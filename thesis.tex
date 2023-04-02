@@ -1,0 +1,413 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Thesis Project
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[
+    a4paper,        % Page size
+    fontsize=10pt,  % Base font size
+    twoside=true,  % Use different layouts for even and odd pages (in particular, if twoside=true, the margin column will be always on the outside)
+	%open=any, % If twoside=true, uncomment this to force new chapters to start on any page, not only on right (odd) pages
+	%chapterentrydots=true, % Uncomment to output dots from the chapter name to the page number in the table of contents
+	numbers=noenddot, % Comment to output dots after chapter numbers; the most common values for this option are: enddot, noenddot and auto (see the KOMAScript documentation for an in-depth explanation)
+]{kaobook}
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+% Text encoding
+\usepackage[utf8]{inputenc}
+\usepackage{siunitx}
+
+% Choose the language
+\ifxetexorluatex
+	\usepackage{polyglossia}
+	\setmainlanguage{english}
+\else
+	\usepackage[english]{babel} % Load characters and hyphenation
+\fi
+\usepackage[english=british]{csquotes}	% English quotes
+
+% Use of book information
+\usepackage{authoraftertitle}
+
+% Font
+\usepackage{libertine}
+\newcommand{\libertineNormal}{\normalfont}
+\newcommand{\libertineBold}{\normalfont\bfseries}
+\newcommand{\libertineNormalCapital}{\normalfont\scshape}
+\newcommand{\libertineBoldCapital}{\normalfont\bfseries\scshape}
+
+% Alignment within the page
+% \usepackage[usestackEOL]{stackengine}
+
+% Load packages for testing
+\usepackage{blindtext}      % Print text without any meaning for testing purposes
+%\usepackage{showframe}     % Uncomment to show boxes around the text area, margin, header and footer
+%\usepackage{showlabels}    % Uncomment to output the content of \label commands to the document where they are used
+
+% Load the bibliography package
+\usepackage{kaobiblio}
+\addbibresource{references.bib}       % Bibliography file
+\addbibresource{main.bib} 
+
+% Load mathematical packages for theorems and related environments
+\usepackage[framed=true]{kaotheorems}
+
+% Load the package for hyperreferences
+\usepackage{kaorefs}
+
+% Tables
+\usepackage{pdflscape}
+\usepackage{rotating}
+\usepackage{tabularx}
+
+% Letter spacing
+\usepackage{microtype}
+
+% Test
+\usepackage{lipsum} 
+
+% Colors
+\usepackage{xcolor}
+
+% Hyperref
+\usepackage{hyperref}
+
+% Variable parameter parsing
+\usepackage{xparse}             % http://ctan.org/pkg/xparse
+\usepackage{ifmtarg}            % http://ctan.org/pkg/ifmtarg
+
+% Horizontal lines
+\newcommand{\horizontalrule}[2]{\par
+  \vspace*{\dimexpr-\parskip-\baselineskip+#1}
+  \noindent\rule{\linewidth}{0.2mm}\par
+  \vspace*{\dimexpr-\parskip-.5\baselineskip+#2}}
+
+% Dedication
+\newenvironment{starting_phrase}
+  {%\clearpage                  % We want a new page          %% I commented this
+   \thispagestyle{empty}        % No header and footer
+   \vspace*{\stretch{1}}        % Some space at the top
+   %\itshape                    % The text is in italics
+   \large
+   \raggedleft                  % Flush to the right margin
+  }
+  {\par % end the paragraph
+   \vspace{\stretch{3}}         % Space at bottom is three times that at the top
+   \normalsize
+   \clearpage                   % Finish off the page
+  }
+
+% Book information
+\newcommand{\titleEnglish}{New tools for modelling sensor data}
+\newcommand{\titleSpanish}{Nuevas herramientas para la modelización de datos procedentes de sensores}
+\newcommand{\authorship}{Alfonso López Ruiz}
+\newcommand{\mainSupervisor}{Dr. Francisco Ramón Feito Higueruela}
+\newcommand{\secondSupervisor}{Dr. Carlos Javier Ogayar Anguita}
+\newcommand{\bookPurpose}{PhD Dissertation}
+\newcommand{\dateDissertation}{June 2023}
+\newcommand{\department}{Departamento de Informática}
+\newcommand{\polytechnicSchool}{Escuela Politécnica Superior de Jaén}
+\newcommand{\university}{Universidad de Jaén}
+
+% Chapter title
+\newcommand{\prefaceChapterTitle}[4]{
+    \noindent\huge
+    \libertineNormalCapital
+    \textls[#4]{#1}  
+    \horizontalrule{#2pt}{#3pt}
+}
+
+% Symbols
+\usepackage{amssymb}
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+% Spacing
+\newcommand{\minorSpacing}{\vspace{1mm}}
+
+% Colors
+\definecolor{redThesis}{HTML}{ba3132}
+\definecolor{darkGray}{HTML}{777777}
+
+% Bibliography
+\bibliography{references}
+
+% Background images
+\usepackage{tikz}
+
+% Math values %
+\usepackage{commath}
+\newcommand*{\R}{\mathbb{R}}
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\atan}{atan}
+\DeclareMathOperator*{\acos}{acos}
+\DeclareMathOperator*{\asin}{asin}
+\newcommand\inv[1]{#1\raisebox{1.15ex}{$\scriptscriptstyle-\!1$}}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+% Images with comments within the image %
+\newcommand{\imageannotated}[5]{
+    \begin{tikzpicture}
+        \draw (0, 0) node[inner sep=0] {\includegraphics[width=\textwidth]{#1}};
+        \draw (#3, #4) node[text=#5] {#2};
+    \end{tikzpicture}
+}
+
+\graphicspath{{images/}} % Paths in which to look for images
+
+\makeindex[columns=3, title=Alphabetical Index, intoc] % Make LaTeX produce the files required to compile the index
+
+\makeglossaries             % Make LaTeX produce the files required to compile the glossary
+\input{glossary.tex}        % Include the glossary definitions
+
+\makenomenclature           % Make LaTeX produce the files required to compile the nomenclature
+
+% Reset sidenote counter at chapters
+%\counterwithin*{sidenote}{chapter}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\frontmatter % Denotes the start of the pre-document content, uses roman numerals
+
+%----------------------------------------------------------------------------------------
+%	OPENING PAGE
+%----------------------------------------------------------------------------------------
+
+%\makeatletter
+%\extratitle{
+%	% In the title page, the title is vspaced by 9.5\baselineskip
+%	\vspace*{9\baselineskip}
+%	\vspace*{\parskip}
+%	\begin{center}
+%		% In the title page, \huge is set after the komafont for title
+%		\usekomafont{title}\huge\@title
+%	\end{center}
+%}
+%\makeatother
+
+%----------------------------------------------------------------------------------------
+%	OUTPUT TITLE PAGE AND PREVIOUS
+%----------------------------------------------------------------------------------------
+
+\input{chapters/cover_information.tex}
+
+%----------------------------------------------------------------------------------------
+%	STARTING PHRASE
+%----------------------------------------------------------------------------------------
+
+\input{chapters/phrase.tex}
+
+%----------------------------------------------------------------------------------------
+%	COPYRIGHT
+%----------------------------------------------------------------------------------------
+
+\input{chapters/copyright.tex}
+
+%----------------------------------------------------------------------------------------
+%	PRESENTATION AND SIGNS
+%----------------------------------------------------------------------------------------
+
+\input{chapters/presentation.tex}
+
+%----------------------------------------------------------------------------------------
+%	PREFACE
+%----------------------------------------------------------------------------------------
+
+\pagelayout{smallmargin}
+\input{chapters/abstract.tex}
+\pagelayout{wide}
+
+%----------------------------------------------------------------------------------------
+%	PUBLICATIONS
+%----------------------------------------------------------------------------------------
+
+\input{chapters/publications.tex}
+
+%----------------------------------------------------------------------------------------
+%	ACKNOWLEDGMENTS
+%----------------------------------------------------------------------------------------
+
+\input{chapters/acknowledgments.tex}
+
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS & LIST OF FIGURES/TABLES
+%----------------------------------------------------------------------------------------
+
+\begingroup % Local scope for the following commands
+
+% Define the style for the TOC, LOF, and LOT
+%\setstretch{1} % Uncomment to modify line spacing in the ToC
+%\hypersetup{linkcolor=blue} % Uncomment to set the colour of links in the ToC
+\setlength{\textheight}{230\hscale} % Manually adjust the height of the ToC pages
+
+% Turn on compatibility mode for the etoc package
+\etocstandarddisplaystyle % "toc display" as if etoc was not loaded
+\etocstandardlines % "toc lines as if etoc was not loaded
+
+\tableofcontents % Output the table of contents
+
+\listoffigures % Output the list of figures
+
+% Comment both of the following lines to have the LOF and the LOT on 
+% different pages
+% \let\cleardoublepage\bigskip
+% \let\clearpage\bigskip
+
+\listoftables % Output the list of tables
+
+\listoflstlistings % Output the list of listings
+
+\endgroup
+
+%----------------------------------------------------------------------------------------
+%	MAIN BODY
+%----------------------------------------------------------------------------------------
+
+\mainmatter % Denotes the start of the main document content, resets page numbering and uses arabic numbers
+\setchapterstyle{kao} % Choose the default chapter heading style
+
+%----------------------------------------------------------------------------------------
+%	GLOSSARY
+%----------------------------------------------------------------------------------------
+
+% The glossary needs to be compiled on the command line with 'makeglossaries main' from the template directory
+
+\pagelayout{smallmargin} 
+\setglossarystyle{listgroup} % Set the style of the glossary (see https://en.wikibooks.org/wiki/LaTeX/Glossary for a reference)
+\printglossary[title=Acronyms, toctitle=Acronyms] % Output the glossary, 'title' is the chapter heading for the glossary, toctitle is the table of contents heading
+
+%----------------------------------------------------------------------------------------
+%	NOMENCLATURE
+%----------------------------------------------------------------------------------------
+
+% The nomenclature needs to be compiled on the command line with 'makeindex main.nlo -s nomencl.ist -o main.nls' from the template directory
+
+\pagelayout{smallmargin}
+\include{chapters/nomenclature.tex}
+\pagelayout{margin}
+
+%----------------------------------------------------------------------------------------
+%	THESIS
+%----------------------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%	PART I
+%----------------------------------------------------------------------------------------
+
+% \chapterBackground{figs/chapters/Chapter1_01.png}{figs/chapters/Chapter1_02.png}{Radu Carstean}{Pawn Mate}{Sketchfab}{black}
+
+% \partIntro{I}{Introduction and overview}{This section introduces a shallow background of Remote Sensing as well as the aims and objectives of this doctoral dissertation. Then, the state-of-the-art on the fusion of Remote Sensing data is presented.}
+
+% \input{chapters/introduction.tex}
+
+% \chapterBackground{figs/chapters/Chapter2_01.png}{figs/chapters/Chapter2_02.png}{wintrez}{Mandalorian}{Sketchfab}{black}
+
+% \input{chapters/fundamentals.tex}
+% \input{chapters/context.tex}
+
+%----------------------------------------------------------------------------------------
+%	PART II
+%----------------------------------------------------------------------------------------
+
+% \chapterBackground{figs/chapters/Chapter2_01.png}{figs/chapters/Chapter2_02.png}{Igor Tretyakov}{Low poly city}{Sketchfab}{black}
+
+% \partIntro{II}{Materials and image fusion}{The first part of this chapter introduces the materials applied to this research work. Specifications and shortcomings of each device are illustrated and solved for the sake of clarity and to avoid its repeatability through this dissertation. Then, images are processed in two dimensions to compose a multi-layer system that will help to construct enriched 3D models in later chapters. }
+
+% \input{chapters/technology.tex}
+% \input{chapters/image_fusion.tex}
+
+%----------------------------------------------------------------------------------------
+%	PART III
+%----------------------------------------------------------------------------------------
+
+% \chapterBackground{figs/chapters/Chapter3_01.png}{figs/chapters/Chapter3_02.png}{DailyArt}{Stone lion}{Sketchfab}{black}
+
+% \partIntro{III}{Point cloud enrichment}{This chapter comprises the generation of thermal and multispectral point clouds. Imagery is projected over dense RGB point clouds to also obtain denser point clouds from information with lower resolution. The evolution of the projective approach is shown throughout this chapter; the first proposals were mainly solved as sequential algorithms, whereas the core of the last one was implemented in the GPU. }
+
+% \input{chapters/thermal_point_cloud.tex}
+% \input{chapters/multi_thermal_point_cloud}
+% \input{chapters/hyper_point_cloud}
+
+%----------------------------------------------------------------------------------------
+%	PART IV
+%----------------------------------------------------------------------------------------
+
+\chapterBackground{figs/chapters/Chapter4_01.png}{figs/chapters/Chapter4_02.png}{Georg Klein}{Viking ship}{Sketchfab}{black}
+
+\partIntro{IV}{Data simulation and optimization}{This part is split into three chapters. The first one simulates an efficient LiDAR sensor aimed at providing large point cloud datasets for the training of Deep Learning models. Then, the LiDAR data source is further enriched with intensity by taking into account the surface BRDF. Finally, the emulated sensor is applied to the optimization of LiDAR scans within 3D buildings. }
+
+% \input{chapters/lidar_remote_sensing.tex}
+\input{chapters/lidar_intensity.tex}
+
+% \pagelayout{wide} % No margins
+% \addpart{Class Options, Commands and Environments}
+% \pagelayout{margin} % Restore margins
+
+% \input{chapters/options.tex}
+% \input{chapters/textnotes.tex}
+% \input{chapters/figsntabs.tex}
+% \input{chapters/references.tex}
+
+% \pagelayout{wide} % No margins
+% \addpart{Design and Additional Features}
+% \pagelayout{margin} % Restore margins
+
+% \input{chapters/layout.tex}
+% \input{chapters/mathematics.tex}
+
+% \appendix % From here onwards, chapters are numbered with letters, as is the appendix convention
+
+% \pagelayout{wide} % No margins
+% \addpart{Appendix}
+% \pagelayout{margin} % Restore margins
+
+% \input{chapters/appendix.tex}
+
+% \pagelayout{wide}
+% \setchapterstyle{kao}
+% \chapter{Test}
+% \blindtext
+
+%----------------------------------------------------------------------------------------
+
+\backmatter % Denotes the end of the main document content
+\setchapterstyle{plain} % Output plain chapters from this point onwards
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+
+% The bibliography needs to be compiled with biber using your LaTeX editor, or on the command line with 'biber main' from the template directory
+
+\defbibnote{bibnote}{Here are the references in citation order.\par\bigskip} % Prepend this text to the bibliography
+\printbibliography[heading=bibintoc, title=Bibliography, prenote=bibnote] % Add the bibliography heading to the ToC, set the title of the bibliography and output the bibliography note
+
+%----------------------------------------------------------------------------------------
+%	INDEX
+%----------------------------------------------------------------------------------------
+
+% The index needs to be compiled on the command line with 'makeindex main' from the template directory
+
+\printindex % Output the index
+
+%----------------------------------------------------------------------------------------
+%	BACK COVER
+%----------------------------------------------------------------------------------------
+
+% If you have a PDF/image file that you want to use as a back cover, uncomment the following lines
+
+%\clearpage
+%\thispagestyle{empty}
+%\null%
+%\clearpage
+%\includepdf{cover-back.pdf}
+
+%----------------------------------------------------------------------------------------
+
+\end{document}

@@ -1,0 +1,120 @@
+% Parameters: Title, Authors, Journal, Year, DOI, URL, Rest.
+\newcommand{\journalPublication}[7]{
+    #2, #4. #1. #3, #7. doi: \href{#6}{#5}.
+}
+
+% Parameters: Title, Authors, Journal, Year.
+\newcommand{\pendingJournalPublication}[4]{
+    #2, #4. #1. #3.
+}
+
+% Parameters: Title, Authors, Journal, Year, DOI, URL, Location
+\newcommand{\conferencePublication}[7]{
+    #2, #4. #1. #3, #7. doi: \href{#6}{#5}.
+}
+
+\DeclareDocumentCommand{\journalQuartiles}{ m m m o o o o o o }{%
+    Journal impact factor: #1. #2 in \textit{#3}\IfNoValueTF{#4}{}{, #4 in \textit{#5}}\IfNoValueTF{#6}{}{, #6 in \textit{#7}}\IfNoValueTF{#8}{.}{, #8 in \textit{#9}.}
+}
+
+\newcommand{\conferenceRating}[1]{Conference rating: #1.}
+
+\newpage
+\prefaceChapterTitle{publications}{19}{24}{35}
+
+\normalsize
+\libertineNormal
+The following work is already published unless indicated otherwise. These are organized into journals and peer-reviewed conferences; the first are sorted according to the JRC quartile and impact factor, while the latter are classified according to the conference rating from GII (Group of Italian Professors of Computer Engineering), GRIN (Group of Italian Professors of Computer Science), and SCIE (Spanish Computer-Science Society):
+
+\begin{itemize}
+    \item \textbf{JCR-indexed journals}
+    \begin{itemize}[parsep=6pt]
+        \item {
+            \journalPublication{An optimized approach for generating dense thermal point clouds from UAV-imagery}{\textbf{Alfonso López-Ruiz} and Juan-Manuel Jurado-Rodríguez and Carlos-Javier Ogayar Anguita and Francisco-Ramón Feito-Higueruela}{ISPRS Journal of Photogrammetry and Remote Sensing}{2021}{10.1016/j.isprsjprs.2021.09.022}{https://doi.org/10.1016/j.isprsjprs.2021.09.022}{volume 97, pp. 78-95}
+
+            \journalQuartiles{11.774}{Q1 (1/50)}{Geography, Physical}[Q1 (6/202)][Geosciences, Multidisciplinary]
+            }
+        \item {
+            \journalPublication{Metaheuristics for the optimization of Terrestrial LiDAR set-up}{\textbf{Alfonso López-Ruiz}, Carlos-Javier Ogayar-Anguita, Juan-Manuel Jurado-Rodríguez \& Francisco Ramón Feito}{Automation in Construction}{2023}{10.1016/j.autcon.2022.104675}{https://www.sciencedirect.com/science/article/abs/pii/S0926580522005453}{volume 146, pp. 104675}
+            
+            \journalQuartiles{10.517}{Q1 (3/68)}{Construction \& Building Technology}[Q1 (1/138)][Civil Engineering]
+            }
+        \item {
+            \journalPublication{A GPU-accelerated framework for simulating LiDAR scanning}{\textbf{Alfonso López-Ruiz} and Carlos-Javier Ogayar-Anguita and Juan-Manuel Jurado Rodríguez and Francisco-Ramón Feito-Higueruela}{IEEE Transactions on Geoscience and Remote Sensing}{2022}{10.1109/tgrs.2022.3165746}{https://doi.org/10.1109/tgrs.2022.3165746}{volume 60, pp. 1-18}
+
+            \journalQuartiles{8.125}{Q1 (29/276)}{Electrical \& Electronic Engineering}[Q1 (5/87)][Geochemistry \& Geophysics][Q1 (4/34)][Remote Sensing][Q1 (5/28)][Imaging Science \& Photographic Technology]
+            }
+        \item {
+            \journalPublication{Remote sensing image fusion on 3D scenarios: A review of applications for agriculture and forestry}{Juan-Manuel Jurado-Rodríguez, \textbf{Alfonso López-Ruiz}, Luís-Filipe Machado-Pádua \& Joaquim-João Sousa-Moreira}{International Journal of Applied Earth Observation and Geoinformation}{2022}{10.1016/j.jag.2022.102856}{https://doi.org/10.1016}{volume 112, pp. 102856}
+
+            \journalQuartiles{7.672}{Q1 (5/34)}{Remote Sensing}
+            }
+        \item {
+            \journalPublication{A framework for registering {UAV}-based imagery for crop-tracking in Precision Agriculture}{\textbf{Alfonso López-Ruiz}, Juan-Manuel Jurado-Rodríguez, Carlos-Javier Ogayar-Anguita \& Francisco-Ramón Feito-Higueruela}{International Journal of Applied Earth Observation and Geoinformation}{2021}{10.1016/j.jag.2020.102274}{https://doi.org/10.1016\%2Fj.jag.2020.102274}{volume 97, pp. 102274}
+
+            \journalQuartiles{7.672}{Q1 (5/34)}{Remote Sensing}
+            }
+        \item {
+            \pendingJournalPublication{Efficient generation of occlusion-aware multispectral and thermographic point clouds}{\textbf{Alfonso López-Ruiz}, Juan-Manuel Jurado-Rodríguez, Carlos-Javier Ogayar-Anguita \& Francisco-Ramón Feito-Higueruela}{Computers and Electronics in Agriculture}{2023}
+            
+            \journalQuartiles{6.757}{Q1 (4/59)}{Agriculture, Multidisciplinary}[Q1 (23/112)][Computer Science, Interdisciplinary Applications]
+        }
+        \item {
+            \journalPublication{Generation of hyperspectral point clouds: Mapping, compression and rendering}{\textbf{Alfonso López-Ruiz}, Juan-Manuel Jurado-Rodríguez, Juan-Roberto Jiménez-Pérez \& Francisco-Ramón Feito-Higueruela}{Computer \& Graphics}{2022}{10.1016/j.cag.2022.06.011}{https://doi.org/10.1016/j.cag.2022.06.011}{volume 106, pp. 267-276}
+
+            \journalQuartiles{1.821}{Q3 (68/110)}{Computer Science, Software Engineering}
+            }
+    \end{itemize}
+    \item \textbf{Peer-reviewed conferences}
+        \begin{itemize}[parsep=6pt]
+        \item {
+            \conferencePublication{GPU-based Mapping of Thermal Imagery for Generating 3D Occlusion-Aware Point Clouds}{\textbf{Alfonso López-Ruiz}, Juan-Manuel Jurado-Rodríguez, Carlos-Javier Ogayar-Anguita and Francisco-Ramón Feito-Higueruela}{IGARSS 2022 (2022 IEEE International Geoscience and Remote Sensing Symposium)}{July 17-22, 2022}{10.1109/igarss46834.2022.9884240}{https://doi.org/10.1109\%2Figarss46834.2022.9884240}{Kuala-Lumpur (Malaysia)}
+
+            \conferenceRating{B-, Class 3}
+            }
+        \item {
+            \conferencePublication{Comparison of GPU-based Methods for Handling Point Cloud Occlusion}{\textbf{Alfonso López-Ruiz}, Juan-Manuel Jurado-Rodríguez, Emilio-José Padrón, Carlos-Javier Ogayar-Anguita \& Francisco-Ramón Feito-Higueruela}{2021 Spanish Computer Graphics Conference (CEIG)}{September 22–24 2021}{10.2312/ceig.20211364}{https://diglib.eg.org/handle/10.2312/ceig.20211364}{Málaga (Spain)}
+            }
+        \item {
+            \conferencePublication{A GPU-accelerated LiDAR Sensor for Generating Labelled Datasets}{\textbf{Alfonso López-Ruiz}, Carlos-Javier Ogayar-Anguita \& Francisco-Ramón Feito-Higueruela}{2021 Spanish Computer Graphics Conference (CEIG)}{September 22–24 2021}{10.2312/ceig.20211360q}{https://diglib.eg.org/handle/10.2312/ceig.20211360q}{Málaga (Spain)}
+            }
+        \item {
+            \conferencePublication{Multispectral Registration, Undistortion and Tree Detection for Precision Agriculture}{\textbf{Alfonso López-Ruiz}, Juan-Manuel Jurado-Rodríguez, Carlos-Javier Ogayar-Anguita \& Francisco-Ramón Feito-Higueruela}{2019 Spanish Computer Graphics Conference (CEIG)}{June 26-28 2019}{10.2312/ceig.20191209}{https://https://diglib.eg.org/handle/10.2312/ceig20191209}{San Sebastián (Spain)}
+            }
+        \end{itemize}
+    \item \textbf{Pending publications}
+        \begin{itemize}[parsep=6pt]
+            \item {
+                \pendingJournalPublication{Semantic BRDF-based LiDAR point cloud generation on the GPU}{\textbf{Alfonso López-Ruiz}, Carlos-Javier Ogayar-Anguita, Rafael-Jesús Segura Sánchez \& Juan-Manuel Jurado-Rodríguez, }{Computer Graphics Forum}{2023}
+                
+                \journalQuartiles{2.363}{Q2 (53/110)}{Computer Science, Software Engineering}
+            }
+        \end{itemize}
+    \item \textbf{Other publications not directly related or explained}
+        \begin{itemize}
+            \item \textbf{JCR-indexed journals}
+                \begin{itemize}[parsep=6pt]
+                    \item {
+                        \journalPublication{Nested spatial data structures for optimal indexing of LiDAR data}{Carlos-Javier Ogayar-Anguita, \textbf{Alfonso, López-Ruiz}, Antonio-Jesús Rueda-Ruiz \& Rafael-Jesús Segura-Sánchez}{ISPRS Journal of Photogrammetry and Remote Sensing}{2023}{10.1016/j.isprsjprs.-\\2022.11.018}{https://www.sciencedirect.com/science/article/abs/pii/S0924271622003112}{volume 195, pp. 287–29}
+            
+                        \journalQuartiles{11.774}{Q1 (1/50)}{Geography, Physical}[Q1 (6/202)][Geosciences, Multidisciplinary]
+                        }
+                   \item {
+                        \journalPublication{Reconstruction of tree branching structures from UAV-LiDAR data}{José-Luis Cárdenas-Donoso, \textbf{Alfonso López-Ruiz}, Carlos-Javier Ogayar-Anguita and Francisco-Ramón Feito-Higueruela and Juan-Manuel Jurado-Rodríguez}{Frontiers in Environmental Science}{2022}{10.3389/fenvs.2022.960083}{https://www.frontiersin.org/articles/10.3389/fenvs.2022.960083}{volume 10, pp. 1-15}
+            
+                        \journalQuartiles{5.411}{Q2 (82/279)}{Environmental Sciences}
+                        }
+                \end{itemize}
+            \item \textbf{Peer-reviewed conferences}
+                \begin{itemize}[parsep=6pt]
+                    \item {
+                        \conferencePublication{Modeling and Enhancement of LiDAR Point Clouds from Natural Scenarios}{José-Antonio Collado, \textbf{Alfonso López-Ruiz}, Juan- Roberto Jiménez-Pérez, Lidia-María Ortega-Alvarado, Francisco-Ramón Feito-Higueruela \& Juan-Manuel Jurado-Rodríguez}{Eurographics 2022 (Posters)}{2022}{10.2312/egp.20221016}{https://doi.org/10.2312/egp.20221016}{Reims (France)}
+
+                        \conferenceRating{A, Class 2}
+                    }
+                    \item {
+                        \conferencePublication{Guided Modeling of Natural Scenarios: Vegetation and Terrain}{José-Antonio Collado, \textbf{Alfonso López-Ruiz}, Juan- Roberto Jiménez-Pérez, Lidia-María Ortega-Alvarado, Juan-Manuel Jurado-Rodríguez \& Francisco-Ramón Feito-Higueruela}{2022 Spanish Computer Graphics Conference (CEIG)}{2022}{10.2312/ceig.20221144}{https://diglib.eg.org/handle/10.2312/ceig.20221144}{Vic (Spain)}
+                        }
+                \end{itemize}
+        \end{itemize}
+\end{itemize}
