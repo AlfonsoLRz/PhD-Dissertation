@@ -146,6 +146,11 @@
 \DeclareMathOperator*{\atan}{atan}
 \DeclareMathOperator*{\acos}{acos}
 \DeclareMathOperator*{\asin}{asin}
+\newcommand*\BitAnd{\mathbin{\&}}
+\newcommand*\BitOr{\mathbin{|}}
+\newcommand*\ShiftLeft{\ll}
+\newcommand*\ShiftRight{\gg}
+\newcommand*\BitNeg{\ensuremath{\mathord{\sim}}}
 \newcommand\inv[1]{#1\raisebox{1.15ex}{$\scriptscriptstyle-\!1$}}
 \newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
 
@@ -343,7 +348,8 @@
 \partIntro{IV}{Data simulation and optimization}{This part is split into three chapters. The first one simulates an efficient LiDAR sensor aimed at providing large point cloud datasets for the training of Deep Learning models. Then, the LiDAR data source is further enriched with intensity by taking into account the surface BRDF. Finally, the emulated sensor is applied to the optimization of LiDAR scans within 3D buildings. }
 
 % \input{chapters/lidar_remote_sensing.tex}
-\input{chapters/lidar_intensity.tex}
+% \input{chapters/lidar_intensity.tex}
+\input{chapters/lidar_optimization}
 
 % \pagelayout{wide} % No margins
 % \addpart{Class Options, Commands and Environments}
