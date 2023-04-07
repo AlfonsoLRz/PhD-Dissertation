@@ -125,6 +125,9 @@
 \newcommand{\cmark}{\ding{51}}%
 \newcommand{\xmark}{\ding{55}}%
 
+% Debug rare characters
+%\DeclareUnicodeCharacter{2121}{I~AM~HERE!!!!}
+
 % Spacing
 \newcommand{\minorSpacing}{\vspace{1mm}}
 
@@ -305,16 +308,16 @@
 %	PART I
 %----------------------------------------------------------------------------------------
 
-% \chapterBackground{figs/chapters/Chapter1_01.png}{figs/chapters/Chapter1_02.png}{Radu Carstean}{Pawn Mate}{Sketchfab}{black}
+\chapterBackground{figs/chapters/Chapter1_01.png}{figs/chapters/Chapter1_02.png}{Radu Carstean}{Pawn Mate}{Sketchfab}{black}
 
-% \partIntro{I}{Introduction and overview}{This section introduces a shallow background of Remote Sensing as well as the aims and objectives of this doctoral dissertation. Then, the state-of-the-art on the fusion of Remote Sensing data is presented.}
+\partIntro{I}{Introduction and overview}{This section introduces a shallow background of Remote Sensing as well as the aims and objectives of this doctoral dissertation. Then, the state-of-the-art on the fusion of Remote Sensing data is presented.}
 
 % \input{chapters/introduction.tex}
 
-% \chapterBackground{figs/chapters/Chapter2_01.png}{figs/chapters/Chapter2_02.png}{wintrez}{Mandalorian}{Sketchfab}{black}
+\chapterBackground{figs/chapters/Chapter2_01.png}{figs/chapters/Chapter2_02.png}{wintrez}{Mandalorian}{Sketchfab}{black}
 
 % \input{chapters/fundamentals.tex}
-% \input{chapters/context.tex}
+\input{chapters/context.tex}
 
 %----------------------------------------------------------------------------------------
 %	PART II
@@ -350,6 +353,16 @@
 % \input{chapters/lidar_remote_sensing.tex}
 % \input{chapters/lidar_intensity.tex}
 \input{chapters/lidar_optimization}
+
+%----------------------------------------------------------------------------------------
+%	PART V
+%----------------------------------------------------------------------------------------
+
+\chapterBackground{figs/chapters/Chapter5_01.png}{figs/chapters/Chapter5_02.png}{Georg Klein}{Viking ship}{Sketchfab}{black}
+
+\partIntro{V}{Data analysis}{This chapter comprises work aimed at analyzing previously processed data, rather than collecting and fusing it to shape 3D results. The methodologies explained in previous chapters are applied to these analyses as some of them require observing and extracting features over point clouds and large hyperspectral datasets. }
+
+\input{chapters/castle_puerta_arenas}
 
 % \pagelayout{wide} % No margins
 % \addpart{Class Options, Commands and Environments}
