@@ -3,7 +3,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[
-    a4paper,        % Page size
+    b5paper,        % Page size
     fontsize=10pt,  % Base font size
     twoside=true,  % Use different layouts for even and odd pages (in particular, if twoside=true, the margin column will be always on the outside)
 	%open=any, % If twoside=true, uncomment this to force new chapters to start on any page, not only on right (odd) pages
@@ -120,6 +120,7 @@
 }
 
 % Symbols
+\usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{pifont}
 \newcommand{\cmark}{\ding{51}}%
@@ -317,7 +318,7 @@
 \chapterBackground{figs/chapters/Chapter2_01.png}{figs/chapters/Chapter2_02.png}{wintrez}{Mandalorian}{Sketchfab}{black}
 
 % \input{chapters/fundamentals.tex}
-\input{chapters/context.tex}
+%\input{chapters/context.tex}
 
 %----------------------------------------------------------------------------------------
 %	PART II
@@ -348,11 +349,11 @@
 
 \chapterBackground{figs/chapters/Chapter4_01.png}{figs/chapters/Chapter4_02.png}{Georg Klein}{Viking ship}{Sketchfab}{black}
 
-\partIntro{IV}{Data simulation and optimization}{This part is split into three chapters. The first one simulates an efficient LiDAR sensor aimed at providing large point cloud datasets for the training of Deep Learning models. Then, the LiDAR data source is further enriched with intensity by taking into account the surface BRDF. Finally, the emulated sensor is applied to the optimization of LiDAR scans within 3D buildings. }
+\partIntro{IV}{Simulations and planning}{This part is split into three chapters. The first one simulates an efficient LiDAR sensor aimed at providing large point cloud datasets for the training of Deep Learning models. Then, the LiDAR data source is further enriched with intensity by taking into account the surface BRDF. Finally, the emulated sensor is applied to the optimization of LiDAR scans within 3D buildings. }
 
 % \input{chapters/lidar_remote_sensing.tex}
 % \input{chapters/lidar_intensity.tex}
-\input{chapters/lidar_optimization}
+%\input{chapters/lidar_optimization}
 
 %----------------------------------------------------------------------------------------
 %	PART V
@@ -362,7 +363,8 @@
 
 \partIntro{V}{Data analysis}{This chapter comprises work aimed at analyzing previously processed data, rather than collecting and fusing it to shape 3D results. The methodologies explained in previous chapters are applied to these analyses as some of them require observing and extracting features over point clouds and large hyperspectral datasets. }
 
-\input{chapters/castle_puerta_arenas}
+\input{chapters/vineyard_classification}
+%\input{chapters/castle_puerta_arenas}
 
 % \pagelayout{wide} % No margins
 % \addpart{Class Options, Commands and Environments}
@@ -370,7 +372,7 @@
 
 % \input{chapters/options.tex}
 % \input{chapters/textnotes.tex}
-% \input{chapters/figsntabs.tex}
+%\input{chapters/figsntabs.tex}
 % \input{chapters/references.tex}
 
 % \pagelayout{wide} % No margins
@@ -404,7 +406,9 @@
 
 % The bibliography needs to be compiled with biber using your LaTeX editor, or on the command line with 'biber main' from the template directory
 
-\defbibnote{bibnote}{Here are the references in citation order.\par\bigskip} % Prepend this text to the bibliography
+\defbibnote{bibnote}{
+%Here are the references in citation order.\par\bigskip
+} % Prepend this text to the bibliography
 \printbibliography[heading=bibintoc, title=Bibliography, prenote=bibnote] % Add the bibliography heading to the ToC, set the title of the bibliography and output the bibliography note
 
 %----------------------------------------------------------------------------------------

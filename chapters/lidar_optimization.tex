@@ -1,5 +1,5 @@
 \setchapterpreamble[u]{\margintoc}
-\chapter{Optimization of indoor LiDAR scans}
+\chapter{Optimization of LiDAR scans}
 \labch{lidar_optimization}
 \label{sec:lidar_optimization}
 
@@ -179,7 +179,7 @@ Neighbourhood exploration is introduced to locally enhance candidate locations. 
 
 \subsection{Greedy algorithm}
 
-The traditional local search is here referred as a Greedy algorithm that helps to rapidly survey the neighbourhood. These surrounding points are evaluated and sorted according to its fitness. Solutions are iteratively improved by moving to the best found solution, if any improves the current fitness. Otherwise, this approach gets stuck on a local minima and terminates. The termination criteria also contemplates reaching a maximum number of iterations. Re-visiting previous explored locations is avoided with an efficient $\textit{dot}$ product of the gradient being evaluated and the previous one ($f(\hat{g}_1, \hat{g}_2) = \hat{g}_1 \cdot \hat{g}_2$). A gradient is considered to be already explored whether $f(\hat{g}_1, \hat{g}_2) < \epsilon - 1$, with $\epsilon$ being a small value such as $2^16$ that avoids errors in comparisons with floating-point data. Remark that this efficient check tackles inmediately revisiting previous neighbours, though it could enter in a more intrincate cycle loop.
+The traditional local search is here referred as a Greedy algorithm that helps to rapidly survey the neighbourhood. These surrounding points are evaluated and sorted according to its fitness. Solutions are iteratively improved by moving to the best found solution, if any improves the current fitness. Otherwise, this approach gets stuck on a local minima and terminates. The termination criteria also contemplates reaching a maximum number of iterations. Re-visiting previous explored locations is avoided with an efficient $\textit{dot}$ product of the gradient being evaluated and the previous one ($f(\hat{g}_1, \hat{g}_2) = \hat{g}_1 \cdot \hat{g}_2$). A gradient is considered to be already explored whether $f(\hat{g}_1, \hat{g}_2) < \epsilon - 1$, with $\epsilon$ being a small value such as $2^{16}$ that avoids errors in comparisons with floating-point data. Remark that this efficient check tackles inmediately revisiting previous neighbours, though it could enter in a more intrincate cycle loop.
 
 \subsection{Simulated Annealing}
 

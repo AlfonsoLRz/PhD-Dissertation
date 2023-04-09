@@ -4,8 +4,8 @@
 }
 
 % Parameters: Title, Authors, Journal, Year.
-\newcommand{\pendingJournalPublication}[4]{
-    #2, #4. #1. #3.
+\newcommand{\pendingJournalPublication}[3]{
+    #2, #3. #1.
 }
 
 % Parameters: Title, Authors, Journal, Year, DOI, URL, Location
@@ -55,7 +55,7 @@ The following work is already published unless indicated otherwise. These are or
             \journalQuartiles{7.672}{Q1 (5/34)}{Remote Sensing}
             }
         \item {
-            \pendingJournalPublication{Efficient generation of occlusion-aware multispectral and thermographic point clouds}{\textbf{Alfonso López-Ruiz}, Juan-Manuel Jurado-Rodríguez, Carlos-Javier Ogayar-Anguita \& Francisco-Ramón Feito-Higueruela}{Computers and Electronics in Agriculture}{2023}
+            \journalPublication{Efficient generation of occlusion-aware multispectral and thermographic point clouds}{\textbf{Alfonso López-Ruiz}, Juan-Manuel Jurado-Rodríguez, Carlos-Javier Ogayar-Anguita \& Francisco-Ramón Feito-Higueruela}{Computers and Electronics in Agriculture}{2023}{\\10.1016/j.compag.2023.107712}{https://doi.org/10.1016/j.compag.2023.107712}{volume 207, pp. 107712}
             
             \journalQuartiles{6.757}{Q1 (4/59)}{Agriculture, Multidisciplinary}[Q1 (23/112)][Computer Science, Interdisciplinary Applications]
         }
@@ -85,36 +85,40 @@ The following work is already published unless indicated otherwise. These are or
     \item \textbf{Pending publications}
         \begin{itemize}[parsep=6pt]
             \item {
-                \pendingJournalPublication{Semantic BRDF-based LiDAR point cloud generation on the GPU}{\textbf{Alfonso López-Ruiz}, Carlos-Javier Ogayar-Anguita, Rafael-Jesús Segura Sánchez \& Juan-Manuel Jurado-Rodríguez, }{Computer Graphics Forum}{2023}
-                
-                \journalQuartiles{2.363}{Q2 (53/110)}{Computer Science, Software Engineering}
+                \pendingJournalPublication{Semantic BRDF-based LiDAR point cloud generation on the GPU}{\textbf{Alfonso López-Ruiz}, Carlos-Javier Ogayar-Anguita, Rafael-Jesús Segura-Sánchez}{2023}
+            }
+            \item {
+                \pendingJournalPublication{Classification of vineyard varieties using UAV hyperspectral imaging}{\textbf{Alfonso López-Ruiz}, Joaquim-João Moreira-de Sousa, Carlos-Javier Ogayar-Anguita \& Francisco-Ramón Feito-Higueruela}{2023}
+            }
+            \item {
+                \pendingJournalPublication{Detection of landscape features with visible and thermal imaging}{Carolina Collado, Carmen Enríquez-Muñoz, \textbf{Alfonso López-Ruiz}, Carlos Enríquez \& Juan-Manuel Jurado-Rodríguez}{2023}
             }
         \end{itemize}
-    \item \textbf{Other publications not directly related or explained}
-        \begin{itemize}
-            \item \textbf{JCR-indexed journals}
-                \begin{itemize}[parsep=6pt]
-                    \item {
-                        \journalPublication{Nested spatial data structures for optimal indexing of LiDAR data}{Carlos-Javier Ogayar-Anguita, \textbf{Alfonso, López-Ruiz}, Antonio-Jesús Rueda-Ruiz \& Rafael-Jesús Segura-Sánchez}{ISPRS Journal of Photogrammetry and Remote Sensing}{2023}{10.1016/j.isprsjprs.-\\2022.11.018}{https://www.sciencedirect.com/science/article/abs/pii/S0924271622003112}{volume 195, pp. 287–29}
+    % \item \textbf{Other publications not directly related or explained}
+    %     \begin{itemize}
+    %         \item \textbf{JCR-indexed journals}
+    %             \begin{itemize}[parsep=6pt]
+    %                 \item {
+    %                     \journalPublication{Nested spatial data structures for optimal indexing of LiDAR data}{Carlos-Javier Ogayar-Anguita, \textbf{Alfonso, López-Ruiz}, Antonio-Jesús Rueda-Ruiz \& Rafael-Jesús Segura-Sánchez}{ISPRS Journal of Photogrammetry and Remote Sensing}{2023}{10.1016/j.isprsjprs.-\\2022.11.018}{https://www.sciencedirect.com/science/article/abs/pii/S0924271622003112}{volume 195, pp. 287–29}
             
-                        \journalQuartiles{11.774}{Q1 (1/50)}{Geography, Physical}[Q1 (6/202)][Geosciences, Multidisciplinary]
-                        }
-                   \item {
-                        \journalPublication{Reconstruction of tree branching structures from UAV-LiDAR data}{José-Luis Cárdenas-Donoso, \textbf{Alfonso López-Ruiz}, Carlos-Javier Ogayar-Anguita and Francisco-Ramón Feito-Higueruela and Juan-Manuel Jurado-Rodríguez}{Frontiers in Environmental Science}{2022}{10.3389/fenvs.2022.960083}{https://www.frontiersin.org/articles/10.3389/fenvs.2022.960083}{volume 10, pp. 1-15}
+    %                     \journalQuartiles{11.774}{Q1 (1/50)}{Geography, Physical}[Q1 (6/202)][Geosciences, Multidisciplinary]
+    %                     }
+    %                \item {
+    %                     \journalPublication{Reconstruction of tree branching structures from UAV-LiDAR data}{José-Luis Cárdenas-Donoso, \textbf{Alfonso López-Ruiz}, Carlos-Javier Ogayar-Anguita and Francisco-Ramón Feito-Higueruela and Juan-Manuel Jurado-Rodríguez}{Frontiers in Environmental Science}{2022}{10.3389/fenvs.2022.960083}{https://www.frontiersin.org/articles/10.3389/fenvs.2022.960083}{volume 10, pp. 1-15}
             
-                        \journalQuartiles{5.411}{Q2 (82/279)}{Environmental Sciences}
-                        }
-                \end{itemize}
-            \item \textbf{Peer-reviewed conferences}
-                \begin{itemize}[parsep=6pt]
-                    \item {
-                        \conferencePublication{Modeling and Enhancement of LiDAR Point Clouds from Natural Scenarios}{José-Antonio Collado, \textbf{Alfonso López-Ruiz}, Juan- Roberto Jiménez-Pérez, Lidia-María Ortega-Alvarado, Francisco-Ramón Feito-Higueruela \& Juan-Manuel Jurado-Rodríguez}{Eurographics 2022 (Posters)}{2022}{10.2312/egp.20221016}{https://doi.org/10.2312/egp.20221016}{Reims (France)}
+    %                     \journalQuartiles{5.411}{Q2 (82/279)}{Environmental Sciences}
+    %                     }
+    %             \end{itemize}
+    %         \item \textbf{Peer-reviewed conferences}
+    %             \begin{itemize}[parsep=6pt]
+    %                 \item {
+    %                     \conferencePublication{Modeling and Enhancement of LiDAR Point Clouds from Natural Scenarios}{José-Antonio Collado, \textbf{Alfonso López-Ruiz}, Juan- Roberto Jiménez-Pérez, Lidia-María Ortega-Alvarado, Francisco-Ramón Feito-Higueruela \& Juan-Manuel Jurado-Rodríguez}{Eurographics 2022 (Posters)}{2022}{10.2312/egp.20221016}{https://doi.org/10.2312/egp.20221016}{Reims (France)}
 
-                        \conferenceRating{A, Class 2}
-                    }
-                    \item {
-                        \conferencePublication{Guided Modeling of Natural Scenarios: Vegetation and Terrain}{José-Antonio Collado, \textbf{Alfonso López-Ruiz}, Juan- Roberto Jiménez-Pérez, Lidia-María Ortega-Alvarado, Juan-Manuel Jurado-Rodríguez \& Francisco-Ramón Feito-Higueruela}{2022 Spanish Computer Graphics Conference (CEIG)}{2022}{10.2312/ceig.20221144}{https://diglib.eg.org/handle/10.2312/ceig.20221144}{Vic (Spain)}
-                        }
-                \end{itemize}
-        \end{itemize}
+    %                     \conferenceRating{A, Class 2}
+    %                 }
+    %                 \item {
+    %                     \conferencePublication{Guided Modeling of Natural Scenarios: Vegetation and Terrain}{José-Antonio Collado, \textbf{Alfonso López-Ruiz}, Juan- Roberto Jiménez-Pérez, Lidia-María Ortega-Alvarado, Juan-Manuel Jurado-Rodríguez \& Francisco-Ramón Feito-Higueruela}{2022 Spanish Computer Graphics Conference (CEIG)}{2022}{10.2312/ceig.20221144}{https://diglib.eg.org/handle/10.2312/ceig.20221144}{Vic (Spain)}
+    %                     }
+    %             \end{itemize}
+    %     \end{itemize}
 \end{itemize}
