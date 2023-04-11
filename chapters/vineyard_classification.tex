@@ -36,6 +36,7 @@ Data acquired from the spectrometer was analyzed to evaluate the distance among 
 \end{figure}
 
 \section{Processing of UAV data}
+\label{sec:vineyard_hyperspectral_processing}
 
 This section briefly describes the process of obtaining reflectance data from raw hyperspectral imagery, which is illustrated in Figure \ref{fig:spectral_view_rectification}. The calculated reflectance is then transformed and standardized to feed a DL network. 
 
@@ -61,7 +62,7 @@ The classification of vineyard varieties with UAV data can be hardly approached 
 \begin{figure*}[ht]
     \centering
     \includegraphics[width=\linewidth]{figs/vineyard_classification/network.png}
-	\caption{Overview of dataset preparation. First, a binary mask was generated using the NDVI and rows were organized into different groups to distinguish vineyard classes. Once pixels are processed as described in \nameref{sec:uav_processing}, both reflectance and labels were split into patches. The signatures on the right side show the original and transformed reflectance, including the variance per feature. }
+	\caption{Overview of dataset preparation. First, a binary mask was generated using the NDVI and rows were organized into different groups to distinguish vineyard classes. Once pixels are processed as described in \nameref{sec:vineyard_hyperspectral_processing}, both reflectance and labels were split into patches. The signatures on the right side show the original and transformed reflectance, including the variance per feature. }
 	\label{fig:vineyard_cnn_network}
 \end{figure*}
 
@@ -163,7 +164,9 @@ Part & Layer & Kernel size & Strides & Output size\\
 
 Two similar blocks are included as Part III and Part IV in Figure \ref{fig:vineyard_cnn_network}. Both share the same structure: Inception block, normalization, activation and dropout. It s a frequent follow-up of convolutional layers \cite{li_faster_2022, xue_attention-based_2021}, with dropout being greater (0.4) for middle layers than the last and initial layers (0.2). Instead of using max-pooling to downsample the network, strides in convolutional layers were observed to perform better. Thus, strides of size 2 were used in spatial-based CNN layers. The network specifications are shown in Table \ref{table:cnn_architecture}.
 
-The Inception block was first proposed by \cite{szegedy_going_2014}. The first proposal consisted of a module with four parallel layers later concatenated: convolutional layers with different kernel sizes (1 for spectral features and 3 and 5 to obtain aggregations from surrounding pixels), and a max-pooling layer that works directly over input data. Accordingly, a response map with a large number of filters is obtained. The importance of each of them is determined by the following layers that will again downsample data. However, at the time this layout was considered to be prohibitive if the input layer has a large number of filters, especially for kernels of larger size. Therefore, $1\times1$ convolutions aimed at reducing data were attached before each one of the Inception threads (max-pool and convolutions with $\kappa > 1$). In this work, both proposals were used: the naïve is checked in the experimentation to increase the network's capacity, whereas the second is part of the proposed network. The latter compresses spatial data even more and is following connected to the network output. 
+The Inception block was first proposed by \cite{szegedy_going_2014}. The first proposal consisted of a module with four parallel layers later concatenated: convolutional layers with different kernel sizes (1 for spectral features and 3 and 5 to obtain aggregations from surrounding pixels), and a max-pooling layer that works directly over input data. Accordingly, a response map with a large number of filters is obtained. The importance of each of them is determined by the following layers that will again downsample data. However, at the time this layout was considered to be prohibitive if the input layer has a large number of filters, especially for kernels of larger size. Therefore, $1\times1$ convolutions aimed at reducing data were attached before each one of the Inception threads (max-pool and convolutions with $\kappa > 1$). In this work, both proposals were used: the naïve is checked in the experimentation to increase the network's capacity, whereas the second is part of the proposed network. The latter compresses spatial data even more and is following connected to the network output. The code showing the skeleton of the proposed network is shown in Code \ref{code:vineyardmodel}.
+
+\lstinputlisting[language=python, caption={The proposed CNN network aimed at classifying different vineyard varieties.}, label=code:vineyardmodel]{code/vineyard_allopezr2d_skeleton.py}
 
 Finally, the model is fitted with training data and its performance is assessed with validation samples. For supervised problems like ours, data is composed of both samples and ground truth. In this work, the training samples were split into several sets according to the hardware limitations, and the model was iteratively trained with a significant number of iterations for every set ($\varepsilon \gets 100$). Besides mitigating storage limitations, this leave-p-out cross-validation also helps to generalize by not training over the complete dataset. Furthermore, each one of these clusters is further split into small batches during a single iteration. The batch size must be large enough to include a balanced representation of samples. In this work, the batch size was set to $2^{10}$. This phase can be terminated early if no improvements are observed during $t$ epochs, with $t \gets 20$ in this work.
 
@@ -184,30 +187,30 @@ From both datasets (balanced and second-round vegetation), batches were augmente
 
 \section{Experimentation and analysis}
 
-A brief explanation of the study area and sensors is first provided in this section; then, the performance of the proposed network is evaluated over multiple hyperspectral swaths collected in the two surveyed areas. Results are presented in terms of overall accuracy (OA), average accuracy (AA), statistical kappa ($\kappa$) and f1-score. The first shows the percentage of correctly classified samples, the AA represents the average class-wise accuracy, the $\kappa$ coefficient is the degree of agreement between the classification results and the ground truth, and finally, the f1-score measures the model's precision by leveraging both precision and recall metrics. Several representative neural networks are compared with our method: LtCNN \cite{liu_plant_2022}, JigsawHSI \cite{moraga_jigsawhsi_2022}, SpectralNET \cite{chakraborty_spectralnet_2021}, HybridSN \cite{roy_hybridsn_2020}, Nezami et al. \cite{nezami_tree_2020} and A-SPN \cite{xue_attention-based_2021}. From these, only a few address airborne-sensing imagery \cite{liu_plant_2022}, whereas the rest are focused on satellite data. Hence, several considerations must be addressed: 1) some of these manuscripts apply different transformations to the input data and 2) the number of spectral bands also differ from our sensing tool. Therefore, the preprocessing pipeline was selected as the one providing better performance over our input data, either our pipeline or the one proposed in the reference work. However, FA showed a higher performance for every network if input data was transformed according to this fitting method, rather than the following: 
-\begin{itemize}
-    \item \cite{nezami_tree_2020}, \cite{li_faster_2022} (LtCNN) used the corrected reflectance with no preprocessing. 
-    \item Moraga \cite{moraga_jigsawhsi_2022} (JigsawHSI) used PCA, FA, SVD and NMF with 9-12 final features.
-    \item Liu et al. \cite{liu_plant_2022} (A-SPN) and \cite{roy_hybridsn_2020} (HybridSN) used PCA to transform reflectance with $n \gets 15, 30$, respectively, whereas $n$ is unknown for \cite{xue_attention-based_2021}.
-    \item \cite{chakraborty_spectralnet_2021} (SpectralNet) used FA with only 3 features.
-\end{itemize}
-
-Regarding implementation, all the tests were performed on a PC with AMD Ryzen Threadripper 3970X 3.6 GHz, 256 GB RAM, Nvidia RTX A6000 GPU and Windows 10 OS. The proposed CNN as well as the compared networks were implemented with Keras (version 2.10.0) and TensorFlow (version 2.10.1) in Python. CUDA 11.8 and CuNN 8.6 were installed to reduce the fitting time. Not every network from previous work could be applied as published; for example, LtCNN is designed for large image patches ($200\times200$) and thus convolutional striding and MaxPooling cannot be applied when patches reach a size of $1\times1$. For LtCNN \cite{lu_hyperspectral_2022}, kernel size and max pooling's strides were reduced as depicted in Appendix.
-
-\subsection{Study area}
-
-The vineyards used as study areas in this work are situated in the Northern region of Portugal, specifically in Vila Real \ref{fig:vineyard_study_area}). Each vineyard plot is dedicated to either red or white grapevine variants, and each grapevine variety is cultivated in one or more contiguous rows. Data acquisition occurred in two ways: 1) by gathering leaves from each row, directly on the field, and 2) by conducting a UAV flight, which is described subsequently. The initial outcomes were analyzed in a laboratory setting, while the second survey was dedicated to collecting HSI swaths.
-
-\begin{figure*}[ht]
+\begin{figure*}[bht]
     \centering
     \includegraphics[width=\linewidth]{figs/vineyard_classification/study_area.png}
 	\caption{Overview of the areas surveyed with UAV hyperspectral imaging for the classification task. Two different vineyard crops are depicted according to their main variety: a) red and b) white. }
 	\label{fig:vineyard_study_area}
 \end{figure*}
 
+A brief explanation of the study area and sensors is first provided in this section; then, the performance of the proposed network is evaluated over multiple hyperspectral swaths collected in the two surveyed areas. Results are presented in terms of overall accuracy (OA), average accuracy (AA), statistical kappa ($\kappa$) and f1-score. The first shows the percentage of correctly classified samples, the AA represents the average class-wise accuracy, the $\kappa$ coefficient is the degree of agreement between the classification results and the ground truth, and finally, the f1-score measures the model's precision by leveraging both precision and recall metrics. Several representative neural networks are compared with our method: LtCNN \cite{liu_plant_2022}, JigsawHSI \cite{moraga_jigsawhsi_2022}, SpectralNET \cite{chakraborty_spectralnet_2021}, HybridSN \cite{roy_hybridsn_2020}, Nezami et al. \cite{nezami_tree_2020} and A-SPN \cite{xue_attention-based_2021}. From these, only a few address airborne-sensing imagery \cite{liu_plant_2022}, whereas the rest are focused on satellite data. Hence, several considerations must be addressed: 1) some of these manuscripts apply different transformations to the input data and 2) the number of spectral bands also differ from our sensing tool. Therefore, the preprocessing pipeline was selected as the one providing better performance over our input data, either our pipeline or the one proposed in the reference work. However, FA showed a higher performance for every network if input data was transformed according to this fitting method, rather than the following: 
+\begin{itemize}
+    \item Nezami et al. \cite{nezami_tree_2020}, Liu et al. \cite{liu_plant_2022} (LtCNN) used the corrected reflectance with no preprocessing. 
+    \item Moraga and Duzgun \cite{moraga_jigsawhsi_2022} (JigsawHSI) used PCA, FA, SVD and NMF with 9-12 final features.
+    \item Liu et al. \cite{liu_plant_2022} (A-SPN) and \cite{roy_hybridsn_2020} (HybridSN) used PCA to transform reflectance with $n \gets 15, 30$, respectively, whereas $n$ is unknown for \cite{xue_attention-based_2021}.
+    \item Chakraborty and Trehan \cite{chakraborty_spectralnet_2021} (SpectralNet) used FA with only 3 features.
+\end{itemize}
+
+Regarding implementation, all the tests were performed on a PC with AMD Ryzen Threadripper 3970X 3.6 GHz, 256 GB RAM, Nvidia RTX A6000 GPU and Windows 10 OS. The proposed CNN as well as the compared networks were implemented with Keras (version 2.10.0) and TensorFlow (version 2.10.1) in Python. CUDA 11.8 and CuNN 8.6 were installed to reduce the fitting time. Not every network from previous work could be applied as published; for example, LtCNN is designed for large image patches ($200\times200$) and thus convolutional striding and MaxPooling cannot be applied when patches reach a size of $1\times1$. For LtCNN \cite{lu_hyperspectral_2022}, kernel size and max pooling's strides were reduced as depicted in Figure \ref{fig:lt_cnn}. The rest of networks are also documented, from Figure \ref{fig:aspn_cnn} to Figure \ref{fig:hybridsn_cnn}.
+
+\subsection{Study area}
+
+The vineyards used as study areas in this work are situated in the Northern region of Portugal, specifically in Vila Real \ref{fig:vineyard_study_area}). Each vineyard plot is dedicated to either red or white grapevine variants, and each grapevine variety is cultivated in one or more contiguous rows. Data acquisition occurred in two ways: 1) by gathering leaves from each row, directly on the field, and 2) by conducting a UAV flight, which is described subsequently. The initial outcomes were analyzed in a laboratory setting, while the second survey was dedicated to collecting HSI swaths.
+
 \subsection{Material}
 
-The M600 hexacopter equipped with a Nano-Hyperspec from Headwall was used for the UAV flight. The flight was planned using Universal Ground Control Station at an altitude of 50 \si{\meter} with a 40\% side overlap. The red and white varieties were surveyed with 5 and 8 swaths, respectively. The leaves collected were analyzed at the University of Trás-os Montes e Alto Douro (UTAD) using a spectrometer, where reflectivity was acquired by sampling the front and back of each leaf under controlled illumination. The first and last reflectance samples were discarded since they were noisier, thus narrowing down the spectral interval from 187.63-1100.35 \si{\nano\meter} to 450-950 \si{\nano\meter}. Even after applying filters, some spectral signatures differed significantly from the expected average profile ($\mu$) and were removed based on the distance calculation from $\mu$. Table \ref{table:grape_samples} provides a summary of the collected grape leaf samples.
+The M600 hexacopter equipped with a Nano-Hyperspec from Headwall was used for the UAV flight. The flight was planned using Universal Ground Control Station at an altitude of 50 \si{\meter} with a 40\% side overlap. 5 and 8 swaths were obtained for red and white grapevine varieties, respectively, as depicted in Figure \ref{fig:vineyard_swaths}. The leaves collected were analyzed at the University of Trás-os Montes e Alto Douro (UTAD) using a spectrometer, where reflectivity was acquired by sampling the front and back of each leaf under controlled illumination. The first and last reflectance samples were discarded since they were noisier, thus narrowing down the spectral interval from 187.63-1100.35 \si{\nano\meter} to 450-950 \si{\nano\meter}. Even after applying filters, some spectral signatures differed significantly from the expected average profile ($\mu$) and were removed based on the distance calculation from $\mu$. Table \ref{table:grape_samples} provides a summary of the collected grape leaf samples.
 
 \subsection{Impact of window size}
 
@@ -230,19 +233,18 @@ The patch size is one, if not the most relevant, parameter concerning the networ
 \subsection{Ablation study}
 
 The proposed network is intended to be validated in this section by removing some of the network features, while the rest remain unchanged. The proposed changes are the following:
+\begin{marginfigure}[1.cm]
+    \centering
+    \includegraphics[width=\linewidth]{figs/vineyard_classification/inception_block.png}
+	\caption{First proposal of Inception block \cite{szegedy_going_2014}.}
+	\label{fig:naive_inception}
+\end{marginfigure}
 \begin{enumerate}
     \item The first two convolutional layers to extract spectral and spatial features were removed, thus only remaining the two Inception blocks.
     \item Both Inception blocks were modelled using the naïve version, originally proposed by \cite{szegedy_going_2014} (see Figure \ref{fig:naive_inception}). The main difference between this architecture and ours is that the former extracts features with different neighbourhood sizes using the spectral bands as input for the later convolutional layers.
     \item Only the first Inception block was exchanged by a naïve version, as the one used in the previous experiment.
     \item The spatial attention layer was not included.
 \end{enumerate}
-
-\begin{marginfigure}[.cm]
-    \centering
-    \includegraphics[width=\linewidth]{figs/vineyard_classification/inception_block.png}
-	\caption{First proposal of Inception block \cite{szegedy_going_2014}.}
-	\label{fig:naive_inception}
-\end{marginfigure}
 
 The obtained results are shown in Table \ref{table:ablation_results}. Removing the SA layers led to a slight decrease in performance, similar to removing the first convolutional layers. However, the latter returned worse results since spectral features were not retrieved prior to normalizing attributes for the first time and passing them to the Inception layers. Unsurprisingly, using the first version of the Inception layer twice led to a significant performance decrease for every metric, as it kept transforming the spectral dimensionality in a deep layer. The second Inception version also transforms spectral features but rather provides them as an additional layer (concatenation) that can be weighted according to their contribution to the output. Following this reasoning, swapping the first Inception layer with the first version of it did not involve a huge performance drop. Improvements to the proposed architecture over the c) variant were very small and therefore may suggest that using either one of them does not offer great changes in the performance. Similar results to this last setup were achieved by removing the spatial attention layer; it did not lead to a significant performance drop, though better results were obtained using it. 
 
@@ -251,7 +253,7 @@ The obtained results are shown in Table \ref{table:ablation_results}. Removing t
 
 \renewcommand{\arraystretch}{1.15}
 \begin{table*}
-\footnotesize
+\small
 \centering
 \caption{Overall results in terms of Overall Accuracy (OA), Average Accuracy (AA) and Kappa coefficient
 with different methods.\\ }
@@ -315,17 +317,27 @@ f1 & \textbf{\numberVariance{98.43}{0.13}} & \numberVariance{79.20}{7.08} & \num
 
 \begin{figure*}[ht]
     \centering
-    \includegraphics[width=\linewidth]{figs/vineyard_classification/time_capacity.png}
-	\caption{Augmentation of a single hyperspectral patch ($20\times20$). }
-	\label{fig:time_capacity_networks}
+    \includegraphics[width=.9\linewidth]{figs/vineyard_classification/training_history.png}
+	\caption{Overall accuracy and loss during training. }
+	\label{fig:training_history}
 \end{figure*}
 
 \begin{figure*}[ht]
     \centering
-    \includegraphics[width=\linewidth]{figs/vineyard_classification/training_history.png}
-	\caption{Overall accuracy and loss during training. }
-	\label{fig:training_history}
+    \includegraphics[width=.85\linewidth]{figs/vineyard_classification/time_capacity_network.png}
+	\caption{Response time for training the network over a) red and b) white grapevine samples, as well as the number of parameters for every compared network, including ours.  }
+	\label{fig:time_capacity_networks}
 \end{figure*}
+
+\subsection{Separability}
+
+\begin{marginfigure}[.1cm]
+    \centering
+    \includegraphics[width=\linewidth]{figs/vineyard_classification/separability.png}
+	\caption{Clustering of samples according to the feature transformation performed by uMAP over 1) the starting hyperspectral features and 2) features extracted by the CNN prior to transferring it to the final Softmax layer. }
+	\label{fig:separability_umap}
+\end{marginfigure}
+The output of the proposed network can be assessed in terms of separability by removing the final Dropout and Dense layers. Data is transformed and flattened according to the network's learnt weights. It is subsequently embedded with uMAP \cite{mcinnes_umap_2020} to compress high-dimensionality data into a few features, thus allowing us to visualize the new data representation. The same procedure can be followed over the original data to compare how was the data manifold uncrumpled. As shown in Figure \ref{fig:separability_umap}, different labels were not perfectly unmixed, although the improvement in comparison to the starting representation is notable. To provide this result, the last Flatten layer was connected to uMAP fitting with $n = 2$; hence, 2592 features were narrowed to two features to represent the embedding in a two-dimensional chart.
 
 \subsection{Confusion matrices}
 
@@ -336,18 +348,7 @@ Figure \ref{fig:confusion_matrices} shows the OA of the proposed network against
     \includegraphics[width=\linewidth]{figs/vineyard_classification/confusion_matrices.png}
 	\caption{Confusion matrices for the classification of red and white varieties. }
 	\label{fig:confusion_matrices}
-\end{figure*}
-
-\subsection{Separability}
-
-The output of the proposed network can be assessed in terms of separability by removing the final Dropout and Dense layers. Data is transformed and flattened according to the network's learnt weights. It is subsequently embedded with uMAP \cite{mcinnes_umap_2020} to compress high-dimensionality data into a few features, thus allowing us to visualize the new data representation. The same procedure can be followed over the original data to compare how was the data manifold uncrumpled. As shown in Figure \ref{fig:separability_umap}, different labels were not perfectly unmixed, although the improvement in comparison to the starting representation is notable. To provide this result, the last Flatten layer was connected to uMAP fitting with $n = 2$; hence, 2592 features were narrowed to two features to represent the embedding in a two-dimensional chart. 
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=\linewidth]{figs/vineyard_classification/separability.png}
-	\caption{Clustering of samples according to the feature transformation performed by uMAP over 1) the starting hyperspectral features and 2) features extracted by the CNN prior to transferring it to the final Softmax layer. }
-	\label{fig:separability_umap}
-\end{figure}
+\end{figure*} 
 
 \subsection{Analysis of errors}
 
@@ -391,43 +392,6 @@ Dataset & OA & Kappa ($\kappa$) & Batch size & OA & Kappa ($\kappa$) & Reference
 \end{table*}
 \renewcommand{\arraystretch}{1}
 
-\subsection{Transfer learning}
-
-Transfer learning has been widely studied to take advantage of trained networks with a notable capability of separating a variable number of classes. The underlying concept is that a network which has been successfully applied to one case study and has learned relevant features may be applied to another case study with a similar outcome. Nonetheless, it does not necessarily involve training the whole network, which typically has a severe amount of parameters. Instead, some layers that learn more abstract features, presumably the first, are not trained; their weights are preserved and deeper layers are trained to specialize in another application. 
-
-The objective of this section is to carry out several experiments to conclude whether weights learned over the classification either of UAV or satellite HSI, can be exploited on the complementary data source to make the training faster, and even more accurate. From the previously carried tests, we collected five trained networks: two from UAV-based imagery, and another three from the satellite datasets. Hence, Table \ref{fig:uav_into_satellite} shows the OA whether the network weights are loaded as trained from UAV-based data, and vice versa (Table \ref{fig:satellite_into_uav}). Furthermore, another key in this discussion is the number of layers and which of them are not trained. The following four reasonings have been applied:
-\begin{itemize}
-    \item First, the model is completely trained again. It does not learn from scratch since weights are not randomly initialized, but they consist of weights that already worked on a similar application (not similar data).
-    \item Second, the last Inception block (Part IV in Figure \ref{fig:network}) is trained again, but the rest of the network remains as loaded. It can be assumed that deeper layers are specialized in classifying UAV HSI samples, and thereby requires to be re-trained.
-    \item Then, this very same reasoning is repeated by training two Inception blocks rather than only the last one.
-    \item Although improbable, one could argue that the first layers, where high-level spatial and spectral features are retrieved, are the key factor in training both data sources. The last experiment did not train the spatial attention as well as the two first convolutional layers.
-\end{itemize}
-
-Note that weights can be either loaded from networks trained to identify red or white grapevine varieties, and the same occurs for the satellite datasets that were compared.
-
-\renewcommand{\arraystretch}{1.1}
-\begin{table*}
-\centering
-\caption{Classification of hyperspectral imagery from satellite platforms in terms of Overall Accuracy (OA) and Kappa coefficient ($\kappa$).\\ }
-\label{table:satellite_into_uav}
-\begin{tabular}{|l@{}|*6{c|}}
-\toprule
-Dataset & Initial & 1) Complete & 2) Part IV & 3) Part III \& IV & 4) SA and Part II & Batch size\\
-\cmidrule{1-7}
-\multicolumn{7}{|c|}{Weights from \textbf{red} grapevine varieties}\\
-\cmidrule{1-7}
-\textbf{Pavia university} & \numberVariance{99.77}{0.02} & \numberVariance{99.70}{0.06} & \textbf{\numberVariance{99.92}{0.02}} & \textbf{\numberVariance{99.92}{0.02}} & \numberVariance{82.76}{0.90} & \multirow{2}{*}{128}\\
-\textbf{Indian pines} & \numberVariance{99.74}{0.04} & \numberVariance{99.87}{0.01} & \numberVariance{99.81}{0.06} & \textbf{\numberVariance{99.91}{0.01}} & \numberVariance{99.76}{0.06} &\\
-\cmidrule{1-7}
-\multicolumn{7}{|c|}{Weights from \textbf{white} grapevine varieties}\\
-\cmidrule{1-7}
-\textbf{Pavia university} & \numberVariance{99.77}{0.02} & \numberVariance{99.70}{0.06} & \textbf{\numberVariance{99.92}{0.02}} & \textbf{\numberVariance{99.92}{0.02}} & \numberVariance{82.76}{0.90} & \multirow{2}{*}{128}\\
-\textbf{Indian pines} & \numberVariance{99.74}{0.04} & \numberVariance{99.70}{0.06} & \textbf{\numberVariance{99.92}{0.02}} & \textbf{\numberVariance{99.92}{0.02}} & \numberVariance{82.76}{0.90} & \\
-\bottomrule
-\end{tabular}
-\end{table*}
-\renewcommand{\arraystretch}{1}
-
 \section{Conclusions and future work}
 
 The proposed network presents a CNN model that uses current state-of-the-art procedures applied to classify grapevine varieties. Spatial-attention layers were proved to enhance the results, whereas Inception layers were checked to discuss which one could provide better results over hyperspectral imagery. Note that the majority of CNN works in the literature are oriented towards RGB imagery, and therefore, their transition to hypercubes is not as trivial. Also, only a few works have addressed the classification of UAV-based HSI, since it is considerably noisier. Despite this network being proposed for phenotyping applied to grapevines, it was also tested over standard satellite HSI datasets which are frequently used to establish fair comparisons. The results showed that samples from satellite imagery were also classified with notable accuracy (over 99.7\%), although current state-of-the-art networks achieve better results. In contrast, most of the compared models achieved poor results over UAV-based imagery ($\sim90$\% at most). Our training time and the number of parameters were also lower than most of the compared classification models; some of them are composed of millions of parameters, whereas ours solely consist of $\sim400K$ parameters. 
@@ -438,18 +402,18 @@ Regardless of the high OA and AA, the analysis of errors also depicted some clus
 
 As a future work, we would like to further extend this network to integrate as many more varieties as possible. It also ought to be explored whether a different growth stage has some effects on the classification. Hence, proving this would enable this work to be used over any study area at any stage of the year as long as it comprises some of the varieties over which the model has been trained. Also, a considerable effort is being made to collect information about crops receiving grants from national and European funds. For instance, it should be inferred whether a crop is abandoned or not to make a decision on whether these funds are granted. Similarly to this, estimating the area of vineyard rows, even the harvested varieties, could also help in this and other decision-making processes. Finally, the labelling may greatly benefit from using the Digital Elevation Model as collected by the surveying UAV, in order to avoid some labelling errors and speed up this manual task. 
 
-\section{Summary of collected data}
+\section*{Additional material}
 
-\newcommand{\varietySpacing}{\hskip 0.3in}
+\newcommand{\varietySpacing}{\hskip 0.25in}
 \renewcommand{\arraystretch}{1.1}
 \begin{table*}[bp]
 \centering
-\caption{Summary of acquired information regarding different grapevine varieties. For each variety, the number of field rows is shown, as well as the number of laboratory samples and the number of collected leaves to this end. Regarding UAV acquisition, samples are obtained by labelling aerial imagery.\\ }
+\caption{Summary of information collected from different grapevine varieties. For each variety, the number of field rows is shown, along with the number of laboratory samples and the number of collected leaves. Regarding UAV acquisition, samples are obtained by labelling aerial imagery.\\ }
 \label{table:grape_samples}
 
 \begin{tabular}{|*6{l@{\varietySpacing}|}}
 \cmidrule{4-6}
-\multicolumn{2}{c}{} & & \multicolumn{2}{|c|}{Laboratory} & \multicolumn{1}{c|}{UAV}\\
+\multicolumn{2}{c}{} & & \multicolumn{2}{|c|}{Spectrometer} & \multicolumn{1}{c|}{UAV}\\
 \cmidrule{1-6}
 \textbf{Root variety} & \textbf{Variety} & \textbf{\#Rows} & \textbf{\#Leaves} & \textbf{\#Samples} & \textbf{\#Samples}\\
 \cmidrule{1-6}
@@ -462,15 +426,15 @@ As a future work, we would like to further extend this network to integrate as m
 & Touriga National & 3 & 9 & 108 & 38,925\\
 & Tinta Roriz & 4 & 9 & 108 & 31,091\\
 \cmidrule{1-6}
-\multirow{8}{*}{White} & Arito Do Douro & 1 & 6 & 50 & 58.813\\
+\multirow{9}{*}{White} & Arito Do Douro & 1 & 6 & 50 & 58.813\\
 & Boal & 3 & 8 & 72 & 22,751\\
 & Cercial & 1 & 6 & 36 & 13,556\\
 & Codega Do Ladinho & 3 & 16 & 140 & 146,083\\
 & Donzelinho Branco & 1 & 2 & 12 & 34,019\\
-& Falgasao & 1 & 6 & 36 & 13,539\\
+%& Falgasao & 1 & 6 & 36 & 13,539\\
 & Malvasia Fina & 3 & 16 & 129 & 139,985\\
 & Moscatel Galego & 1 & 6 & 54 & 48,352\\
-& Nascatel Galego Roxo & 1 & 6 & 36 & 47,745\\
+& Moscatel Galego Roxo & 1 & 6 & 36 & 47,745\\
 & Samarrinho & 1 & 6 & 36 & 43.560\\
 \bottomrule
 \end{tabular}
@@ -479,51 +443,64 @@ As a future work, we would like to further extend this network to integrate as m
 
 \begin{figure*}[bp]
     \centering
-    {\includegraphics[width=\linewidth, angle=-180]{figs/vineyard_classification/vineyard_signature_grid.png}}
+    {\includegraphics[width=\linewidth]{figs/vineyard_classification/vineyard_signature_grid.png}}
 	\caption{Mean spectral signature of a) red and b) white grape varieties. }
 	\label{fig:vineyard_mean_grid}
 \end{figure*}
 
-\section{CNN architecture of previous work}
+\begin{figure*}[bp]
+    \centering
+    {\includegraphics[width=\linewidth]{figs/vineyard_classification/swaths.png}}
+	\caption{False RGB color images from the collected hypercubes depicting two different areas, focused on 1) red and 2) white grapevine varieties.}
+	\label{fig:vineyard_swaths}
+\end{figure*}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=.7\linewidth]{figs/vineyard_classification/networks/aspn_9x8_32.png}
+	\caption{CNN architecture proposed by Xue et al. \cite{xue_attention-based_2021} as implemented in this study to establish a comparison. }
+	\label{fig:aspn_cnn}
+\end{figure}
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\linewidth]{figs/vineyard_classification/networks/lt_cnn_23x22_64.png}
-	\caption{CNN architecture proposed by \cite{lu_hyperspectral_2022} as implemented in this study to establish a comparison. }
+	\caption{CNN architecture proposed by Liu et al. \cite{liu_plant_2022} as implemented in this study to establish a comparison. }
 	\label{fig:lt_cnn}
 \end{figure}
 
 \begin{figure}[bp]
     \centering
     \includegraphics[width=\linewidth]{figs/vineyard_classification/networks/nezami_25x24_20.png}
-	\caption{CNN architecture proposed by \cite{nezami_tree_2020} as implemented in this study to establish a comparison. }
+	\caption{CNN architecture proposed by Nezami et al. \cite{nezami_tree_2020} as implemented in this study to establish a comparison. }
 	\label{fig:nezami_cnn}
 \end{figure}
 
 \begin{figure*}[ht]
     \centering
     \includegraphics[width=\linewidth]{figs/vineyard_classification/networks/jigsaw_hsi_25x24_0.png}
-	\caption{CNN architecture proposed by \cite{moraga_jigsawhsi_2022} as implemented in this study to establish a comparison. }
+	\caption{CNN architecture proposed by Moraga and Duzgun \cite{moraga_jigsawhsi_2022} as implemented in this study to establish a comparison. }
 	\label{fig:jigsaw_cnn}
+\end{figure*}
+
+\begin{figure*}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{figs/vineyard_classification/networks/spectral_net_24x23_64_01.png}
+	\caption{CNN architecture proposed by Chakraborty and Trehan \cite{chakraborty_spectralnet_2021} as implemented in this study to establish a comparison. }
+	\label{fig:spectralnet_cnn}
+\end{figure*}
+
+\begin{figure*}[ht]
+    \ContinuedFloat
+    \centering
+    \includegraphics[width=\linewidth]{figs/vineyard_classification/networks/spectral_net_24x23_64_02.png}
+	\caption{Continuation of Figure \ref{fig:spectralnet_cnn}. }
+	\label{fig:spectralnet_cnn_continuation}
 \end{figure*}
 
 \begin{figure}[bp]
     \centering
-    \includegraphics[width=\linewidth]{figs/vineyard_classification/networks/spectral_net_24x23_64.png}
-	\caption{CNN architecture proposed by \cite{chakraborty_spectralnet_2021} as implemented in this study to establish a comparison. }
-	\label{fig:spectralnet_cnn}
-\end{figure}
-
-\begin{figure}[bp]
-    \centering
     \includegraphics[width=\linewidth]{figs/vineyard_classification/networks/hybrid_sn_25x24_8.png}
-	\caption{CNN architecture proposed by \cite{roy_hybridsn_2020} as implemented in this study to establish a comparison. }
+	\caption{CNN architecture proposed by Roy et al. \cite{roy_hybridsn_2020} as implemented in this study to establish a comparison. }
 	\label{fig:hybridsn_cnn}
-\end{figure}
-
-\begin{figure}[bp]
-    \centering
-    \includegraphics[width=\linewidth]{figs/vineyard_classification/networks/aspn_9x8_32.png}
-	\caption{CNN architecture proposed by \cite{xue_attention-based_2021} as implemented in this study to establish a comparison. }
-	\label{fig:aspn_cnn}
 \end{figure}

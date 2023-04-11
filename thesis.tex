@@ -3,7 +3,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[
-    b5paper,        % Page size
+    a4paper,        % Page size
     fontsize=10pt,  % Base font size
     twoside=true,  % Use different layouts for even and odd pages (in particular, if twoside=true, the margin column will be always on the outside)
 	%open=any, % If twoside=true, uncomment this to force new chapters to start on any page, not only on right (odd) pages
@@ -78,11 +78,18 @@
 \usepackage{xparse}             % http://ctan.org/pkg/xparse
 \usepackage{ifmtarg}            % http://ctan.org/pkg/ifmtarg
 
+% Big first letter, emulating IEEE template
+\usepackage{lettrine}
+
 % Horizontal lines
 \newcommand{\horizontalrule}[2]{\par
   \vspace*{\dimexpr-\parskip-\baselineskip+#1}
   \noindent\rule{\linewidth}{0.2mm}\par
   \vspace*{\dimexpr-\parskip-.5\baselineskip+#2}}
+
+% Control of odd pages
+\usepackage[strict]{changepage}
+\newcommand{\oddChapter}{\ifoddpage \afterpage{\thispagestyle{empty} \null\newpage} \else \fi}
 
 % Dedication
 \newenvironment{starting_phrase}
@@ -96,7 +103,7 @@
   {\par % end the paragraph
    \vspace{\stretch{3}}         % Space at bottom is three times that at the top
    \normalsize
-   \clearpage                   % Finish off the page
+   % \clearpage                   % Finish off the page
   }
 
 % Book information
@@ -107,6 +114,7 @@
 \newcommand{\secondSupervisor}{Dr. Carlos Javier Ogayar Anguita}
 \newcommand{\bookPurpose}{PhD Dissertation}
 \newcommand{\dateDissertation}{June 2023}
+\newcommand{\dateDissertationSpanish}{Junio de 2023}
 \newcommand{\department}{Departamento de Informática}
 \newcommand{\polytechnicSchool}{Escuela Politécnica Superior de Jaén}
 \newcommand{\university}{Universidad de Jaén}
@@ -207,27 +215,25 @@
 \input{chapters/cover_information.tex}
 
 %----------------------------------------------------------------------------------------
-%	STARTING PHRASE
+%	STARTING PHRASE AND COPYRIGHT
 %----------------------------------------------------------------------------------------
 
 \input{chapters/phrase.tex}
-
-%----------------------------------------------------------------------------------------
-%	COPYRIGHT
-%----------------------------------------------------------------------------------------
-
 \input{chapters/copyright.tex}
 
 %----------------------------------------------------------------------------------------
 %	PRESENTATION AND SIGNS
 %----------------------------------------------------------------------------------------
 
+\oddChapter
 \input{chapters/presentation.tex}
 
 %----------------------------------------------------------------------------------------
-%	PREFACE
+%	ABSTRACT
 %----------------------------------------------------------------------------------------
 
+\clearpage
+\afterpage{\null\newpage}
 \pagelayout{smallmargin}
 \input{chapters/abstract.tex}
 \pagelayout{wide}
@@ -236,12 +242,14 @@
 %	PUBLICATIONS
 %----------------------------------------------------------------------------------------
 
+\oddChapter
 \input{chapters/publications.tex}
 
 %----------------------------------------------------------------------------------------
 %	ACKNOWLEDGMENTS
 %----------------------------------------------------------------------------------------
 
+\oddChapter
 \input{chapters/acknowledgments.tex}
 
 %----------------------------------------------------------------------------------------
@@ -313,9 +321,9 @@
 
 \partIntro{I}{Introduction and overview}{This section introduces a shallow background of Remote Sensing as well as the aims and objectives of this doctoral dissertation. Then, the state-of-the-art on the fusion of Remote Sensing data is presented.}
 
-% \input{chapters/introduction.tex}
+\input{chapters/introduction.tex}
 
-\chapterBackground{figs/chapters/Chapter2_01.png}{figs/chapters/Chapter2_02.png}{wintrez}{Mandalorian}{Sketchfab}{black}
+%\chapterBackground{figs/chapters/Chapter2_01.png}{figs/chapters/Chapter2_02.png}{wintrez}{Mandalorian}{Sketchfab}{black}
 
 % \input{chapters/fundamentals.tex}
 %\input{chapters/context.tex}
@@ -347,9 +355,9 @@
 %	PART IV
 %----------------------------------------------------------------------------------------
 
-\chapterBackground{figs/chapters/Chapter4_01.png}{figs/chapters/Chapter4_02.png}{Georg Klein}{Viking ship}{Sketchfab}{black}
+% \chapterBackground{figs/chapters/Chapter4_01.png}{figs/chapters/Chapter4_02.png}{Georg Klein}{Viking ship}{Sketchfab}{black}
 
-\partIntro{IV}{Simulations and planning}{This part is split into three chapters. The first one simulates an efficient LiDAR sensor aimed at providing large point cloud datasets for the training of Deep Learning models. Then, the LiDAR data source is further enriched with intensity by taking into account the surface BRDF. Finally, the emulated sensor is applied to the optimization of LiDAR scans within 3D buildings. }
+% \partIntro{IV}{Simulations and planning}{This part is split into three chapters. The first one simulates an efficient LiDAR sensor aimed at providing large point cloud datasets for the training of Deep Learning models. Then, the LiDAR data source is further enriched with intensity by taking into account the surface BRDF. Finally, the emulated sensor is applied to the optimization of LiDAR scans within 3D buildings. }
 
 % \input{chapters/lidar_remote_sensing.tex}
 % \input{chapters/lidar_intensity.tex}
@@ -359,12 +367,24 @@
 %	PART V
 %----------------------------------------------------------------------------------------
 
+\oddChapter
 \chapterBackground{figs/chapters/Chapter5_01.png}{figs/chapters/Chapter5_02.png}{Georg Klein}{Viking ship}{Sketchfab}{black}
 
 \partIntro{V}{Data analysis}{This chapter comprises work aimed at analyzing previously processed data, rather than collecting and fusing it to shape 3D results. The methodologies explained in previous chapters are applied to these analyses as some of them require observing and extracting features over point clouds and large hyperspectral datasets. }
 
-\input{chapters/vineyard_classification}
+% \input{chapters/vineyard_classification}
 %\input{chapters/castle_puerta_arenas}
+
+%----------------------------------------------------------------------------------------
+%	PART VI
+%----------------------------------------------------------------------------------------
+
+\oddChapter
+\chapterBackground{figs/chapters/Chapter6_01.png}{figs/chapters/Chapter6_02.png}{Rigsters}{Deer group}{Sketchfab}{white}
+
+\partIntro{VI}{Concluding remarks}{}
+
+\input{chapters/conclusions.tex}
 
 % \pagelayout{wide} % No margins
 % \addpart{Class Options, Commands and Environments}
@@ -382,7 +402,34 @@
 % \input{chapters/layout.tex}
 % \input{chapters/mathematics.tex}
 
-% \appendix % From here onwards, chapters are numbered with letters, as is the appendix convention
+%----------------------------------------------------------------------------------------
+%	PART VI
+%----------------------------------------------------------------------------------------
+
+\appendix % From here onwards, chapters are numbered with letters, as is the appendix convention
+
+\oddChapter
+\chapterBackground{figs/chapters/Chapter6_01.png}{figs/chapters/Chapter6_02.png}{Rigsters}{Deer group}{Sketchfab}{white}
+
+\partIntro{VII}{Appendices}{}
+
+\pagelayout{margin}
+\input{chapters/preamble_spanish}
+
+%----------------------------------------------------------------------------------------
+%	COVER
+%----------------------------------------------------------------------------------------
+
+\pagelayout{wide}
+\thispagestyle{empty}
+\input{chapters/cover_information_spanish.tex}
+\thispagestyle{empty}
+\input{chapters/copyright_spanish}
+\pagelayout{margin}
+
+\setchapterstyle{kao}
+\input{chapters/introduction_spanish.tex}
+% \input{chapters/conclusions_spanish}
 
 % \pagelayout{wide} % No margins
 % \addpart{Appendix}
