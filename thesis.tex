@@ -6,7 +6,7 @@
     a4paper,        % Page size
     fontsize=10pt,  % Base font size
     twoside=true,  % Use different layouts for even and odd pages (in particular, if twoside=true, the margin column will be always on the outside)
-	%open=any, % If twoside=true, uncomment this to force new chapters to start on any page, not only on right (odd) pages
+	open=right, % If twoside=true, uncomment this to force new chapters to start on any page, not only on right (odd) pages
 	%chapterentrydots=true, % Uncomment to output dots from the chapter name to the page number in the table of contents
 	numbers=noenddot, % Comment to output dots after chapter numbers; the most common values for this option are: enddot, noenddot and auto (see the KOMAScript documentation for an in-depth explanation)
 ]{kaobook}
@@ -88,8 +88,11 @@
   \vspace*{\dimexpr-\parskip-.5\baselineskip+#2}}
 
 % Control of odd pages
+% \usepackage{everypage}
 \usepackage[strict]{changepage}
-\newcommand{\oddChapter}{\ifoddpage \afterpage{\thispagestyle{empty} \null\newpage} \else \fi}
+
+\newcommand{\oddCoverChapter}{\ifoddpage \afterpage{\thispagestyle{empty}\null\newpage} \else \fi}
+\newcommand{\oddChapter}{\ifoddpage \else \afterpage{\thispagestyle{empty}\null\newpage} \fi}
 
 % Dedication
 \newenvironment{starting_phrase}
@@ -158,6 +161,7 @@
 \DeclareMathOperator*{\atan}{atan}
 \DeclareMathOperator*{\acos}{acos}
 \DeclareMathOperator*{\asin}{asin}
+\DeclareMathOperator*{\dis}{d}
 \newcommand*\BitAnd{\mathbin{\&}}
 \newcommand*\BitOr{\mathbin{|}}
 \newcommand*\ShiftLeft{\ll}
@@ -305,9 +309,9 @@
 
 % The nomenclature needs to be compiled on the command line with 'makeindex main.nlo -s nomencl.ist -o main.nls' from the template directory
 
-\pagelayout{smallmargin}
-\include{chapters/nomenclature.tex}
-\pagelayout{margin}
+% \pagelayout{smallmargin}
+% \include{chapters/nomenclature.tex}
+% \pagelayout{margin}
 
 %----------------------------------------------------------------------------------------
 %	THESIS
@@ -317,35 +321,34 @@
 %	PART I
 %----------------------------------------------------------------------------------------
 
+\oddCoverChapter
 \chapterBackground{figs/chapters/Chapter1_01.png}{figs/chapters/Chapter1_02.png}{Radu Carstean}{Pawn Mate}{Sketchfab}{black}
 
-\partIntro{I}{Introduction and overview}{This section introduces a shallow background of Remote Sensing as well as the aims and objectives of this doctoral dissertation. Then, the state-of-the-art on the fusion of Remote Sensing data is presented.}
+\oddChapter
+\partIntro{I}{Introduction and overview}{This section introduces a shallow background of Remote Sensing as well as the aim and objectives of this doctoral dissertation. Then, the state-of-the-art on the fusion and simulation of Remote Sensing data is presented.}
 
-\input{chapters/introduction.tex}
-
-%\chapterBackground{figs/chapters/Chapter2_01.png}{figs/chapters/Chapter2_02.png}{wintrez}{Mandalorian}{Sketchfab}{black}
-
+% \input{chapters/introduction.tex}
 % \input{chapters/fundamentals.tex}
-%\input{chapters/context.tex}
+% \input{chapters/context.tex}
 
 %----------------------------------------------------------------------------------------
 %	PART II
 %----------------------------------------------------------------------------------------
 
-% \chapterBackground{figs/chapters/Chapter2_01.png}{figs/chapters/Chapter2_02.png}{Igor Tretyakov}{Low poly city}{Sketchfab}{black}
+\chapterBackground{figs/chapters/Chapter2_01.png}{figs/chapters/Chapter2_02.png}{wintrez}{Mandalorian}{Sketchfab}{black}
 
-% \partIntro{II}{Materials and image fusion}{The first part of this chapter introduces the materials applied to this research work. Specifications and shortcomings of each device are illustrated and solved for the sake of clarity and to avoid its repeatability through this dissertation. Then, images are processed in two dimensions to compose a multi-layer system that will help to construct enriched 3D models in later chapters. }
+\partIntro{II}{Materials and image fusion}{The first part of this chapter introduces the materials applied to this research work. Specifications and shortcomings of each device are illustrated and solved for the sake of clarity and to avoid its repeatability through this dissertation. Then, images are processed and matched to compose a multi-layer system that will help to construct enriched 3D models in later chapters. }
 
-% \input{chapters/technology.tex}
+%\input{chapters/technology.tex}
 % \input{chapters/image_fusion.tex}
 
 %----------------------------------------------------------------------------------------
 %	PART III
 %----------------------------------------------------------------------------------------
 
-% \chapterBackground{figs/chapters/Chapter3_01.png}{figs/chapters/Chapter3_02.png}{DailyArt}{Stone lion}{Sketchfab}{black}
+\chapterBackground{figs/chapters/Chapter3_01.png}{figs/chapters/Chapter3_02.png}{Igor Tretyakov}{Low poly city}{Sketchfab}{black}
 
-% \partIntro{III}{Point cloud enrichment}{This chapter comprises the generation of thermal and multispectral point clouds. Imagery is projected over dense RGB point clouds to also obtain denser point clouds from information with lower resolution. The evolution of the projective approach is shown throughout this chapter; the first proposals were mainly solved as sequential algorithms, whereas the core of the last one was implemented in the GPU. }
+\partIntro{III}{Point cloud enrichment}{This chapter comprises the generation of thermal and multispectral point clouds. Imagery is projected over dense RGB point clouds to also obtain denser point clouds from information with lower resolution. The evolution of the projective approach is shown throughout this chapter; the first proposals were mainly solved as sequential algorithms, whereas the core of the last one was implemented in the \acrshort{gpu}. }
 
 % \input{chapters/thermal_point_cloud.tex}
 % \input{chapters/multi_thermal_point_cloud}
@@ -355,9 +358,9 @@
 %	PART IV
 %----------------------------------------------------------------------------------------
 
-% \chapterBackground{figs/chapters/Chapter4_01.png}{figs/chapters/Chapter4_02.png}{Georg Klein}{Viking ship}{Sketchfab}{black}
+\chapterBackground{figs/chapters/Chapter4_01.png}{figs/chapters/Chapter4_02.png}{DailyArt}{Stone lion}{Sketchfab}{black}
 
-% \partIntro{IV}{Simulations and planning}{This part is split into three chapters. The first one simulates an efficient LiDAR sensor aimed at providing large point cloud datasets for the training of Deep Learning models. Then, the LiDAR data source is further enriched with intensity by taking into account the surface BRDF. Finally, the emulated sensor is applied to the optimization of LiDAR scans within 3D buildings. }
+\partIntro{IV}{Simulations and planning}{This part is split into three chapters. The first one simulates an efficient \acrshort{lidar} sensor aimed at providing large point cloud datasets for the training of Deep Learning models. Then, the \acrshort{lidar} data source is further enriched with intensity by taking into account the surface \acrshort{brdf}. Finally, the emulated sensor is applied to the optimization of \acrshort{lidar} scans within 3D buildings. }
 
 % \input{chapters/lidar_remote_sensing.tex}
 % \input{chapters/lidar_intensity.tex}
@@ -373,18 +376,20 @@
 \partIntro{V}{Data analysis}{This chapter comprises work aimed at analyzing previously processed data, rather than collecting and fusing it to shape 3D results. The methodologies explained in previous chapters are applied to these analyses as some of them require observing and extracting features over point clouds and large hyperspectral datasets. }
 
 % \input{chapters/vineyard_classification}
-%\input{chapters/castle_puerta_arenas}
+\input{chapters/castle_puerta_arenas}
 
 %----------------------------------------------------------------------------------------
 %	PART VI
 %----------------------------------------------------------------------------------------
 
-\oddChapter
-\chapterBackground{figs/chapters/Chapter6_01.png}{figs/chapters/Chapter6_02.png}{Rigsters}{Deer group}{Sketchfab}{white}
+% \oddChapter
+% \chapterBackground{figs/chapters/Chapter6_01.png}{figs/chapters/Chapter6_02.png}{Rigsters}{Deer group}{Sketchfab}{white}
 
-\partIntro{VI}{Concluding remarks}{}
+% \partIntro{VI}{Concluding remarks}{}
 
-\input{chapters/conclusions.tex}
+% \pagelayout{smallmargin}
+% \input{chapters/conclusions.tex}
+% \pagelayout{margin}
 
 % \pagelayout{wide} % No margins
 % \addpart{Class Options, Commands and Environments}
@@ -406,29 +411,29 @@
 %	PART VI
 %----------------------------------------------------------------------------------------
 
-\appendix % From here onwards, chapters are numbered with letters, as is the appendix convention
+% \appendix % From here onwards, chapters are numbered with letters, as is the appendix convention
 
-\oddChapter
-\chapterBackground{figs/chapters/Chapter6_01.png}{figs/chapters/Chapter6_02.png}{Rigsters}{Deer group}{Sketchfab}{white}
+% \oddChapter
+% \chapterBackground{figs/chapters/Chapter6_01.png}{figs/chapters/Chapter6_02.png}{Rigsters}{Deer group}{Sketchfab}{white}
 
-\partIntro{VII}{Appendices}{}
+% \partIntro{VII}{Appendices}{}
 
-\pagelayout{margin}
-\input{chapters/preamble_spanish}
+% \pagelayout{margin}
+% \input{chapters/preamble_spanish}
 
 %----------------------------------------------------------------------------------------
 %	COVER
 %----------------------------------------------------------------------------------------
 
-\pagelayout{wide}
-\thispagestyle{empty}
-\input{chapters/cover_information_spanish.tex}
-\thispagestyle{empty}
-\input{chapters/copyright_spanish}
-\pagelayout{margin}
+% \pagelayout{wide}
+% \thispagestyle{empty}
+% \input{chapters/cover_information_spanish.tex}
+% \thispagestyle{empty}
+% \input{chapters/copyright_spanish}
+% \pagelayout{margin}
 
-\setchapterstyle{kao}
-\input{chapters/introduction_spanish.tex}
+% \setchapterstyle{kao}
+% \input{chapters/introduction_spanish.tex}
 % \input{chapters/conclusions_spanish}
 
 % \pagelayout{wide} % No margins
@@ -464,7 +469,16 @@
 
 % The index needs to be compiled on the command line with 'makeindex main' from the template directory
 
-\printindex % Output the index
+%\printindex % Output the index
+
+%----------------------------------------------------------------------------------------
+%	CREDITS
+%----------------------------------------------------------------------------------------
+
+\clearpage
+\thispagestyle{empty}
+\null
+\input{chapters/repository}
 
 %----------------------------------------------------------------------------------------
 %	BACK COVER
@@ -477,6 +491,8 @@
 %\null%
 %\clearpage
 %\includepdf{cover-back.pdf}
+
+
 
 %----------------------------------------------------------------------------------------
 

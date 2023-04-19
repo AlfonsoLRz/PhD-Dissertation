@@ -5,7 +5,7 @@
 
 \section*{About this chapter}
 
-This chapter describes the image registration algorithm on which this dissertation is articulated. We address the matching of multispectral and thermographic images with visible information. To this end, the Enhanced Correlation Coefficient (ECC) is used for maximizing the correlation of images in different spectral ranges. A comparative assessment is finally done to demonstrate which is the best configuration to balance both time efficiency and quality of matching results. Shortcomings that are frequent in \gls{Remote sensing} aerial images were presented and corrected in Chapter \nameref{sec:materials}. 
+This chapter describes the image registration algorithm on which this dissertation is articulated. We address the matching of multispectral and thermographic images with visible information. To this end, the Enhanced Correlation Coefficient (\acrshort{ecc}) is used for maximizing the correlation of images in different spectral ranges. A comparative assessment is finally done to demonstrate which is the best configuration to balance both time efficiency and quality of matching results. Shortcomings that are frequent in Remote sensing aerial images were presented and corrected in Chapter \nameref{sec:materials}. 
 
 \section{Matching multispectral imagery}
 
@@ -15,11 +15,11 @@ This chapter describes the image registration algorithm on which this dissertati
 	\label{fig:image_fusion_framework}
 \end{figure*}
 
-The Parrot Sequoia multispectral sensor captures four spectral bands: Green (GRE), Red (RED), Red Edge (REG) and Near Infrared (NIR). These are acquired by the same device, but with different lenses aimed at perceiving different spectral wavelengths. Hence, their overlapping exposes the lack of alignment between them, as shown in Figure \ref{fig:multispectral_ghost_effect}. At least the following differences are identified: 
+The Parrot Sequoia multispectral sensor captures four spectral bands: Green (GRE), Red (RED), Red Edge (\acrshort{reg}) and Near Infrared (\acrshort{nir}). These are acquired by the same device, but with different lenses aimed at perceiving different spectral wavelengths. If the images are overlapped as collected, the lack of alignment between them is exposed, as shown in Figure \ref{fig:multispectral_ghost_effect}. At least the following differences are identified: 
 \begin{itemize}
     \item Images are translated as a result of each lens working in a \textbf{different fixed position within the multispectral sensor}. 
-    \item \textbf{Every lens has its own optical axis and principal point}. The ideal configuration parts from parallel optical axes that lead to solving the misalignment by a simple translation. Even if this was the configuration after manufacturing, the lens calibration deteriorates over time. Indeed, the image metadata shows the viewing conditions of each band with respect to the master one (GRE) in what is known as a camera ring, i.e., a set of cameras which are connected and defined by geometric constraints. Every band defines its own yaw, roll and pitch angles with respect to the master, and thus optical axes cannot be assumed to be parallel.
-    \item \textbf{Timestamps differ for multispectral images belonging to the same shot}. It is in the order of \si{\milli\second}, and yet it implies a harder matching because of the UAV's movement.
+    \item \textbf{Every lens has its own optical axis and principal point}. The ideal configuration parts from parallel optical axes that lead to solving the misalignment by a simple translation. Even if this was the configuration after manufacturing, the lens calibration deteriorates over time. Indeed, the image metadata shows the viewing conditions of each band with respect to the master one, the Green one, in what is known as a camera ring. It is defined as a set of cameras which are connected and defined by geometric constraints. Every band defines its own yaw, roll and pitch angles with respect to the master, and thus optical axes cannot be assumed to be parallel.
+    \item \textbf{Timestamps differ for multispectral images belonging to the same shot}. It is in the order of \si{\milli\second}, and yet it implies a harder matching because of the \acrshort{uas}'s movement.
 \end{itemize}
 
 \begin{marginfigure}[.2cm]
@@ -27,12 +27,12 @@ The Parrot Sequoia multispectral sensor captures four spectral bands: Green (GRE
   \caption{Image ghosting effect obtained by overlapping multispectral bands with $\alpha < 1$.}
   \label{fig:multispectral_ghost_effect}
 \end{marginfigure}
-Matching of multispectral imagery could be performed by means of the image metadata, thus relying on the sensor calibration. Instead, the proposed methodology operates over colour information. Traditional image-matching approaches, such as SIFT (Scale-invariant feature transform), do not work well over images observing different wavelength intervals since surface colour varies throughout them. Although there exist variants from SIFT method that work under photometric differences \cite{park_pi-sift_2008}, they do not seem as robust as the \textbf{Enhanced Correlation Coefficient (ECC)} \cite{evangelidis_parametric_2008}. Given two images of the same dimensionality, ECC seeks the matrix that minimizes the intensity correlation of both images. It is more convenient for our purposes for the following reasons. First, it works by estimating a transformation matrix, ranging from a simple translation ($2 \times 3$) to a homography ($3 \times 4$); the larger the matrix, the more time-consuming is to seek the transformation. Therefore, the motion model can be determined considering the desired time efficiency and what kind of transformations the misalignment presents. Even for the homography, the algorithm remains linear ($\mathcal{O}(n)$). Control parameters of ECC are the number of maximum iterations upon convergence ($n$) as well as the aimed precision ($\epsilon$). Another intrinsic parameter is the dimensionality of input images, as it considerably reduces latency.
+Matching of multispectral imagery could be performed by means of the image metadata, thus relying on the sensor calibration. Instead, the proposed methodology operates over colour information. Traditional image-matching approaches, such as \acrshort{sift}, \acrshort{surf} and \acrshort{orb}, do not work well over images collecting different wavelength intervals, with surfaces showing different radiation. Although there exist variants from \acrshort{sift} that work under photometric differences \cite{park_pi-sift_2008}, they are not as robust as the \textbf{Enhanced Correlation Coefficient (\acrshort{ecc})} \cite{evangelidis_parametric_2008}. Given two images of the same dimensionality, \acrshort{ecc} seeks the matrix that minimizes the intensity correlation of both images. It is more convenient for our purposes for the following reasons. First, it works by estimating a transformation matrix, ranging from a simple translation ($2 \times 3$) to a homography ($3 \times 4$); the larger the matrix, the more time-consuming the process. Therefore, the motion model can be determined considering the desired time efficiency and what kind of transformations the misalignment presents. Even for the homography, the algorithm has a linear complexity ($\mathcal{O}(n)$). Control parameters of \acrshort{ecc} are the number of maximum iterations upon convergence ($n$) as well as the aimed precision ($\epsilon$). Another intrinsic parameter is the dimensionality of input images, as it considerably reduces latency.
 
 \begin{marginfigure}[-2cm]
     \centering
     \includegraphics{figs/image_fusion/motion_models.png}
-    \caption{Transformation models that can be estimated using ECC.}
+    \caption{Transformation models that can be estimated using \acrshort{ecc}.}
     \label{fig:ecc_motion_models}
 \end{marginfigure}
 
@@ -43,52 +43,52 @@ Matching of multispectral imagery could be performed by means of the image metad
 	\label{fig:ecc_hierarchy}
 \end{figure}
 
-Homography can describe any kind of differences among images, but the euclidean model was proven enough for matching multispectral bands. Hence, the algorithmic complexity was reduced by estimating a matrix of size $2 \times 3$, which can explain translation, rotation and scaling, with the first being the most relevant. The procedure can be further improved by first matching those images which are more similar in terms of intensity. According to the peculiarities of multispectral images, these are fused hierarchically rather than sequentially. With this approach, images with more similar intensity are first registered. More specifically, the next pipeline is followed: $\textit{GRE} \rightarrow \textit{RGB}$, $\textit{RED} \rightarrow \textit{GRE} \rightarrow \textit{RGB}$, $\textit{REG} \rightarrow \textit{GRE} \rightarrow \textit{RGB}$ and $\textit{NIR} \rightarrow \textit{REG} \rightarrow \textit{GRE} \rightarrow \textit{RGB}$ (see Figure \ref{fig:ecc_hierarchy}). Still, each image is only registered once, as the whole chain concatenation is computed using matrix composition. Though desirable, convergence is not always achieved by the algorithm for every pair of images. This scenario is identified by measuring the angles of the resulting quadrilateral shape, which are discarded according to a threshold $\beta$ for highly distorted forms. The transformed results may also have areas with undetermined values. Once again, the minimum area to be cropped can be calculated as defined in Equation \ref{eq:matrix_corners}. It cannot be simply computed from the lower left and upper right corners, $[0, 0]$ and $[w - 1, h - 1]$, since euclidean transformations involve rotations. Thus, it is not enough to check two non-adjacent corners.
+Homography can describe any kind of differences among images, but the Euclidean model was proven enough for matching multispectral bands. Hence, the algorithmic complexity was reduced by estimating a matrix of size $2 \times 3$, which can explain translation, rotation and scaling, with the first being the most relevant. The procedure can be further improved by first matching those images which are more similar in terms of intensity. According to the peculiarities of multispectral images, these are fused hierarchically rather than sequentially. With this approach, images with more similar intensity are first registered. More specifically, the next pipeline is followed: $\textit{GRE} \rightarrow \textit{RGB}$, $\textit{RED} \rightarrow \textit{GRE} \rightarrow \textit{RGB}$, $\textit{REG} \rightarrow \textit{GRE} \rightarrow \textit{RGB}$ and $\textit{NIR} \rightarrow \textit{REG} \rightarrow \textit{GRE} \rightarrow \textit{RGB}$ (see Figure \ref{fig:ecc_hierarchy}). Still, each image is only registered once, as the whole chain concatenation is computed using matrix composition. Though desirable, convergence is not always achieved by the algorithm for every pair of images. This scenario is identified by measuring the angles of the resulting quadrilateral shape, which are discarded according to a threshold $\beta$ for highly degenerated forms. The transformed results may also have areas with undetermined values. Once again, the minimum area to be cropped can be calculated as defined in Equation \ref{eq:matrix_corners}. It cannot be simply computed from the lower left and upper right corners, $[0, 0]$ and $[w - 1, h - 1]$, since Euclidean transformations involve rotations. Thus, it is not enough to check two non-adjacent corners.
 
-The hierarchical alignment of multispectral images is constructed on the basis of the image similarity of multispectral bands, as shown in Figure \ref{fig:multi_band_correlation}. It shows the correlation between pairs of bands through the normalized correlation coefficient (CC), which calculates a value $\rho \in [0,1]$ that show how similar two grayscale images are, $f(x, y)$, $f'(x, y)$. For the sake of simplicity, GRE image is considered the master image, as occurs in the camera ring. Accordingly, Figure \ref{fig:multi_band_correlation} justifies the hierarchy shown in Figure \ref{fig:ecc_hierarchy}. Note that NIR and REG layers are reciprocally the most similar. However, REG images are more similar to the root, GRE, and thus NIR layers were aligned to REG images.
+The hierarchical alignment of multispectral images is constructed on the basis of the image similarity of multispectral bands, as shown in Figure \ref{fig:multi_band_correlation}. It shows the correlation between pairs of bands through the normalized correlation coefficient (\acrshort{cc}), which calculates a value $\rho \in [0,1]$ that show how similar two grayscale images are, $f(x, y)$, $f'(x, y)$. For the sake of simplicity, the Green image is considered the root as in the camera ring. Accordingly, Figure \ref{fig:multi_band_correlation} justifies the hierarchy shown in Figure \ref{fig:ecc_hierarchy}. Note that \acrshort{nir} and \acrshort{reg} layers are reciprocally the most similar. However, \acrshort{reg} images are more similar to the root, Green, and thus \acrshort{nir} layers were aligned to \acrfull{reg} images.
 
 \begin{figure*}
     \centering
     \includegraphics{figs/image_fusion/confusion_matrices.png}
-    \caption{Confusion matrices depicting the similarity of multispectral images in two different datasets.}
+    \caption{Confusion matrices depicting the similarity of multispectral images in three different datasets.}
     \label{fig:multi_band_correlation}
 \end{figure*}
 
-\section{Matching multispectral and RGB imagery}
+\section{Matching \acrshort{rgb} and multispectral imagery}
 
 \begin{figure*}
     \centering
     \includegraphics{figs/image_fusion/multispectral_rgb_registration.png}
-    \caption{Registration methodology for RGB and multispectral datasets. The blur size was increased for a better understanding of the scheme.}
+    \caption{Image-matching for \acrshort{rgb} and multispectral datasets. The blur size was increased for a better understanding of the figure.}
     \label{fig:rgb_multi_registration}
 \end{figure*}
 
-The contribution of RGB imagery to this model is to add more accurate geopositioning data. However, multispectral and RGB datasets were not acquired by the same device in this work, nor they were synchronized on the triggering. Thus, images to be matched are selected according to the timestamp, and yet, their timestamp difference may scale up to several seconds. Similarly to the previous case study, the ECC is appropriate since RGB and multispectral images have some relevant differences in the depicted surface intensity. Instead of matching every multispectral image, only the root was registered and therefore the rest is also matched according to the hierarchy proposed in Figure \ref{fig:ecc_hierarchy}.
+The contribution of \acrshort{rgb} imagery to this model is to add more accurate geopositioning data. However, multispectral and \acrshort{rgb} datasets were not acquired by the same device in this work, nor they were synchronized on the triggering. Thus, images to be matched are selected according to the timestamp, and yet, their timestamp difference may scale up to several seconds. Similarly to the previous case study, the \acrshort{ecc} is appropriate since \acrshort{rgb} and multispectral images have some relevant differences in the depicted object intensity. Instead of matching every multispectral image, only the root was registered and therefore the rest is also matched according to the hierarchy proposed in Figure \ref{fig:ecc_hierarchy}.
 
-RGB images have higher dimensionality than multispectral images, and thus the latter was scaled-down to match the size of the first. The ECC algorithm can be applied at a sub-pixel level and its parameters can be configured for a fine-grain registration. Furthermore, faster convergence is achieved by blurring both images, despite being slower. The complete workflow is shown in Figure \ref{fig:thermal_registration}, whereas the values of the parameters are the following: a blur mask of size 3, a high number of iterations, $n \gets 400$, and a precision factor, $p$, of $1^{-60}$. The value of these parameters is further discussed in Section \nameref{sec:image_fusion_evaluation}. Figure \ref{fig:rgb_multi_registration_result} shows an example of this matching procedure.
+\acrshort{rgb} images have higher dimensionality than multispectral images, and thus the latter was scaled-down to match the size of the first. The \acrshort{ecc} algorithm can be applied at a sub-pixel level and its parameters can be configured for a fine-grained registration. Furthermore, faster convergence is achieved by blurring both images, despite being slower. The complete workflow is shown in Figure \ref{fig:thermal_registration}, whereas the values of the parameters are the following: a blur mask of size 3, a high number of iterations, $n \gets 400$, and a high precision factor, $p$, of $1^{-60}$. The values of these parameters are further discussed in Section \nameref{sec:image_fusion_evaluation}. Figure \ref{fig:rgb_multi_registration_result} shows an example of this matching procedure.
 
 \begin{figure}[ht]
     \centering
     \includegraphics{figs/image_fusion/rgb_multispectral_registration_result.png}
-    \caption{Result of matching a multispectral and RGB image. The original images are depicted on the right side.}
+    \caption{An example of image-matching between a multispectral and \acrshort{rgb} image. The original images are depicted on the right side.}
     \label{fig:rgb_multi_registration_result}
 \end{figure}
 
-\section{Matching thermographic and RGB images}
+\section{Matching \acrshort{rgb} and thermographic images}
 
 \begin{figure*}
     \includegraphics{figs/image_fusion/thermal_registration.png}
-    \caption{Flow chart of the registration process of RGB and thermal datasets.}
+    \caption{Flow chart of the image-matching procedure between \acrshort{rgb} and infrared imagery.}
     \label{fig:thermal_registration}
 \end{figure*}
 
-The last step of this multi-layer architecture is to match thermal and RGB imagery, with RGB images being the link among multispectral and thermal datasets. Asynchronism shortcomings are here omitted since both kinds of images are taken by the same device. Still, there exist huge differences in the optical acquisition of RGB and thermal images. The RGB lens captures a wider area following the fisheye distortion model, whereas the thermal lens has a more narrowed field of view. As occurred for multispectral images, there is a translation between both images due to the physical distance between lenses, as well as rotations derived from differences in the shot triggering despite being synchronized. Also, the aspect factor between the focal length of the two optical systems is not enough to overlap RGB and thermal datasets. 
+The last step of this multi-layer architecture is to match thermal and \acrshort{rgb} imagery, with \acrshort{rgb} images being the link among multispectral and thermal datasets. Asynchronism shortcomings are here omitted since both kinds of images are taken by the same device. Still, there exist huge differences in the optical acquisition of \acrshort{rgb} and thermal images. The \acrshort{rgb} lens captures a wider area following the fisheye distortion model, whereas the thermal lens has a more narrowed field of view. As occurred for multispectral images, there is a translation between both images due to the physical distance between lenses, as well as rotations derived from differences in the shot triggering despite being synchronized. Also, the parameters from the optical systems are not enough to determine which is the overlapping area of interest in both \acrshort{rgb} and thermal datasets. 
 
-In this case study, the affine transformation of the ECC model was selected as the optimizing objective. Translation and rotation help on addressing the visual differences in RGB and thermal imagery, whereas scaling searches for an appropriate size where both images overlap and fit well. At least two approaches can be followed to solve their matching: a) select a bigger area of the RGB image which entirely covers the thermal image, with the result including some undetermined values, or b) select a smaller area which does not necessarily cover the thermal image, thus tackling the previous shortcoming (Figure \ref{fig:thermal_comparative}). The complete procedure is shown in Figure \ref{fig:thermal_registration}. RGB is scaled down to fit the thermal dimensionality and thus the response time is lowered. The precision factor and the number of iterations were adjusted to provide an accurate registration. 
+In this case study, the affine transformation of the \acrshort{ecc} model was selected as the optimizing objective. Translation and rotation help on addressing the visual differences in \acrshort{rgb} and thermal imagery, whereas scaling searches for an appropriate size where both images overlap and fit well. At least two approaches can be followed to solve their matching: a) select a bigger area of the \acrshort{rgb} image which entirely covers the thermal image, with the result including some undetermined values, or b) select a smaller area which does not necessarily cover the thermal image, thus tackling the previous shortcoming (Figure \ref{fig:thermal_comparative}). The complete procedure is shown in Figure \ref{fig:thermal_registration}. \acrshort{rgb} images were scaled down to fit the thermal dimensionality and thus the response time is lowered. The precision factor and the number of iterations were adjusted to provide an accurate registration. 
 
 \begin{figure}
     \includegraphics{figs/image_fusion/thermal_comparative.png}
-    \caption{Matching of RGB and thermal images using an RGB area smaller than thermal image and the contrary on the right side. }
+    \caption{Matching of \acrshort{rgb} and thermal images using an \acrshort{rgb} area smaller than thermal images, and the opposite configuration on the right side. }
     \label{fig:thermal_comparative}
 \end{figure}
 
@@ -97,19 +97,19 @@ In this case study, the affine transformation of the ECC model was selected as t
 \begin{figure*}
 	\centering
 	\includegraphics{figs/image_fusion/contour_retrieval.png}
-	\caption{Processing of multispectral images to distinguish vegetation of interest from crop soil.}
+	\caption{Transformation of multispectral images to distinguish vegetation and soil.}
 	\label{fig:contour_extraction}
 \end{figure*}
 
-The proposed framework enables obtaining RGB, multispectral and thermographic data from a crop. Using some of these layers, it can also be applied to the temporal tracking of individual trees. More specifically, multispectral images are sensitive to vegetation and thus can help in the identification of trees. Once identified, points belonging to each one can be further analyzed to extract vegetation indices such as NDVI. 
+The proposed framework enables obtaining \acrshort{rgb}, multispectral and thermographic data from an area of interest. This stack of layers can be further applied to the temporal tracking of individual trees. More specifically, multispectral images are sensitive to vegetation and thus can help in the identification of trees. Once identified, points belonging to each one can be further analyzed to extract vegetation indices such as \acrshort{ndvi}. 
 
-The observed surface reflectance, $f(\theta)$, presents some peaks where the vegetation reflectance reaches a maximum value. The contrast among layers with higher and lower reflectance enables distinguishing soil and canopy. Despite not having more fine-grained samples of $f(\theta)$ as in hyperspectral data, relative maximum and minimum reflectance values concerning vegetation are visible at $\mathtt{NIR}$ and $\mathtt{RED}$ layers, respectively. Soil reflectance is assumed to be constant or small throughout all these layers, and thus can be easily filtered out. Therefore, $\mathtt{NIR}-\mathtt{RED}$ produces the result shown in Figure \ref{fig:contour_extraction}.
+The observed surface reflectance, $f(\theta)$, presents some peaks where the vegetation reflectance reaches a maximum value. The contrast among layers with higher and lower reflectance enables distinguishing soil and canopy. Despite not having more fine-grained samples of $f(\theta)$ as in hyperspectral data, relative maximum and minimum reflectance values concerning vegetation are visible at \acrshort{nir} and Red layers, respectively. Soil reflectance is assumed to be constant or small throughout all these layers, and thus can be easily filtered out. Therefore, $\acrshort{nir} - Red$ produces the result shown in Figure \ref{fig:contour_extraction}.
 
 Besides the image difference, the following steps are previously performed:
 \begin{enumerate}
     \item \textbf{Gaussian blur} to smooth the image colour and remove noise.
     \item \textbf{Image thresholding} to isolate the vegetation-labelled pixels.
-    \item \textbf{Extracting a hierarchy of contours}. Contours within another are not of interest and therefore are discarded. Neither are of interest small contours belonging to low vegetation or noise, and cropped contours (partially visible). The latter can be identified since they have horizontal or vertical edges on the image boundaries.
+    \item \textbf{Extracting a hierarchy of contours}. Contours within another are not of interest and therefore are discarded. Neither are of interest small contours belonging to low vegetation or noise, as well as cropped contours (partially visible). The latter can be identified since they have horizontal or vertical edges on the image boundaries.
 \end{enumerate}
 
 The identification of individual trees can be modulated using the size of a blur mask, the maximum area to be discarded and a threshold value high enough to avoid merging tree contours. Despite this method obtaining accurate contours, most of them contain hundreds of points and thus the polygon can be simplified by obtaining its convex hull \cite{sklansky_finding_1982} or other preferred polygons (e.g., hexagons). 
@@ -117,25 +117,25 @@ The identification of individual trees can be modulated using the size of a blur
 \begin{figure}[hbp]
     \centering
     \includegraphics[width=1\linewidth]{figs/image_fusion/convex_hull_contours.png}
-    \caption{Conversion of tree contours into their convex hull and hexagons.}
+    \caption{Conversion of polygons into convex and hexagonal hulls.}
     \label{fig:convex_hull_contours}
 \end{figure}
 
 \section{Validation}
 \label{sec:image_fusion_evaluation}
 
-This work has been evaluated with four different datasets depicting olive orchards located in Jaén, a Southern region of Spain. The first threee datasets have multispectral and RGB images, whereas the last collect RGB and thermal imagery. The main study area covers two hectares of olive trees in which the proposed methodology has been checked. Figure \ref{fig:image_fusion_study_area} presents a general overview of the main study area.
+This work has been evaluated with four different datasets depicting olive orchards located in Jaén, a Southern region of Spain. The first three datasets have multispectral and \acrshort{rgb} images, whereas the last collect \acrshort{rgb} and thermal imagery. The main study area covers two hectares of olive trees in which the proposed methodology has been checked. Figure \ref{fig:image_fusion_study_area} presents a general overview of the main study area.
 
 \begin{figure}[htb]
     \centering
     \includegraphics{figs/image_fusion/study_area.png}
-    \caption{An overview of the study area. Coordinates are given in UTM (Universal Transverse Mercator) coordinate system.}
+    \caption{An overview of the study area. Coordinates are given in the Universal Transverse Mercator (\acrshort{utm}) coordinate system.}
     \label{fig:image_fusion_study_area}
 \end{figure}
 
-The measurements were performed on a PC with Intel Core i7.6700 3.4GHz, 16GB RAM, NVIDIA GTX 1070 with 8GB RAM and Windows 10 OS. The implementation of the ECC algorithm was provided by the image processing library OpenCV within a C++ environment. The accuracy of the matching process was estimated using the normalized correlation coefficient (CC), defined as shown in Equation \ref{ec:correlationCoefficient}. The CC metric obtains a coefficient $\rho \in [0, 1]$ that measures the similarity between two images $I$ and $T$, source and template. It is a simple estimation measuring the intensity difference among images and therefore is not an exact measurement of the matching accuracy. Images to be compared were selected randomly from the four datasets.
+The measurements were performed on a computer with Intel Core i7.6700 3.4GHz, 16GB RAM, NVIDIA GTX 1070 with 8GB RAM and Windows 10 operative system (\acrshort{os}). The implementation of the \acrshort{ecc} algorithm was provided by the image processing library Open Source Computer Vision Library (\acrshort{opencv}) in a C++ application. The accuracy of the matching process was estimated using the normalized \acrshort{cc}, defined as shown in Equation \ref{ec:correlation_coefficient}. The \acrshort{cc} metric obtains a coefficient $\rho \in [0, 1]$ that measures the similarity between two images $I$ and $T$, source and template. It is a simple estimation measuring the intensity difference that sheds light on the matching accuracy, despite not being perfect. Finally, the images to be compared were randomly selected from the four datasets.
 \begin{equation}
-    \label{ec:correlationCoefficient}
+    \label{ec:correlation_coefficient}
     \textit{CC} = \frac{\sum_{x',y'} T(x',y') * I(x + x', y + y')}{\sqrt{\sum_{x',y'}T(x',y')^{2} * \sum_{x',y'}I(x + x',y + y')^{2}}}
 \end{equation}
 
@@ -147,14 +147,15 @@ Three parameters that affect the response time and registration accuracy were ch
 \end{itemize}
 
 \section{Results and discussion}
-\label{sec:Results}
 
-\textbf{Multispectral registration}. Four tests were launched to prove the accuracy of the registration methodology using the four multispectral bands. The original correlation coefficient is presented in Table \ref{table:multispectral_base_correlation} to highlight the improvement of the four matching tests against the first scenario. The dimensionality of multispectral images is low, and therefore, they do not need to be downscaled by default. The first set-up uses parameters that seem to be close to the optimal configuration, although the response time is higher. Table \ref{table:multispectral_rgb_correlation} shows that worse results for images that shows human-made objects due to a higher difference in the colour intensity. However, these are well aligned by visual inspection. The second test shows that the response time can be decreased at expense of lower CC. The third one uses an intermediate configuration that achieves high CC values with low latency. Finally, the fourth test downscales the image size by three, thus leading to higher CC with a lower response time. However, the latter returns worse results by visual inspection.
+\subsection{Multispectral registration}
+
+Four experiments were carried out to check the accuracy of the registration methodology using the four multispectral bands. The starting \acrshort{cc} is presented in Table \ref{table:multispectral_base_correlation} to highlight the improvement of the four image-matching experiments against the initial scenario. The dimensionality of multispectral images is low, and therefore did not require to be downscaled. The first experiment used parameters that may be near the optimal configuration, at expense of a higher response time. Table \ref{table:multispectral_rgb_correlation} shows that worse results were obtained for images showing human-made objects that presented more notable intensity differences in distinct channels. Still, these were well aligned by visual inspection. The second test shows how the response time decrease at the expense of obtaining a lower \acrshort{cc}. The third experiment used an in-between configuration with respect to the previous two: it achieved high \acrshort{cc} but also decreased the latency. Finally, the fourth experiment downscaled the image size by three, obtaining a higher \acrshort{cc} with a lower response time. However, the latter returns worse results by visual inspection.
 
 \renewcommand{\arraystretch}{1.2}
 \begin{table}
-    \captionsetup{singlelinecheck=off}
-    \caption{Normalized correlation coefficient between original multispectral images. }
+    \footnotesize
+    \caption{Normalized \acrshort{cc} between original multispectral images. }
     \label{table:multispectral_base_correlation}
     \begin{tabular}{ll|c@{\hskip 0.5in}c@{\hskip 0.5in}c}
         \toprule
@@ -185,11 +186,13 @@ Three parameters that affect the response time and registration accuracy were ch
         \multicolumn{2}{r|}{\textbf{Average}} & \textbf{0.9564} & \textbf{0.9323} & \textbf{0.9581}\\
         \bottomrule
     \end{tabular}
+    \normalsize
 \end{table}
 \renewcommand{\arraystretch}{1}
 
-\renewcommand{\arraystretch}{1.15}
+\renewcommand{\arraystretch}{1.2}
 \begin{table*}
+    \small
     \caption{Normalized correlation coefficient and response time on the matching of a random subset of multispectral images over four different tests (test 1: $n \gets 30, p \gets 1\textsuperscript{-10}$, test 2: $n \gets 15, p \gets 1\textsuperscript{-2}$, test 3: $n \gets 15, p \gets 1\textsuperscript{-10}$ and test 4: $n \gets 150, p \gets 1\textsuperscript{-60}$).}
     \label{table:multispectral_correlation_registration}
     \begin{tabular}{ll|cccr|cccr}
@@ -218,14 +221,18 @@ Three parameters that affect the response time and registration accuracy were ch
         & 9 & $0.9967$ & $0.9713$ & $0.9810$ & $3.585$ & $0.9967$ & $0.9713$ & $0.9810$ & $1.471$\\
         & 141 & $9966$ & $0.9746$ & $0.9791$ & $3.518$ & $0.9967$ & $0.9713$ & $0.9810$ & $1.110$\\
         \cmidrule{1-10}
-        \multicolumn{2}{r|}{\textbf{Average}} & \textbf{0.9849} & \textbf{0.9496} & \textbf{0.9654} & \textbf{3577.53} & \textbf{0.9788} & \textbf{0.9488} & \textbf{0.965} & \textbf{1110.8}\\
+        \multicolumn{2}{r|}{\textbf{Average}} & \textbf{0.9849} & \textbf{0.9496} & \textbf{0.9654} & \textbf{3.5775} & \textbf{0.9788} & \textbf{0.9488} & \textbf{0.965} & \textbf{1.1108}\\
+        \cmidrule{1-10}
+        \multicolumn{2}{r|}{\textbf{Starting results}} & 0.9564 & 0.9323 & 0.9581 & & 0.9564 & 0.9323 & 0.9581 & \\
         \bottomrule
     \end{tabular}
+    \normalsize
 \end{table*}
 \renewcommand{\arraystretch}{1}
 
-\renewcommand{\arraystretch}{1.15}
+\renewcommand{\arraystretch}{1.2}
 \begin{table*}
+    \small
     \captionsetup{singlelinecheck=off}
     \caption{Continuation of Table \ref{table:multispectral_correlation_registration}.}
     \begin{tabular}{ll|cccr|cccr}
@@ -234,7 +241,7 @@ Three parameters that affect the response time and registration accuracy were ch
         \cmidrule{1-10}
         & & \multicolumn{3}{c}{GRE} & & \multicolumn{3}{c}{GRE} & \\
         & & RED & NIR & REG & & RED & NIR & REG\\
-        Dataset & Viewpoint & $\rho$ & $\rho$ & $\rho$ & \#time (\si{\second}) & $\rho$ & $\rho$ & $\rho$ & \#time (\si{\second}) \\
+        Dat. & Viewpoint & $\rho$ & $\rho$ & $\rho$ & \#time (\si{\second}) & $\rho$ & $\rho$ & $\rho$ & \#time (\si{\second}) \\
         \cmidrule{1-10}
         \multirow{3}{*}{1} & 1 & $0.9545$ & $0.9186$ & $0.9403$ & $1.933$ & $0.9540$ & $0.9181$ & $0.9394$ & $1.797$\\
         & 4 & $0.9866$ & $0.9474$ & $0.9682$ & $1.900$ & $0.9883$ & $0.9473$ & $0.9665$ & $1.780$\\
@@ -254,47 +261,51 @@ Three parameters that affect the response time and registration accuracy were ch
         & 9 & $0.9967$ & $0.9713$ & $0.9810$ & $1.911$ & $0.9964$ & $0.9713$ & $0.9806$ & $1.789$\\
         & 141 & $9966$ & $0.9746$ & $0.9791$ & $1.873$ & $0.9965$ & $0.9750$ & $0.9786$ & $1.789$\\
         \cmidrule{1-10}
-        \multicolumn{2}{r|}{\textbf{Average}} & \textbf{0.9839} & \textbf{0.9493} & \textbf{0.9654} & \textbf{1904.86} & \textbf{0.9852} & \textbf{0.9499} & \textbf{0.9648} & \textbf{1781.73}\\
+        \multicolumn{2}{r|}{\textbf{Average}} & \textbf{0.9839} & \textbf{0.9493} & \textbf{0.9654} & \textbf{1.9048} & \textbf{0.9852} & \textbf{0.9499} & \textbf{0.9648} & \textbf{1.7817}\\
+        \cmidrule{1-10}
+        \multicolumn{2}{r|}{\textbf{Starting results}} & 0.9564 & 0.9323 & 0.9581 & & 0.9564 & 0.9323 & 0.9581 & \\
         \bottomrule
     \end{tabular}
+    \normalsize
 \end{table*}
 \renewcommand{\arraystretch}{1}
 
-\textbf{RGB and multispectral registration}. Table \ref{table:multispectral_rgb_correlation} shows the results of three different tests. Intensity differences between images are higher and therefore, the response time increases. The second test obtains the lowest latency, while the first achieves the same result with increased response time. This scenario proves the convergence of the ECC algorithm; the safest approach selects a large value that guarantees the ECC convergence, whereas a real-time application may opt for a lower number of iterations at expense of risking the convergence. Both tests use images with a size equal to the multispectral dimensionality split by two. Such size enables smoothing the image and improving the registration process, despite a small blur still being required. The third test uses the starting multispectral size and RGB images are downscaled to fit them. It returns worse results than previous tests since the number of iterations and precision are reduced to avoid high execution times. 
+\subsection{\acrshort{rgb} and multispectral image-matching}
 
-\renewcommand{\arraystretch}{1.15}
-\begin{table*}
-    \caption{Normalized correlation coefficient and response time on the matching of a random subset of multispectral and RGB images (test 1: $d \gets \textit{multispectral}_{\textit{size}} / 2, n \gets 400, p \gets 1\textsuperscript{-60}$, test 2: $d \gets \textit{multispectral}_{\textit{size}} / 2, n \gets 150, p \gets 1\textsuperscript{-30}$ and test 3: $d \gets \textit{multispectral}_{\textit{size}}, n \gets 100, p \gets 1\textsuperscript{-20}$).}
+Table \ref{table:multispectral_rgb_correlation} shows the results of three different experiments. Changes in intensity are most significant in \acrshort{rgb} and multispectral imagery, thus hardening the matching and increasing the response time. The second test obtains the lowest latency, while the first achieves the same result with increased response time. This scenario proves the convergence of the \acrshort{ecc} algorithm; the safest approach selects a large value that guarantees the \acrshort{ecc} convergence, whereas a real-time application may opt for a lower number of iterations at expense of risking the convergence. Both tests use images with a size equal to the multispectral dimensionality split by two. Such size enables smoothing the image and improving the registration process, despite a small blur still being required. The third test uses the starting multispectral size and RGB images are downscaled to fit them. It returns worse results than previous tests since the number of iterations and precision are reduced to avoid high execution times. 
+
+\renewcommand{\arraystretch}{1.2}
+\begin{table}
+    \small
+    \caption{Normalized \acrshort{cc} and response time on the matching of a random subset of multispectral and \acrshort{rgb} images from the fourth dataset (test 1: $d \gets \textit{size}_{\textit{multispectral}} / 2, n \gets 400, p \gets 1\textsuperscript{-60}$, test 2: $d \gets \textit{size}_{\textit{multispectral}} / 2, n \gets 150, p \gets 1\textsuperscript{-30}$ and test 3: $d \gets \textit{size}_{\textit{multispectral}}, n \gets 100, p \gets 1\textsuperscript{-20}$).}
     \label{table:multispectral_rgb_correlation}
-    \begin{tabular}{ll|cc|cc|cc}
+    \begin{tabular}{l|cc|cc|cc}
         \toprule
-        \multicolumn{2}{c}{} & \multicolumn{2}{c}{Test 1} & \multicolumn{2}{c}{Test 2} & \multicolumn{2}{c}{Test 3}\\
-        \cmidrule{1-8}
-        Dataset & Viewpoints & $\rho$ & \#time (\si{\second}) & $\rho$ & \#time (\si{\second}) & $\rho$ & \#time (\si{\second})\\
-        \cmidrule{1-8}
-        \multirow{5}{*}{4} & 1, 916 & $0.9683$ & $8.090$ & $0.9683$ & $2.810$ & $0.9569$ & $7.405$\\
-        & 148, 918 & $0.9664$ & $7.882$ & $0.9664$ & $2.839$ & $0.9408$ & $7.022$\\
-        & 142, 904 & $0.9711$ & $7.506$ & $0.9711$ & $2.757$ & $0.9453$ & $7.058$\\ 
-        & 137, 892 & $0.9761$ & $7.221$ & $0.9761$ & $2.718$ & $0.9747$ & $7.448$\\
-        & 144, 906 & $0.9690$ & $7.266$ & $0.9690$ & $2.724$ & $0.9680$ & $7.087$\\
-        \cmidrule{1-8}
-        \multicolumn{2}{r|}{\textbf{Average}} & \textbf{0.9701} & \textbf{7593} & \textbf{0.9701} & \textbf{2769.6} & \textbf{0.9571} & \textbf{7204}\\
+        \multicolumn{1}{c}{} & \multicolumn{2}{c}{Test 1} & \multicolumn{2}{c}{Test 2} & \multicolumn{2}{c}{Test 3}\\
+        \cmidrule{1-7}
+        Viewpoints & $\rho$ & \#time (\si{\second}) & $\rho$ & \#time (\si{\second}) & $\rho$ & \#time (\si{\second})\\
+        \cmidrule{1-7}
+        1, 916 & $0.9683$ & $8.090$ & $0.9683$ & $2.810$ & $0.9569$ & $7.405$\\
+        148, 918 & $0.9664$ & $7.882$ & $0.9664$ & $2.839$ & $0.9408$ & $7.022$\\
+        142, 904 & $0.9711$ & $7.506$ & $0.9711$ & $2.757$ & $0.9453$ & $7.058$\\ 
+        137, 892 & $0.9761$ & $7.221$ & $0.9761$ & $2.718$ & $0.9747$ & $7.448$\\
+        144, 906 & $0.9690$ & $7.266$ & $0.9690$ & $2.724$ & $0.9680$ & $7.087$\\
+        \cmidrule{1-7}
+        \multicolumn{1}{r|}{\textbf{Average}} & \textbf{0.970} & \textbf{7593} & \textbf{0.9701} & \textbf{2.769} & \textbf{0.9571} & \textbf{7.204}\\
         \bottomrule
     \end{tabular}
-\end{table*}
+    \normalsize
+\end{table}
 \renewcommand{\arraystretch}{1}
 
-\textbf{Thermal and RGB registration}. Three tests were proposed with the same parameters as before (Table \ref{table:thermal_rgb_correlation}). In comparison with previous tests, size reduction does not have a great impact since contours are smoothed out in thermal images. CC values were also lower than in previous tests since the registration results have areas with undetermined values, as shown in Figure \ref{fig:thermal_comparative}. Therefore, the first and third tests show the outcome of downscaling the starting thermal size. Both reach the best CC, whereas the third returns the same results as the first with lower latency due to the convergence. The second test uses the starting thermal size and obtains almost the same CC average at the cost of a slightly higher response time. In contrast with multispectral tests, the first and third set-ups use smaller dimensionality but do not obtain inaccurate matches by visual inspection. In conclusion, using the original size is not needed in this case. 
+\subsection{Thermal and \acrshort{rgb} image-matching}
 
-\section{Conclusions}
-
-A framework for registering heterogeneous UAV-based images into a multi-layer model was proposed. The ECC algorithm was applied to this task, thus showing it is highly suitable for matching images in different spectral wavelengths. Through a case study, we have also proposed a method to identify individual trees using multispectral images, which can be further used in multi-temporal tracking applied to crops.
-
-The differences between aerial images are typically smaller than in terrestrial images, and yet affine transformations have been necessary. From this framework, an adaptive process starting from a reduced size and scaling up to the original size could be proposed. Reducing the size helps in finding an approximate transformation with a lower response time, which could be used in the estimation of an initial, yet large, transformation. On the other hand, estimations with larger image sizes enable optimizing the result. 
+Three experiments were performed with the same parameters as before (Table \ref{table:thermal_rgb_correlation}). In comparison with previous tests, reducing the image dimensionality does not have a great impact since edges are smoothed out in thermal images. \acrshort{cc} values were also lower than in previous tests since the registration results have areas with undetermined values, as shown in Figure \ref{fig:thermal_comparative}. Therefore, the first and third tests show what happens if data is downscaled to the dimensions of thermal images. Both reached the best \acrshort{cc}, whereas the third experiment returned the same results as the first, although with faster convergence and lower response time. The second experiment utilized the starting thermographic size and obtains almost the same \acrshort{cc} average at the cost of a slightly higher response time. In contrast with multispectral tests, the first and third experiments used images with smaller dimensionality but the results were not as inaccurate by visual inspection. In conclusion, thermal imagery can be matched with \acrshort{rgb} data by downscaling the dimensionality of both. 
 
 \renewcommand{\arraystretch}{1.15}
-\begin{table*}[t]
-    \caption{Normalized correlation coefficient and response time on the matching of a random subset of RGB and thermal images over three different tests (test 1: $d \gets \textit{thermal}_{\textit{size}} / 2, n \gets 300, p \gets 1\textsuperscript{-60}$, test 2: $d \gets \textit{thermal}_{\textit{size}}, n \gets 100, p \gets 1\textsuperscript{-20}$ and test 3: $d \gets \textit{thermal}_{\textit{size}} / 2, n \gets 60, p \gets 1\textsuperscript{-20}$).}
+\begin{table}[ht]
+    \footnotesize
+    \caption{Normalized \acrshort{rgb} and response time on the matching of a random subset of \acrshort{rgb} and thermal images over three different tests (test 1: $d \gets \textit{size}_{\textit{thermal}} / 2, n \gets 300, p \gets 1\textsuperscript{-60}$, test 2: $d \gets \textit{size}_{\textit{thermal}}, n \gets 100, p \gets 1\textsuperscript{-20}$ and test 3: $d \gets \textit{size}_{\textit{thermal}} / 2, n \gets 60, p \gets 1\textsuperscript{-20}$).}
     \label{table:thermal_rgb_correlation}
     \begin{tabular}{ll|cr|cr|cr}
         \toprule
@@ -316,9 +327,16 @@ The differences between aerial images are typically smaller than in terrestrial 
         & 405 & $0.9266$ & $2.716$ & $0.9265$ & $3.187$ & $0.9266$ & $1.400$\\
         & 607 & $0.9511$ & $2.794$ & $0.9502$ & $3.236$ & $0.9511$ & $1.382$\\
         \cmidrule{1-8}
-        \multicolumn{2}{r|}{\textbf{Average}} & \textbf{0.9581} & \textbf{2813.58} & \textbf{0.9579} & \textbf{3222.58} & \textbf{0.9581} & \textbf{1398.16}\\
+        \multicolumn{2}{r|}{\textbf{Average}} & \textbf{0.958} & \textbf{2.8135} & \textbf{0.9579} & \textbf{3.222} & \textbf{0.9581} & \textbf{1.398}\\
         \bottomrule
     \end{tabular}
-\end{table*}
+    \normalsize
+\end{table}
 \renewcommand{\arraystretch}{1}
+
+\section{Conclusions}
+
+A framework aimed at matching images from heterogeneous sensors coupled on \acrshort{uas} was proposed to obtain a multi-layer model. The \acrshort{ecc} algorithm was applied to this task, thus showing it is highly suitable for matching images depicting different spectral wavelengths. Finally, a case study has been explored over the aligned multispectral images to track individual trees. Hence, it could be further extended to multi-temporal tracking.
+
+The differences between aerial images are typically smaller than in terrestrial images, and yet affine transformations were required to approach the image-matching problem. From this work, an adaptive algorithm starting from a very reduced size, until reaching the original size, could be checked to work over images with higher geometrical changes. Therefore, reducing the size helps to find an approximate, yet imprecise, transformation with a lower response time, whereas higher dimensionality. On the other hand, estimations with larger image sizes enable optimizing the result. 
 

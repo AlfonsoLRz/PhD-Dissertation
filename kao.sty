@@ -142,6 +142,7 @@
 \DeclareDocumentCommand{\pagelayout}{m}{%
 	\ifthenelse{\equal{margin}{#1}}{\marginlayout\marginfloatsetup}{}%
  	\ifthenelse{\equal{smallmargin}{#1}}{\smallmarginlayout\widefloatsetup}{}%
+   	\ifthenelse{\equal{muchsmallermargin}{#1}}{\muchsmallermarginlayout\widefloatsetup}{}%
 	\ifthenelse{\equal{wide}{#1}}{\widelayout\widefloatsetup}{}%
 	\ifthenelse{\equal{fullwidth}{#1}}{\fullwidthlayout\widefloatsetup}{}%
 }
@@ -204,6 +205,20 @@
 		bottom=27.4\vscale,
 		inner=24.8\hscale,
 		textwidth=130\hscale,
+		marginparsep=6.2\hscale,
+		marginparwidth=47.7\hscale,
+	}%
+	\recalchead%
+	\widelayoutfalse%
+}
+
+% Layout #5: much smaller margins
+\newcommand{\muchsmallermarginlayout}{%
+	\newgeometry{
+		top=27.4\vscale,
+		bottom=27.4\vscale,
+		inner=24.8\hscale,
+		textwidth=140\hscale,
 		marginparsep=6.2\hscale,
 		marginparwidth=47.7\hscale,
 	}%
