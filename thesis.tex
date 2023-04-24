@@ -3,8 +3,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[
-    a4paper,        % Page size
-    fontsize=10pt,  % Base font size
+    b5paper,        % Page size
+    fontsize=8.5pt,  % Base font size
     twoside=true,  % Use different layouts for even and odd pages (in particular, if twoside=true, the margin column will be always on the outside)
 	open=right, % If twoside=true, uncomment this to force new chapters to start on any page, not only on right (odd) pages
 	%chapterentrydots=true, % Uncomment to output dots from the chapter name to the page number in the table of contents
@@ -93,6 +93,7 @@
 
 \newcommand{\oddCoverChapter}{\ifoddpage \afterpage{\thispagestyle{empty}\null\newpage} \else \fi}
 \newcommand{\oddChapter}{\ifoddpage \else \afterpage{\thispagestyle{empty}\null\newpage} \fi}
+\newcommand{\blankPage}{\thispagestyle{empty}\null\newpage}
 
 % Dedication
 \newenvironment{starting_phrase}
@@ -117,7 +118,7 @@
 \newcommand{\secondSupervisor}{Dr. Carlos Javier Ogayar Anguita}
 \newcommand{\bookPurpose}{PhD Dissertation}
 \newcommand{\dateDissertation}{June 2023}
-\newcommand{\dateDissertationSpanish}{Junio de 2023}
+\newcommand{\dateDissertationSpanish}{junio de 2023}
 \newcommand{\department}{Departamento de Informática}
 \newcommand{\polytechnicSchool}{Escuela Politécnica Superior de Jaén}
 \newcommand{\university}{Universidad de Jaén}
@@ -222,6 +223,7 @@
 %	STARTING PHRASE AND COPYRIGHT
 %----------------------------------------------------------------------------------------
 
+\blankPage
 \input{chapters/phrase.tex}
 \input{chapters/copyright.tex}
 
@@ -229,15 +231,16 @@
 %	PRESENTATION AND SIGNS
 %----------------------------------------------------------------------------------------
 
-\oddChapter
+\blankPage
+\blankPage
 \input{chapters/presentation.tex}
 
 %----------------------------------------------------------------------------------------
 %	ABSTRACT
 %----------------------------------------------------------------------------------------
 
-\clearpage
-\afterpage{\null\newpage}
+\blankPage
+\blankPage
 \pagelayout{smallmargin}
 \input{chapters/abstract.tex}
 \pagelayout{wide}
@@ -327,8 +330,8 @@
 \oddChapter
 \partIntro{I}{Introduction and overview}{This section introduces a shallow background of Remote Sensing as well as the aim and objectives of this doctoral dissertation. Then, the state-of-the-art on the fusion and simulation of Remote Sensing data is presented.}
 
-% \input{chapters/introduction.tex}
-% \input{chapters/fundamentals.tex}
+\input{chapters/introduction.tex}
+\input{chapters/fundamentals.tex}
 % \input{chapters/context.tex}
 
 %----------------------------------------------------------------------------------------
@@ -346,7 +349,8 @@
 %	PART III
 %----------------------------------------------------------------------------------------
 
-\chapterBackground{figs/chapters/Chapter3_01.png}{figs/chapters/Chapter3_02.png}{Igor Tretyakov}{Low poly city}{Sketchfab}{black}
+% \chapterBackground{figs/chapters/Chapter3_01.png}{figs/chapters/Chapter3_02.png}{Igor Tretyakov}{Low poly city}{Sketchfab}{black}
+\chapterBackground{figs/chapters/Chapter7_01.png}{figs/chapters/Chapter7_02.png}{Alexander Ruz}{Combat robot}{Sketchfab}{black}
 
 \partIntro{III}{Point cloud enrichment}{This chapter comprises the generation of thermal and multispectral point clouds. Imagery is projected over dense RGB point clouds to also obtain denser point clouds from information with lower resolution. The evolution of the projective approach is shown throughout this chapter; the first proposals were mainly solved as sequential algorithms, whereas the core of the last one was implemented in the \acrshort{gpu}. }
 
@@ -364,32 +368,30 @@
 
 % \input{chapters/lidar_remote_sensing.tex}
 % \input{chapters/lidar_intensity.tex}
-%\input{chapters/lidar_optimization}
+% \input{chapters/lidar_optimization}
 
 %----------------------------------------------------------------------------------------
 %	PART V
 %----------------------------------------------------------------------------------------
 
 \oddChapter
-\chapterBackground{figs/chapters/Chapter5_01.png}{figs/chapters/Chapter5_02.png}{Georg Klein}{Viking ship}{Sketchfab}{black}
+\chapterBackground{figs/chapters/Chapter5_01.png}{figs/chapters/Chapter5_02.png}{Georg Klein}{Viking ship}{Sketchfab}{white}
 
 \partIntro{V}{Data analysis}{This chapter comprises work aimed at analyzing previously processed data, rather than collecting and fusing it to shape 3D results. The methodologies explained in previous chapters are applied to these analyses as some of them require observing and extracting features over point clouds and large hyperspectral datasets. }
 
 % \input{chapters/vineyard_classification}
-\input{chapters/castle_puerta_arenas}
+% \input{chapters/castle_puerta_arenas}
 
 %----------------------------------------------------------------------------------------
 %	PART VI
 %----------------------------------------------------------------------------------------
 
-% \oddChapter
-% \chapterBackground{figs/chapters/Chapter6_01.png}{figs/chapters/Chapter6_02.png}{Rigsters}{Deer group}{Sketchfab}{white}
+\oddChapter
+\chapterBackground{figs/chapters/Chapter6_01.png}{figs/chapters/Chapter6_02.png}{Rigsters}{Deer group}{Sketchfab}{white}
 
-% \partIntro{VI}{Concluding remarks}{}
+\partIntro{VI}{Concluding remarks}{}
 
-% \pagelayout{smallmargin}
-% \input{chapters/conclusions.tex}
-% \pagelayout{margin}
+\input{chapters/conclusions.tex}
 
 % \pagelayout{wide} % No margins
 % \addpart{Class Options, Commands and Environments}
@@ -408,18 +410,19 @@
 % \input{chapters/mathematics.tex}
 
 %----------------------------------------------------------------------------------------
-%	PART VI
+%	PART VII
 %----------------------------------------------------------------------------------------
 
-% \appendix % From here onwards, chapters are numbered with letters, as is the appendix convention
+\appendix % From here onwards, chapters are numbered with letters, as is the appendix convention
 
-% \oddChapter
-% \chapterBackground{figs/chapters/Chapter6_01.png}{figs/chapters/Chapter6_02.png}{Rigsters}{Deer group}{Sketchfab}{white}
+\oddChapter
+\chapterBackground{figs/chapters/Chapter8_01.png}{figs/chapters/Chapter8_02.png}{Mateusz Woliński}{Seraph}{Sketchfab}{black}
 
-% \partIntro{VII}{Appendices}{}
+\partIntro{VII}{Appendices}{}
 
-% \pagelayout{margin}
 % \input{chapters/preamble_spanish}
+% \input{chapters/introduction_spanish}
+% \input{chapters/conclusions_spanish}
 
 %----------------------------------------------------------------------------------------
 %	COVER
