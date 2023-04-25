@@ -1505,14 +1505,15 @@ November\or December\fi\space\number\year}
     
     \thispagestyle{empty}
     \clearpage    
-	\vspace*{-33\vscale}\hspace*{\dimexpr - \hoffset - \oddsidemargin - 1.14in}%
+	% \vspace*{-33\vscale}\hspace*{\dimexpr - \hoffset - \oddsidemargin - 1.14in}%
+    \vspace*{-33.5\vscale}\hspace*{\dimexpr - \hoffset - \oddsidemargin - 1.12in}%
 	\includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio=false]{#1}%
 
     \newpage
     \thispagestyle{empty}
-	\vspace*{-33\vscale}\hspace*{\dimexpr - \hoffset - \oddsidemargin - 1.14in}%
+	\vspace*{-33.5\vscale}\hspace*{\dimexpr - \hoffset - \oddsidemargin - 1.12in}%
 	\includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio=false]{#2}%
-    \vspace*{-288\vscale}  % Tune this to the image height.
+    \vspace*{-286\vscale}  % Tune this to the image height.
     \begin{flushright}
     \color{#6}\textit{#4} by #3\\
     #5

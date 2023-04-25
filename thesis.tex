@@ -325,45 +325,51 @@
 %----------------------------------------------------------------------------------------
 
 \oddCoverChapter
-\chapterBackground{figs/chapters/Chapter1_01.png}{figs/chapters/Chapter1_02.png}{Radu Carstean}{Pawn Mate}{Sketchfab}{black}
+\chapterBackground{figs/chapters/b5/Chapter1_01.png}{figs/chapters/b5/Chapter1_02.png}{Radu Carstean}{Pawn Mate}{Sketchfab}{black}
 
 \oddChapter
 \partIntro{I}{Introduction and overview}{This section introduces a shallow background of Remote Sensing as well as the aim and objectives of this doctoral dissertation. Then, the state-of-the-art on the fusion and simulation of Remote Sensing data is presented.}
 
-\input{chapters/introduction.tex}
-\input{chapters/fundamentals.tex}
+% \input{chapters/introduction.tex}
+% \input{chapters/fundamentals.tex}
 % \input{chapters/context.tex}
 
 %----------------------------------------------------------------------------------------
 %	PART II
 %----------------------------------------------------------------------------------------
 
-\chapterBackground{figs/chapters/Chapter2_01.png}{figs/chapters/Chapter2_02.png}{wintrez}{Mandalorian}{Sketchfab}{black}
+\oddCoverChapter
+\chapterBackground{figs/chapters/b5/Chapter2_01.png}{figs/chapters/b5/Chapter2_02.png}{wintrez}{Mandalorian}{Sketchfab}{black}
 
-\partIntro{II}{Materials and image fusion}{The first part of this chapter introduces the materials applied to this research work. Specifications and shortcomings of each device are illustrated and solved for the sake of clarity and to avoid its repeatability through this dissertation. Then, images are processed and matched to compose a multi-layer system that will help to construct enriched 3D models in later chapters. }
+\oddChapter
+\partIntro{II}{Materials and image fusion}{The first part of this chapter introduces the materials utilized in this research work. Specifications and shortcomings of each device are here illustrated and solved for the sake of clarity and to avoid its repeatability through this dissertation. Then, images are processed and matched to compose a multi-layer system that will help to construct enriched 3D models in later chapters. }
 
-%\input{chapters/technology.tex}
+% \input{chapters/technology.tex}
 % \input{chapters/image_fusion.tex}
 
 %----------------------------------------------------------------------------------------
 %	PART III
 %----------------------------------------------------------------------------------------
 
-% \chapterBackground{figs/chapters/Chapter3_01.png}{figs/chapters/Chapter3_02.png}{Igor Tretyakov}{Low poly city}{Sketchfab}{black}
-\chapterBackground{figs/chapters/Chapter7_01.png}{figs/chapters/Chapter7_02.png}{Alexander Ruz}{Combat robot}{Sketchfab}{black}
+% \chapterBackground{figs/chapters/b5/Chapter3_01.png}{figs/chapters/b5/Chapter3_02.png}{Igor Tretyakov}{Low poly city}{Sketchfab}{black}
+\oddCoverChapter
+\chapterBackground{figs/chapters/b5/Chapter7_01.png}{figs/chapters/b5/Chapter7_02.png}{Alexander Ruz}{Combat robot}{Sketchfab}{black}
 
-\partIntro{III}{Point cloud enrichment}{This chapter comprises the generation of thermal and multispectral point clouds. Imagery is projected over dense RGB point clouds to also obtain denser point clouds from information with lower resolution. The evolution of the projective approach is shown throughout this chapter; the first proposals were mainly solved as sequential algorithms, whereas the core of the last one was implemented in the \acrshort{gpu}. }
+\oddChapter
+\partIntro{III}{Point cloud enrichment}{This chapter comprises the generation of thermal and multispectral point clouds. Remotely sensed imagery is projected over dense \acrshort{rgb} point clouds to obtain denser point clouds from information with low resolution. The evolution of the projective approach is shown throughout this chapter; the first proposal is solved in a sequential manner, whereas the methodology of the last work was completely implemented in the \acrshort{gpu}. }
 
 % \input{chapters/thermal_point_cloud.tex}
 % \input{chapters/multi_thermal_point_cloud}
-% \input{chapters/hyper_point_cloud}
+\input{chapters/hyper_point_cloud}
 
 %----------------------------------------------------------------------------------------
 %	PART IV
 %----------------------------------------------------------------------------------------
 
-\chapterBackground{figs/chapters/Chapter4_01.png}{figs/chapters/Chapter4_02.png}{DailyArt}{Stone lion}{Sketchfab}{black}
+\oddCoverChapter
+\chapterBackground{figs/chapters/b5/Chapter4_01.png}{figs/chapters/b5/Chapter4_02.png}{DailyArt}{Stone lion}{Sketchfab}{black}
 
+\oddChapter
 \partIntro{IV}{Simulations and planning}{This part is split into three chapters. The first one simulates an efficient \acrshort{lidar} sensor aimed at providing large point cloud datasets for the training of Deep Learning models. Then, the \acrshort{lidar} data source is further enriched with intensity by taking into account the surface \acrshort{brdf}. Finally, the emulated sensor is applied to the optimization of \acrshort{lidar} scans within 3D buildings. }
 
 % \input{chapters/lidar_remote_sensing.tex}
@@ -374,9 +380,10 @@
 %	PART V
 %----------------------------------------------------------------------------------------
 
-\oddChapter
-\chapterBackground{figs/chapters/Chapter5_01.png}{figs/chapters/Chapter5_02.png}{Georg Klein}{Viking ship}{Sketchfab}{white}
+\oddCoverChapter
+\chapterBackground{figs/chapters/b5/Chapter5_01.png}{figs/chapters/b5/Chapter5_02.png}{Georg Klein}{Viking ship}{Sketchfab}{white}
 
+\oddChapter
 \partIntro{V}{Data analysis}{This chapter comprises work aimed at analyzing previously processed data, rather than collecting and fusing it to shape 3D results. The methodologies explained in previous chapters are applied to these analyses as some of them require observing and extracting features over point clouds and large hyperspectral datasets. }
 
 % \input{chapters/vineyard_classification}
@@ -386,12 +393,13 @@
 %	PART VI
 %----------------------------------------------------------------------------------------
 
-\oddChapter
-\chapterBackground{figs/chapters/Chapter6_01.png}{figs/chapters/Chapter6_02.png}{Rigsters}{Deer group}{Sketchfab}{white}
+\oddCoverChapter
+\chapterBackground{figs/chapters/b5/Chapter6_01.png}{figs/chapters/b5/Chapter6_02.png}{Rigsters}{Deer group}{Sketchfab}{white}
 
+\oddChapter
 \partIntro{VI}{Concluding remarks}{}
 
-\input{chapters/conclusions.tex}
+% \input{chapters/conclusions.tex}
 
 % \pagelayout{wide} % No margins
 % \addpart{Class Options, Commands and Environments}
@@ -415,9 +423,10 @@
 
 \appendix % From here onwards, chapters are numbered with letters, as is the appendix convention
 
-\oddChapter
-\chapterBackground{figs/chapters/Chapter8_01.png}{figs/chapters/Chapter8_02.png}{Mateusz Woliński}{Seraph}{Sketchfab}{black}
+\oddCoverChapter
+\chapterBackground{figs/chapters/b5/Chapter8_01.png}{figs/chapters/b5/Chapter8_02.png}{Mateusz Woliński}{Seraph}{Sketchfab}{black}
 
+\oddChapter
 \partIntro{VII}{Appendices}{}
 
 % \input{chapters/preamble_spanish}

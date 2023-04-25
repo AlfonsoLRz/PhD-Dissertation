@@ -1,4 +1,4 @@
-\setchapterpreamble[u]{\margintoc}
+\small\setchapterpreamble[u]{\margintoc}\normalsize
 \chapter{Materials and software}
 \labch{materials}
 \label{sec:materials}
@@ -7,7 +7,7 @@
 
 This chapter comprises the specifications of sensors used throughout this research work, the drawbacks of each of them and how these were solved. The core data of this dissertation is imagery taken from \acrshort{uas}s; therefore, this section is dedicated to both imagers and drones applied to capturing input data. Materials either belong to the Graphics and Geomatics Group at the University of Jaén (TIC-144) or the Science and Technology Faculty at the University of Trás-os Montes e Alto Douro (Vila Real, Portugal). 
 
-\section{UAV platforms}
+\section{UAS platforms}
 
 \acrshort{uas} platforms used during any of the surveys are following described. The first belongs to the University of Jaén whereas the latter two have been applied to research over the region of Vila Real, Portugal.
 
@@ -28,7 +28,7 @@ DJI Matrice 210 is a quadcopter drone that has been coupled with multispectral a
 
 \subsection{DJI Matrice 600 Pro}
 
-DJI Matrice 600 Pro (M600) is a hexacopter used in this work to record hyperspectral data with a Nano-Hyperspec device. It is equipped with a Ronin-MX gimbal to minimize geometric distortions in HSI acquisition. Its location was captured at different timestamps using two \acrshort{gps} in the arms, and its altitude was determined by other three \acrshort{gps} mounted on the upper plate. Angular data (yaw, roll and pitch angles) were recorded using an \acrshort{imu}. With this equipment profile, the flight autonomy is approximately 20 \si{\minute} \cite{sousa_uav-based_2022}. Flights were planned using Universal Ground Control Station at an altitude of 50 \si{\meter} with a 40\% side overlap for the observation of vineyard rows and the University of Trás-os Montes e Alto Douro campus.
+DJI Matrice 600 Pro (M600) is a hexacopter used in this work to record hyperspectral data with a Nano-Hyperspec device. It is equipped with a Ronin-MX gimbal to minimize geometric distortions in HSI acquisition. Its location was captured at different timestamps using two \acrshort{gps} in the arms, and its altitude was determined by the other three \acrshort{gps} mounted on the upper plate. Angular data (yaw, roll and pitch angles) were recorded using an \acrshort{imu}. With this equipment, the flight autonomy is approximately 20 \si{\minute} \cite{sousa_uav-based_2022}. Flights were planned using Universal Ground Control Station at an altitude of 50 \si{\meter} with a 40\% side overlap for the observation of vineyard rows and the University of Trás-os Montes e Alto Douro campus.
 \begin{marginfigure}[-2.0cm]
 	\includegraphics{figs/materials/dji_matrice_600_pro.png}
 	\caption{Hexacopter DJI Matrice 600 Pro.}
@@ -42,7 +42,7 @@ DJI Matrice 600 Pro (M600) is a hexacopter used in this work to record hyperspec
 	\caption{Quadcopter DJI Phantom 4.}
 	\label{fig:dji_phantom4}
 \end{marginfigure}
-DJI Phantom 4 is a quadcopter with an integrated \acrshort{cmos} camera of 2.8 \si{\milli\meter} optical lens and 12.4 megapixels (MP). Images have a resolution of $4000 \times 3000$ px, whereas video recording is also allowed at different qualities, including Ultra High-Definition (\acrshort{uhd}: $4096 \times 2160$ px at 24/25 frames per second (\acrshort{fps})). It can fly up to an altitude of 6000 \si{\meter} above water level with an autonomy of approximately 28 \si{\minute}. Integration with other sensors such as the Parrot Sequoia is not trivial as it requires the design of a coupling platform and feeding the sensor with an energy source, e.g., a battery. Although it is possible, this \acrshort{uas} has only been applied to \acrshort{rgb} recording with the integrated camera. Path planning has been performed with DroneDeploy (DroneDeploy, San Francisco, CA, USA).
+DJI Phantom 4 is a quadcopter with an integrated \acrshort{cmos} camera of 2.8 \si{\milli\meter} optical lens and 12.4 megapixels (MP). Images have a resolution of $4000 \times 3000$ px, whereas video recording is also allowed at different qualities, including Ultra High-Definition (\acrshort{uhd}: $4096 \times 2160$ px at 24/25 frames per second (\acrshort{fps})). It can fly up to an altitude of 6000 \si{\meter} above water level with an autonomy of approximately 28 \si{\minute}. Integration with other sensors such as the Parrot Sequoia is not trivial as it requires the design of a coupling platform and feeding the sensor with an energy source, e.g., a battery. Although it is possible to integrate further sensors, this \acrshort{uas} has only been applied to \acrshort{rgb} recording with the integrated camera. Path planning has been performed with DroneDeploy (DroneDeploy, San Francisco, CA, USA).
 
 \section{Sensors}
 
@@ -53,26 +53,27 @@ DJI Phantom 4 is a quadcopter with an integrated \acrshort{cmos} camera of 2.8 \
 	\caption{Parrot Sequoia multispectral device.}
 	\label{fig:parrot_sequoia}
 \end{marginfigure}
-Parrot Sequoia is a multispectral sensor from Parrot that has been mainly advertised as an imager for Precision Agriculture. It covers four different spectral bands (see Table \ref{table:parrot_sequoia}) using wide-angle lenses with a focal length of $\sim4$ \si{\milli\meter}. Along with multispectral observations, it is also able to capture information in the visible range with an \acrshort{rgb} sensor of 15.9 MP and a focal length of 4.88 \si{\milli\meter}. The latter is captured in rolling shutter mode, and therefore, not all parts of the image are captured at the same time. Thus, the \acrshort{uas} pace ought to be configured low enough to avoid effects such as wobble, skew as well as spatial and temporal distortion. Regarding the dimensionality of outputs, the resolution is 1280$\times$960 px and 4608$\times$3456 px for multispectral and visible imagery, respectively. Examples of shots from the Parrot Sequoia device for two different study areas are depicted in Figure \ref{fig:multispectral_samples}. 
+Parrot Sequoia is a multispectral sensor from Parrot that has been mainly advertised as an imager for Precision Agriculture. It covers four different spectral bands (see Table \ref{table:parrot_sequoia}) using wide-angle lenses with a focal length of $\sim$4 \si{\milli\meter}. Along with multispectral observations, it is also able to capture information in the visible range with an \acrshort{rgb} sensor of 15.9 MP and a focal length of 4.88 \si{\milli\meter}. The latter is captured in rolling shutter mode, and therefore, not all parts of the image are captured at the same time. Thus, the \acrshort{uas} pace ought to be configured low enough to avoid effects such as wobble, skew as well as spatial and temporal distortion. Regarding the dimensionality of outputs, the resolution is 1280$\times$960 px and 4608$\times$3456 px for multispectral and visible imagery, respectively. Examples of shots from the Parrot Sequoia device for two different study areas are depicted in Figure \ref{fig:multispectral_samples}. 
 
-\begin{figure}[ht]
+\begin{figure*}[ht]
 	\includegraphics{figs/materials/multispectral_samples.png}
 	\caption{\acrshort{rgb} and multispectral bands as captured from a Parrot Sequoia sensor.}
 	\label{fig:multispectral_samples}
-\end{figure}
+\end{figure*}
 
 \renewcommand{\arraystretch}{1.2}
 \begin{table}[ht]
+    \small
     \caption{Specifications of Parrot Sequoia multispectral device.}
     \label{table:parrot_sequoia}
     \begin{tabular}{llll}
         \toprule
         Band & Spectral range & Image size & Focal length\\
         \midrule
-        Green (GRE) & $530-570 \si{\nano\meter}$ & \multirow{4}{*}{$1280 \times 960$ px} & \multirow{4}{*}{3.8\si{\milli\meter}}\\
-        Red (RED) & $640-680 \si{\nano\meter}$ & & \\
-        Red-edge (\acrshort{reg}) & $730-740 \si{\nano\meter}$ & & \\
-        Near-infrared (\acrshort{nir}) & $770-810 \si{\nano\meter}$ & &\\
+        Green (GRE) & $530-570$ \si{\nano\meter} & \multirow{4}{*}{$1280 \times 960$ px} & \multirow{4}{*}{3.8 \si{\milli\meter}}\\
+        Red (RED) & $640-680$ \si{\nano\meter} & & \\
+        Red-edge (\acrshort{reg}) & $730-740$ \si{\nano\meter} & & \\
+        Near-infrared (\acrshort{nir}) & $770-810$ \si{\nano\meter} & &\\
         \cmidrule{1-4}
         Visible (RGB) & Visible & $4608 \times 3456$ px & 4.88 \si{\milli\meter}\\
         \bottomrule
@@ -98,7 +99,7 @@ Figure \ref{fig:fisheye_model} shows this relation on the basis of $\alpha$ and 
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=\linewidth]{figs/materials/fisheye_model.png}
+	\includegraphics[width=\linewidth]{figs/materials/fisheye_model_2.png}
 	\caption{Relation between a pixel from the target image, $p'_{x,y}$, and another from the source image, $p_{x,y}$.}
 	\label{fig:fisheye_model}
 \end{figure}
@@ -109,12 +110,12 @@ Parrot defines its own distortion model for the Sequoia imager. Four polynomial 
 \beta = k_1 + k_2 * \alpha + k_3 * \alpha ^ 2 + k_4 * \alpha ^ 3
 \end{equation}
 
-\begin{marginfigure}[-2cm]
+\begin{marginfigure}[-1.5cm]
 	\includegraphics{figs/materials/inverse_mapping.png}
 	\caption{Undetermined values are obtained when the undistortion process is carried out from the source image to the target one.}
 	\label{fig:inverse_mapping}
 \end{marginfigure}
-The new image has the same size, with $p'_{x,y}$ receiving the colour of $p_{x,y}$. It is relevant to perform this operation in this order, $p' \gets p$, to determine the colour of each pixel. Instead, the inverse mapping ($p \rightarrow p'$) leaves undetermined values since multiple pixels from $P$ could be rounded to the same $p'_{x, y}, x, y \in \mathbb{N}$ in the target image (Figure \ref{fig:inverse_mapping}). Thus, the last step is to compute every $p'_{x,y}$ by mapping it to $p_{x, y}, x, y \in \mathbb{R}$. A bilinear interpolation algorithm is used to solve the problem of accessing float-point indices from $P$.
+The new image has the same size, with $p'_{x,y}$ receiving the colour of $p_{x,y}$. It is relevant to perform this operation in this order, $p' \gets p$, to determine the colour of each pixel. Instead, the inverse mapping ($p \rightarrow p'$) leaves undetermined values since multiple pixels from $P$ could be mapped to the same $p'_{x, y}, x, y \in \mathbb{N}$ in the target image (Figure \ref{fig:inverse_mapping}). Thus, the last step is to compute every $p'_{x,y}$ by mapping it to $p_{x, y}, x, y \in \mathbb{R}$. A bilinear interpolation algorithm is used to solve the problem of accessing float-point indices from $P$.
 
 \subsection{DJI Zenmuse XT2}
 
@@ -133,8 +134,8 @@ DJI Zenmuse XT2 is a dual payload device that includes an \acrshort{rgb} and the
         \toprule
         Band & Spectral range & Image size & Focal length\\
         \midrule
-        Thermal & $750-1350 \si{\nano\meter}$ & $640 \times 512$ px & 19 \si{\milli\meter}\\
-        Visible (RGB) & Visible & $4000 \times 3000$ px & 8 \si{\milli\meter}\\
+        Thermal & $750-1350$ \si{\nano\meter} & $640 \times 512$ px & 19 \si{\milli\meter}\\
+        Visible (\acrshort{rgb}) & Visible & $4000 \times 3000$ px & 8 \si{\milli\meter}\\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -142,7 +143,7 @@ DJI Zenmuse XT2 is a dual payload device that includes an \acrshort{rgb} and the
 
 \subsubsection{Geometric correction}
 
-Images captured by the DJI Zenmuse XT2 are affected by distortions that must be removed for later projection procedures. First, thermographic imagery presents pincushion distortion as a result of the narrow field of view ($32^\circ \times 26^\circ$), whereas \acrshort{rgb} images are distorted following the barrel effect. Unlike Parrot, the camera manufacturer does not define a specific distortion model and thus can be removed as for any other image. Camera distortion can be removed by means of the camera matrix, $K$, as well as radial and tangential distortion coefficients, $(k_1, k_2, p_1, p_2, k_3)$. Also in contrast to Parrot Sequoia, these factors are not provided as image metadata. Instead, they must be determined through calibration and as such are estimated as part of the bundle adjustment of \acrshort{sfm}. Whether an image follows a pincushion or barrel distortion model is determined by the main distortion coefficient, $k_1$. It is below zero for thermal images, i.e., surfaces are not rectilinear; instead, they bow inwards as a consequence of the pincushion distortion. On the other hand, \acrshort{rgb} images have a barrel effect that is removed in the same way, though their principal radial coefficient, $k_1$, is greater than zero. For the latter, surfaces are bowed outwards and therefore, removing the distortion does not require decimating the image (Figure \ref{fig:rgb_xt2_undistortion}).
+Images captured by the DJI Zenmuse XT2 are affected by distortions that must be removed for later projection procedures. First, thermographic imagery presents pincushion distortion as a result of the narrow field of view ($32^\circ \times 26^\circ$), whereas \acrshort{rgb} images are distorted following the barrel effect. Unlike Parrot, the camera manufacturer does not define a specific distortion model and thus can be removed as for any other image. Geometric distortions can be removed by means of the camera matrix, $K$, as well as radial and tangential distortion coefficients, $(k_1, k_2, p_1, p_2, k_3)$. Also in contrast to Parrot Sequoia, these factors are not provided as image metadata. Instead, they must be determined through calibration and as such are estimated as part of the bundle adjustment of \acrshort{sfm}. Whether an image follows a pincushion or barrel distortion model is determined by the main distortion coefficient, $k_1$. It is below zero for thermal images, i.e., surfaces are not rectilinear; instead, they bow inwards as a consequence of the pincushion distortion. On the other hand, \acrshort{rgb} images have a barrel effect that is removed in the same way, though their principal radial coefficient, $k_1$, is greater than zero. For the latter, surfaces are bowed outwards and therefore, removing the distortion does not require decimating the image (Figure \ref{fig:rgb_xt2_undistortion}).
 
 \begin{figure}
     \includegraphics{figs/materials/thermal_distortion.png}
@@ -157,7 +158,7 @@ Images captured by the DJI Zenmuse XT2 are affected by distortions that must be 
 	\label{fig:rgb_xt2_undistortion}
 \end{figure}
 
-As depicted in Figure \ref{fig:thermal_rgb_distortion}, corrected images may have null values if the result has a lower dimensionality than the starting image. Hence, the minimum area that presents non-null colours can be determined by calculating the new corners of the image and subsequently cropping it (Equation \ref{eq:matrix_corners}). As a result, corrected images may end up with lower resolution than the starting ones, which occurs for thermal images and pincushion distortion. Figure \ref{fig:thermal_undistortion} compares three stages of the correction procedure. 
+As depicted in Figure \ref{fig:thermal_rgb_distortion}, corrected images may have null values if the result has a lower dimensionality than the starting image. Hence, the minimum area that presents non-null colours can be determined by calculating the new corners of the image and subsequently cropping it (Equation \ref{eq:matrix_corners}). As a result, corrected images may end up with lower resolution than the starting ones, which occurs for thermal images with pincushion distortion. Figure \ref{fig:thermal_undistortion} compares three stages of the correction procedure. 
 \begin{gather}
     \begin{aligned}
     \label{eq:matrix_corners}
@@ -224,18 +225,20 @@ This section is mainly referred to thermography stored using the proprietary \ac
 \end{equation}
 where $\textit{r}$ is the raw radiance of a pixel, transformed as listed in Code \ref{code:raw2temp}. Note that the following code works for a single pixel, although it can be vectorized to be applied over an entire image. Metadata parameters ought to be read once before the vectorized function.
 
+\vspace{3mm}
+
 \lstinputlisting[language=python, caption={Process of converting radiance as a DN to temperature in Celsius units.}, label=code:raw2temp]{code/raw2temp.py}
 
 Reading the embedded metadata and calculating absolute temperature values for every image is time-consuming. For this reason, these values could be calculated once and stored using a binary encoding to speed up later readings. Figure \ref{fig:thermal_inferno_temperature} shows the temperature limits observed in a scene as well as temperature values normalized and transformed using a mapping function defined by a linear interpolation over the texture on the top side.
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics{figs/materials/thermal_inferno_temperature.png}
+	\includegraphics[width=0.85\linewidth]{figs/materials/thermal_inferno_temperature.png}
 	\caption{Normalized thermographic image encoded with the inferno colour-ramp texture. }
 	\label{fig:thermal_inferno_temperature}
 \end{figure}
 
-On the other hand, the \acrshort{tiff} stores the absolute temperature and thus is simpler to process. Still, \acrshort{dn}s must be transformed according to Equation \ref{eq:tiff_radiometric_calibration}, with $h$ being a factor that takes values $\{0.4, 0.04\}$. The value of $h$ depends on whether the sensor is configured in high-gain mode or not. Starting values are presented by means of 16-bit floating-point numbers that can be normalized once transformed to fall within the range [0, 1], thus allowing us to visualize them.
+On the other hand, the \acrshort{tiff} file format stores the absolute temperature and thus is simpler to process. Still, \acrshort{dn}s must be transformed according to Equation \ref{eq:tiff_radiometric_calibration}, with $h$ being a factor that takes values $\{0.4, 0.04\}$. The value of $h$ depends on whether the sensor is configured in high-gain mode or not. Starting values are presented by means of 16-bit floating-point numbers that can be normalized once transformed to fall within the range [0, 1], thus allowing us to visualize them.
 \begin{gather}
     \label{eq:tiff_radiometric_calibration}
     \begin{aligned}
@@ -249,7 +252,7 @@ On the other hand, the \acrshort{tiff} stores the absolute temperature and thus 
 
 \subsection{Nano-Hyperspec}
 
-Nano-Hyperspec is a push-broom sensor that acquires spectral information for each spatial line. Light enters through the lens and it is dispersed in the spectral axis, thus allowing the observation of the spectra with a dimensionality of 640 spatial pixels. From here, the area is scanned following a flight direction and generating up to 2000 spatial lines per swath. If scanning the area's depth requires more than 2000 lines, several swaths are obtained for each sweep. 272 bands are acquired for every pixel covering the spectral range from 400 to 1000 \si{\nano\meter}. The sampling interval is 2.2 \si{\nano\meter}, though it increases to 6 \si{\nano\meter} at half-maximum.
+Nano-Hyperspec is a push-broom sensor that acquires spectral information for each spatial line. Light enters through the lens and it is dispersed in the spectral axis, thus allowing the observation of the spectra with a dimensionality of 640 spatial pixels. From here, the area is scanned following a flight direction and generating up to 2000 spatial lines per swath. If scanning the area's depth requires more than 2000 lines, several swaths are obtained for each sweep. 272 bands are acquired for every pixel covering a spectral interval ranging from 400 to 1000 \si{\nano\meter}. The sampling frequency is 2.2 \si{\nano\meter}, though it increases to 6 \si{\nano\meter} at half-maximum.
 
 \begin{marginfigure}[-3.0cm]
 	\includegraphics{figs/materials/nano_hyperspec.png}
@@ -257,7 +260,7 @@ Nano-Hyperspec is a push-broom sensor that acquires spectral information for eac
 	\label{fig:nano_hyperspec}
 \end{marginfigure}
 
-The processing of hyperspectral data has been performed with Headwall SpectralView\texttrademark \hspace{1mm} software. The procedure is to obtain several swaths for each study area, where a grayscale tarp ought to be depicted in at least one of them. Then, a white sample is marked from the white area in the grayscale tarp, while the dark reference is obtained by collecting a hyperspectral sample with the lens cap on before the flight. The sensor exposure and frame period are also adjusted before the flight by pointing at a bright reference to avoid clamping samples from white surfaces. The white and dark references are then used to convert the raw data to reflectance. 
+The processing of hyperspectral data has been performed with Headwall SpectralView\texttrademark \hspace{1mm} software. The data collection procedure returns several swaths for each study area, where a grayscale tarp ought to be depicted in at least one of them. Then, a white sample is marked from the white area in the grayscale tarp, while the dark reference is obtained by collecting a hyperspectral sample with the lens cap on before the flight. The sensor exposure and frame period are also adjusted before the flight by pointing at a bright reference to avoid clamping samples from white surfaces. The white and dark references are then used to convert the raw data to reflectance. 
 
 \begin{figure*}[ht]
     \centering
@@ -268,10 +271,11 @@ The processing of hyperspectral data has been performed with Headwall SpectralVi
 
 Ortho-rectified swaths are calculated using high-resolution \acrshort{dem}s (25 \si{\meter}) from Copernicus' observation program \cite{european_environment_agency_eu_2017} and the drone's \acrshort{gps} and \acrshort{imu} data. However, non-ortho-rectified swaths have also been used in this work for analysis to avoid distorting the hyperspectral samples and working with smaller image sizes.
 
-\begin{figure}[ht]
+\FloatBarrier
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.8\linewidth]{figs/materials/orthorectified_hyper.png}
-    \caption{Hyperspectral orthomosaic obtained by adjusting the yaw, roll and pitch angles as well as the UAV's altitude in SpectralView\texttrademark \hspace{1mm} software for every swath.}
+    \caption{Hyperspectral orthomosaic obtained by adjusting the yaw, roll and pitch angles as well as the \acrshort{uas}'s altitude in SpectralView\texttrademark \hspace{1mm} software for every swath.}
     \label{fig:orthorectified_hyper}
 \end{figure}
 
