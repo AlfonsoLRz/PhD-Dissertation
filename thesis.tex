@@ -117,8 +117,8 @@
 \newcommand{\mainSupervisor}{Dr. Francisco Ramón Feito Higueruela}
 \newcommand{\secondSupervisor}{Dr. Carlos Javier Ogayar Anguita}
 \newcommand{\bookPurpose}{PhD Dissertation}
-\newcommand{\dateDissertation}{June 2023}
-\newcommand{\dateDissertationSpanish}{junio de 2023}
+\newcommand{\dateDissertation}{May 2023}
+\newcommand{\dateDissertationSpanish}{mayo de 2023}
 \newcommand{\department}{Departamento de Informática}
 \newcommand{\polytechnicSchool}{Escuela Politécnica Superior de Jaén}
 \newcommand{\university}{Universidad de Jaén}
@@ -153,6 +153,7 @@
 
 % Background images
 \usepackage{tikz}
+\usepackage{wrapfig}
 
 % Math values %
 \usepackage{commath}
@@ -239,11 +240,11 @@
 %	ABSTRACT
 %----------------------------------------------------------------------------------------
 
-\blankPage
-\blankPage
 \pagelayout{smallmargin}
-\input{chapters/abstract.tex}
 \blankPage
+\input{chapters/abstract.tex}
+
+\oddCoverChapter
 \input{chapters/abstract_spanish.tex}
 \pagelayout{wide}
 
@@ -251,7 +252,6 @@
 %	PUBLICATIONS
 %----------------------------------------------------------------------------------------
 
-\blankPage
 \input{chapters/publications.tex}
 
 %----------------------------------------------------------------------------------------
@@ -325,13 +325,13 @@
 %	PART I
 %----------------------------------------------------------------------------------------
 
-\oddCoverChapter
-\chapterBackground{figs/chapters/b5/Chapter1_01.png}{figs/chapters/b5/Chapter1_02.png}{Radu Carstean}{Pawn Mate}{Sketchfab}{black}
+% \oddCoverChapter
+% \chapterBackground{figs/chapters/b5/Chapter1_01.png}{figs/chapters/b5/Chapter1_02.png}{Radu Carstean}{Pawn Mate}{Sketchfab}{black}
 
 \oddChapter
 \partIntro{I}{Introduction and overview}{This section introduces a shallow background of Remote Sensing as well as the aim and objectives of this doctoral dissertation. Then, the state-of-the-art on the fusion and simulation of Remote Sensing data is presented.}
 
-\input{chapters/introduction.tex}
+% \input{chapters/introduction.tex}
 % \input{chapters/fundamentals.tex}
 % \input{chapters/context.tex}
 
@@ -339,8 +339,8 @@
 %	PART II
 %----------------------------------------------------------------------------------------
 
-\oddCoverChapter
-\chapterBackground{figs/chapters/b5/Chapter2_01.png}{figs/chapters/b5/Chapter2_02.png}{wintrez}{Mandalorian}{Sketchfab}{black}
+% \oddCoverChapter
+% \chapterBackground{figs/chapters/b5/Chapter2_01.png}{figs/chapters/b5/Chapter2_02.png}{wintrez}{Mandalorian}{Sketchfab}{black}
 
 \oddChapter
 \partIntro{II}{Materials and image fusion}{The first part of this chapter introduces the materials utilized in this research work. Specifications and shortcomings of each device are here illustrated and solved for the sake of clarity and to avoid its repeatability through this dissertation. Then, images are processed and matched to compose a multi-layer system that will help to construct enriched 3D models in later chapters. }
@@ -353,8 +353,8 @@
 %----------------------------------------------------------------------------------------
 
 % \chapterBackground{figs/chapters/b5/Chapter3_01.png}{figs/chapters/b5/Chapter3_02.png}{Igor Tretyakov}{Low poly city}{Sketchfab}{black}
-\oddCoverChapter
-\chapterBackground{figs/chapters/b5/Chapter7_01.png}{figs/chapters/b5/Chapter7_02.png}{Alexander Ruz}{Combat robot}{Sketchfab}{black}
+% \oddCoverChapter
+% \chapterBackground{figs/chapters/b5/Chapter7_01.png}{figs/chapters/b5/Chapter7_02.png}{Alexander Ruz}{Combat robot}{Sketchfab}{black}
 
 \oddChapter
 \partIntro{III}{Point cloud enrichment}{This chapter comprises the generation of thermal and multispectral point clouds. Remotely sensed imagery is projected over dense \acrshort{rgb} point clouds to obtain denser point clouds from information with low resolution. The evolution of the projective approach is shown throughout this chapter; the first proposal is solved in a sequential manner, whereas the methodology of the last work was completely implemented in the \acrshort{gpu}. }
@@ -367,8 +367,8 @@
 %	PART IV
 %----------------------------------------------------------------------------------------
 
-\oddCoverChapter
-\chapterBackground{figs/chapters/b5/Chapter4_01.png}{figs/chapters/b5/Chapter4_02.png}{DailyArt}{Stone lion}{Sketchfab}{black}
+% \oddCoverChapter
+% \chapterBackground{figs/chapters/b5/Chapter4_01.png}{figs/chapters/b5/Chapter4_02.png}{DailyArt}{Stone lion}{Sketchfab}{black}
 
 \oddChapter
 \partIntro{IV}{Generation of synthetic data}{This part is split into two chapters. The first one covers the efficient simulation of a \acrshort{lidar} sensor aimed at providing large point cloud datasets for the training of Deep Learning models. Then, the \acrshort{lidar} datasets are further enriched with intensity by modelling the surfaces' \acrshort{brdf}. 
@@ -382,8 +382,8 @@
 %	PART V
 %----------------------------------------------------------------------------------------
 
-\oddCoverChapter
-\chapterBackground{figs/chapters/b5/Chapter5_01.png}{figs/chapters/b5/Chapter5_02.png}{Georg Klein}{Viking ship}{Sketchfab}{white}
+% \oddCoverChapter
+% \chapterBackground{figs/chapters/b5/Chapter5_01.png}{figs/chapters/b5/Chapter5_02.png}{Georg Klein}{Viking ship}{Sketchfab}{white}
 
 \oddChapter
 \partIntro{V}{Applications of \\remotely sensed data}{This chapter comprises several case studies where previously processed and generated data are applied to the planning of acquisition processes as well as to the detection and classification of features. First, the synthetic \acrshort{lidar} data will be used for the planning of scans, in order to optimize and minimize the locations required to monitor buildings. Then, thermographic point clouds are applied to the detection of landscape features that could be related to buried remains of an archaeological site. Finally, the hyperspectral data of a vineyard plot is corrected to help in the classification of different grapevine varieties using Deep Learning.  }
@@ -396,8 +396,8 @@
 %	PART VI
 %----------------------------------------------------------------------------------------
 
-\oddCoverChapter
-\chapterBackground{figs/chapters/b5/Chapter6_01.png}{figs/chapters/b5/Chapter6_02.png}{Rigsters}{Deer group}{Sketchfab}{white}
+% \oddCoverChapter
+% \chapterBackground{figs/chapters/b5/Chapter6_01.png}{figs/chapters/b5/Chapter6_02.png}{Rigsters}{Deer group}{Sketchfab}{white}
 
 \oddChapter
 \partIntro{VI}{Concluding remarks}{}
@@ -426,14 +426,14 @@
 
 \appendix % From here onwards, chapters are numbered with letters, as is the appendix convention
 
-\oddCoverChapter
-\chapterBackground{figs/chapters/b5/Chapter8_01.png}{figs/chapters/b5/Chapter8_02.png}{Mateusz Woliński}{Seraph}{Sketchfab}{black}
+% \oddCoverChapter
+% \chapterBackground{figs/chapters/b5/Chapter8_01.png}{figs/chapters/b5/Chapter8_02.png}{Mateusz Woliński}{Seraph}{Sketchfab}{black}
 
 \oddChapter
 \partIntro{VII}{Appendices}{}
 
-\input{chapters/preamble_spanish}
-\input{chapters/introduction_spanish}
+% \input{chapters/preamble_spanish}
+% \input{chapters/introduction_spanish}
 \input{chapters/conclusions_spanish}
 
 %----------------------------------------------------------------------------------------
