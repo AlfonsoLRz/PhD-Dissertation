@@ -11,7 +11,7 @@ La \textbf{teledetección} ayuda a mitigar algunas de las anteriores desventajas
 Por tanto, \textbf{las imágenes de satélite} son más adecuadas para monitorizar cambios a larga escala, utilizando series temporales que abarcan meses, años e incluso décadas. Estos datos permiten comprender la dinámica existente entre el ser humano y la naturaleza, así como el impacto de los fenómenos naturales (Figura \ref{fig:la_palma_landsat8_spanish}). Algunas aplicaciones de dichos conjuntos de datos son el control de uso del suelo, deforestación, cambios en la superficie terrestre y asentamientos urbanos \cite{asokan_change_2019}. No obstante, la resolución espacial y el periodo para revisitar un mismo punto en satélites no comerciales dificulta su aplicabilidad a tareas de monitorización que requieren de un nivel de detalle elevado (Level of detail: \acrshort{lod}). Este nivel de detalle puede referirse tanto la \textbf{resolución espacial} como a la \textbf{resolución temporal}, o a ambas, siendo éstas las principales \textbf{limitaciones} de las imágenes de satélite, además de su elevado coste. A pesar de ello, el uso de imágenes satélite se encuentra en aumento, como muestra la Figura \ref{fig:scopus_search_platforms_spanish}, debido a la cada vez menor distancia representada en un píxel (Ground Sampling Distance: \acrshort{gsd}) así como a la disminución del periodo empleado para revisitar un mismo punto. 
 \begin{marginfigure}[-6cm]
 	\includegraphics{figs/introduction/landsat8_lapalma.jpg}
-	\caption{Cumbre Vieja volcano eruption observed from Landsat-8 \cite{nasa_earth_observatory_lava_2021}.}
+	\caption{Observación de la misión Landsat-8 de la erupción del volcán Cumbre Vieja \cite{nasa_earth_observatory_lava_2021}.}
 	\label{fig:la_palma_landsat8_spanish}
 \end{marginfigure}
 
@@ -19,7 +19,7 @@ La Figura \ref{fig:scopus_search_platforms_spanish} muestra el número de artíc
 
 \begin{figure}[!ht]
 	\includegraphics[width=\linewidth]{figs/introduction/platform_timeline.png}
-	\caption{Número de artículos relacionados con diferentes plataformas de teledetección. Las búsquedas de Scopus fueran las siguientes: $(p_1 \lor p_2 ... \lor p_n) \land (\textit{remote} \hspace{1mm} \land \hspace{1mm} \textit{sensing})$, donde $p_i$ es una de las plataformas en la leyenda. }
+	\caption{Número de artículos relacionados con diferentes plataformas de teledetección. }
     \label{fig:scopus_search_platforms_spanish}
 \end{figure}
 
@@ -54,7 +54,7 @@ Por otro lado, \textbf{los grandes volúmenes de datos dificultan el procesamien
 Otro inconveniente de las aplicaciones en tiempo real es la \textbf{visualización de grandes volúmenes de datos}. Los métodos tradicionales de rendering contienen un conjunto de etapas predefinidas, en las que la geometría y la topología del modelo se transforman iterativamente para producir una imagen compuesta por píxeles. Los colores de éstos se calculan considerando la influencia de una o varias fuentes de luz sobre las texturas de una superficie, discretizando así la formulación que describe la interacción de la luz con la escena. A diferencia de los modelos sintéticos diseñados por el ser humano, los datos obtenidos por sensores reales se sombrean en función de la radiancia observada en un conjunto de longitudes de onda a las que es sensible el dispositivo. Por tanto, son necesarias metodologías de visualización de datos mucho más flexibles, evitando así algunas etapas innecesarias, como el sombreado de primitivas. De acuerdo con la arquitectura de una \acrshort{gpu}, los datos pueden ordenarse y organizarse en estructuras de datos que permiten balancear dos factores: carga de trabajo y precisión geométrica. Ésta última permite alterar la percepción del usuario si se realiza en su justa medida. Además, estas restricciones son aún más mayores en aplicaciones de Realidad Virtual (\acrshort{vr}) que sombrean la escena al menos dos veces, una por cada ojo, e incluso puede incrementarse aún más en función de las técnicas de iluminación empleadas.
 \begin{marginfigure}[-7.5cm]
 	\includegraphics{figs/introduction/hintze.png}
-	\caption{Nube de puntos con 2.4M de puntos reconstruidos utilizando 900 imágenes adquiridas en la Sala Hintze (Modelo de \textit{Thomas Flynn} en \textit{Sketchfab}).  }
+	\caption{Nube con 2.4M de puntos, reconstruida utilizando 900 imágenes de la Sala Hintze (Modelo de \textit{Thomas Flynn} en \textit{Sketchfab}).  }
 	\label{fig:hintze_hall_spanish}
 \end{marginfigure}
 

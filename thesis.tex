@@ -16,7 +16,7 @@
 %----------------------------------------------------------------------------------------
 
 % Text encoding
-\usepackage[utf8]{inputenc}
+% \usepackage[utf8]{inputenc}
 \usepackage{siunitx}
 
 % Choose the language
@@ -218,7 +218,8 @@
 %	OUTPUT TITLE PAGE AND PREVIOUS
 %----------------------------------------------------------------------------------------
 
-\input{chapters/cover_information.tex}
+% \input{chapters/cover_information.tex}
+\input{chapters/cover_information_alternative.tex}
 
 %----------------------------------------------------------------------------------------
 %	STARTING PHRASE AND COPYRIGHT
@@ -357,11 +358,11 @@
 % \chapterBackground{figs/chapters/b5/Chapter7_01.png}{figs/chapters/b5/Chapter7_02.png}{Alexander Ruz}{Combat robot}{Sketchfab}{black}
 
 \oddChapter
-\partIntro{III}{Point cloud enrichment}{This chapter comprises the generation of thermal and multispectral point clouds. Remotely sensed imagery is projected over dense \acrshort{rgb} point clouds to obtain denser point clouds from information with low resolution. The evolution of the projective approach is shown throughout this chapter; the first proposal is solved in a sequential manner, whereas the methodology of the last work was completely implemented in the \acrshort{gpu}. }
+\partIntro{III}{Point cloud enrichment}{This chapter comprises the generation of thermal and multispectral point clouds. Remotely sensed data is projected over large \acrshort{rgb} point clouds to obtain denser point clouds from low-resolution imagery. The evolution of this approach is shown throughout this chapter; the first proposal is solved in a sequential manner, whereas the methodology of the last work was completely implemented in the \acrshort{gpu}. }
 
 % \input{chapters/thermal_point_cloud.tex}
-% \input{chapters/multi_thermal_point_cloud}
-% \input{chapters/hyper_point_cloud}
+\input{chapters/multi_thermal_point_cloud}
+\input{chapters/hyper_point_cloud}
 
 %----------------------------------------------------------------------------------------
 %	PART IV
@@ -402,7 +403,7 @@
 \oddChapter
 \partIntro{VI}{Concluding remarks}{}
 
-\input{chapters/conclusions.tex}
+% \input{chapters/conclusions.tex}
 
 % \pagelayout{wide} % No margins
 % \addpart{Class Options, Commands and Environments}
@@ -434,7 +435,7 @@
 
 % \input{chapters/preamble_spanish}
 % \input{chapters/introduction_spanish}
-\input{chapters/conclusions_spanish}
+% \input{chapters/conclusions_spanish}
 
 %----------------------------------------------------------------------------------------
 %	COVER
