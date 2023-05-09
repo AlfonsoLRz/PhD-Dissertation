@@ -81,7 +81,7 @@ Parrot Sequoia is a multispectral sensor from Parrot that has been mainly advert
 \end{table}
 \renewcommand{\arraystretch}{1}
 
-Wide-angle lenses cover wider areas with a single shot, but also present visual distortions such as the well-known fisheye effect (Figure \ref{fig:fisheye_sample}). Surfaces with rectilinear features are depicted as domed with this distortion, especially for features close to the image corners. It can be corrected with a transformation matrix that creates an image of the same dimensionality, whose pixels carry out the interpolated colour from several pixels of the source image. Remark that interpolation algorithms are required since the transformation of $x \in \mathbb{R}$ yields $x' \in \mathbb{R}$.
+Wide-angle lenses cover wider areas with a single shot, but also present visual distortions such as the well-known fisheye effect (Figure \ref{fig:fisheye_sample}). Surfaces with rectilinear features are depicted as domed with this distortion, especially for features close to the image corners. It can be corrected with a transformation matrix that creates an image of the same dimensionality, whose pixels carry out the interpolated colour from several pixels of the source image. Remark that interpolation algorithms are required since the transformation of $x' \in \mathbb{N}$ yields $x \in \mathbb{R}$.
 
 \begin{figure}[ht]
 	\includegraphics{figs/materials/fisheye_sample.png}
@@ -115,7 +115,7 @@ Then, four polynomial coefficients ($k_1, k_2, k_3, k_4$) are read from the imag
 	\caption{Undetermined values are obtained when the undistortion process is carried out from the source image to the target one.}
 	\label{fig:inverse_mapping}
 \end{marginfigure}
-The new image has the same size, with $p'$ receiving the colour of $p$. It is relevant to perform this operation in this order, $p' \gets p$, to determine the colour of each pixel. Instead, the inverse mapping ($p \rightarrow p'$) leaves undetermined values since multiple pixels from the source image could be mapped to the same pixel in the target image (see Figure \ref{fig:inverse_mapping}). Thus, the last step is to map every $(x', y')$ to $(x, y)$, with $x, y \in \mathbb{R}$. A bilinear interpolation algorithm is used to solve the problem of accessing float-point indices from $P$.
+The new image has the same size, with $p'$ receiving the colour of $p$. It is relevant to perform this operation in this order, $p' \gets p$, to determine the colour of each pixel. Instead, the inverse mapping ($p \rightarrow p'$) leaves undetermined values since multiple pixels from the source image could be mapped to the same pixel in the target image (see Figure \ref{fig:inverse_mapping}). Thus, the last step is to map every $(x', y')$ to $(x, y)$, with $x, y \in \mathbb{R}$. A bilinear interpolation algorithm is used to solve the problem of accessing float-point indices from an image.
 
 \subsection{DJI Zenmuse XT2}
 
@@ -134,7 +134,7 @@ DJI Zenmuse XT2 is a dual payload device that includes \acrshort{rgb} and therma
         \toprule
         Band & Spectral range & Image size & Focal length\\
         \midrule
-        Thermal & $750-1350$ \si{\nano\meter} & $640 \times 512$ px & 19 \si{\milli\meter}\\
+        Thermal & $750-1,350$ \si{\nano\meter} & $640 \times 512$ px & 19 \si{\milli\meter}\\
         Visible (\acrshort{rgb}) & Visible & $4000 \times 3000$ px & 8 \si{\milli\meter}\\
         \bottomrule
     \end{tabular}
@@ -233,14 +233,7 @@ where $\textit{r}$ is the raw radiance of a pixel, transformed as listed in Code
 
 However, reading the embedded metadata and estimating the temperature for every image is time-consuming. For this reason, these values can be calculated once and stored using a binary encoding to speed up later readings. Figure \ref{fig:thermal_inferno_temperature} shows the minimum and maximum temperature observed in a scene as well as the normalized temperature using the colour ramp depicted on the right side.
 
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=\linewidth]{figs/materials/thermal_inferno_temperature.png}
-	\caption{Normalized thermographic image encoded with the inferno colour-ramp texture. }
-	\label{fig:thermal_inferno_temperature}
-\end{figure}
-
-On the other hand, the \acrshort{tiff} file format stores the absolute temperature and thus is simpler to process. Still, \acrshort{dn}s must be transformed according to Equation \ref{eq:tiff_radiometric_calibration}, with $h$ being a factor that takes values $\{0.4, 0.04\}$. The value of $h$ depends on whether the sensor is configured in high-gain mode or not. Starting values are presented using 16-bit floating-point numbers that can be normalized once transformed to fall within the range [0, 1], thus allowing us to visualize them.
+On the other hand, the \acrshort{tiff} file format stores the absolute temperature and is simpler to process. Still, \acrshort{dn}s must be transformed according to Equation \ref{eq:tiff_radiometric_calibration}, with $h$ being a factor that takes values $\{0.4, 0.04\}$. The value of $h$ depends on whether the sensor is configured in high-gain mode or not. Starting values are presented using 16-bit floating-point numbers that can be normalized in [0, 1], thus allowing us to visualize them.
 \begin{gather}
     \label{eq:tiff_radiometric_calibration}
     \begin{aligned}
@@ -252,9 +245,16 @@ On the other hand, the \acrshort{tiff} file format stores the absolute temperatu
     \end{cases}
 \end{gather}
 
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\linewidth]{figs/materials/thermal_inferno_temperature.png}
+	\caption{Normalized thermographic image encoded with the inferno colour-ramp texture. }
+	\label{fig:thermal_inferno_temperature}
+\end{figure}
+
 \subsection{Nano-Hyperspec}
 
-Nano-Hyperspec is a push-broom sensor that acquires spectral information for each spatial line. Light enters through the lens and it is dispersed in the spectral axis, thus allowing the observation of the spectra with a dimensionality of 640 spatial pixels. From here, the area is scanned following a flight direction and generating up to 2000 spatial lines per swath. If scanning the area requires more than 2000 spatial lines, several swaths are obtained for each sweep. 272 bands are acquired for every pixel covering a spectral interval ranging from 400 to 1000 \si{\nano\meter}. The sampling frequency is 2.2 \si{\nano\meter}, though it increases to 6 \si{\nano\meter} at half-maximum.
+Nano-Hyperspec is a push-broom sensor that acquires spectral information for each spatial line. Light enters through the lens and it is dispersed in the spectral axis, thus allowing the observation of the spectra with a dimensionality of 640 spatial pixels. From here, the area is scanned following a flight direction and generating up to 2000 spatial lines per swath. If scanning the area requires more than 2000 spatial lines, several swaths are obtained for each sweep. 272 bands are acquired for every pixel covering a spectral interval ranging from 400 to 1,000 \si{\nano\meter}. The sampling frequency is 2.2 \si{\nano\meter}, though it increases to 6 \si{\nano\meter} at half-maximum.
 
 \begin{marginfigure}[-3.0cm]
 	\includegraphics{figs/materials/nano_hyperspec.png}
@@ -267,7 +267,7 @@ The processing of hyperspectral data has been performed with Headwall SpectralVi
 \begin{figure*}[ht]
     \centering
     \includegraphics{figs/materials/spectral_view_rectification.png}
-    \caption{Conversion of a) hyperspectral \acrshort{dn}s into b) reflectance using a white and dark reference. The three grey levels are sampled in a).}
+    \caption{Conversion of a) hyperspectral \acrshort{dn}s into b) reflectance using a white and dark reference. The three grey levels are sampled from a).}
     \label{fig:hyperspectral_rectification}
 \end{figure*}
 

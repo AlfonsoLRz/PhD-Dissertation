@@ -95,10 +95,10 @@ Compute shaders are general-purpose shaders for \acrshort{gpgpu}, and therefore,
 Regarding memory allocation, \textit{z}-buffers are here modelled as integers of 64 bits (\verb|uint64_t|) using \acrshort{opengl}'s modern extensions, to be equally split between distance and index. Distance is not a numeric integer, $d \in \mathbb{R}$, though its low-level representation can be interpreted as an integer using \verb|floatBitsToUint|. For a viewpoint, $\textit{xyz}_c$, and a 3D point ($\textit{xyz}_p$) with index $i_p$, the Euclidean distance is computed, transformed into an integer and concatenated to $i_p$ (Equation \ref{eq:concatenation}). With this representation, fewer and greater comparisons work as usual. Thus, these operators can be applied to build a \textit{z}-buffer by selecting the minimum distance while also carrying the point index. To this end, the atomic $\min$ operator (\verb|atomicMin|) is used.
 \begin{equation}
     \label{eq:concatenation}
-    z_{k, l} \gets \lVert\textit{xyz}_p, \textit{xyz}_c\rVert ^\frown x_p
+    z_{k, l} \gets \lVert\textit{xyz}_p - \textit{xyz}_c\rVert ^\frown x_p
 \end{equation}
 
-The procedure to project the point cloud into $z$-buffers is following described in Algorithm \ref{alg:gpu_single_batch} if it fits in the \acrshort{gpu}'s \acrshort{vram} and the maximum size of \acrshort{opengl}'s buffers (see Figure \ref{fig:occlusion_compute_shader_zbuffer}). Otherwise, Algorithm \ref{alg:gpu_multiple_batch} is followed. Note that the second scenario omits the smaller procedures shown in Algorithm \ref{alg:gpu_single_batch}. Because data transfers of $z$-buffers in \acrshort{cpu} $\leftrightarrow$ \acrshort{gpu} are notably smaller, point batches are iterated in the outer $\textit{for}$ and thus are only transferred once. Instead, each viewpoint's $z$-buffer is transferred once per point batch. Once all the points have been projected into every $z$-buffer, the indices indicating which points are visible are obtained, as proposed in Algorithm \ref{alg:gpu_single_batch}.
+The procedure to project the point cloud into $z$-buffers is following described in Algorithm \ref{alg:gpu_single_batch} if it fits in the \acrshort{gpu}'s \acrshort{vram} and the maximum size of \acrshort{opengl}'s buffers (see Figure \ref{fig:occlusion_compute_shader_zbuffer}). Otherwise, Algorithm \ref{alg:gpu_multiple_batch} is followed. Note that the second scenario omits the smaller procedures shown in Algorithm \ref{alg:gpu_single_batch}. Because data transfers of $z$-buffers in \acrshort{cpu} $\leftrightarrow$ \acrshort{gpu} are notably smaller, point batches are iterated in the outer $\textit{for}$ and thus are only transferred once. Instead, each viewpoint's $z$-buffer is transferred once per point batch. Once all the points have been projected into every $z$-buffer, the indices indicating which points are visible are read, as proposed in Algorithm \ref{alg:gpu_single_batch}.
 \begin{marginfigure}[.3cm]
     \includegraphics[width=\linewidth]{figs/multi_thermal_projection/occlusion_compute_shader.png}
     \caption{Overview of methodology based on compute shaders for a single batch of 3D points.}
@@ -303,7 +303,7 @@ Regarding the sought precision, images were aligned using $\epsilon \gets 10^{-5
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\linewidth]{figs/multi_thermal_projection/results/ecc_precision.png}
-    \caption{Image similarity measured after performing \acrshort{ecc} alignment with a precision equal to $1^x$. Lower values seek the most accurate alignment. The similarity is normalized in [0, 1] for improving the visualization. }
+    \caption{Image similarity measured after performing the \acrshort{ecc} alignment with a precision equal to $1^x$. Lower values seek the most accurate alignment. The similarity is normalized in [0, 1] for improving the visualization. }
     \label{fig:ecc_precision}
 \end{figure}
 
@@ -515,7 +515,7 @@ Previous results are measured by 1) loading a Polygon File Format (\acrshort{ply
 \begin{table*}
     \sffamily
     \centering
-    \caption{Response time of the first two stages if 1) it is the first load or 2) binary data has already been stored as a result of a previous load. \textbf{Stage 1} refers to point cloud reading, whereas \textbf{Stage 2} involves the image processing prior to the dense reconstruction. }
+    \caption{Response time of the first two stages if 1) it is the first load or 2) binary data has already been stored as a result of a previous load. Stage 1 refers to point cloud reading, whereas Stage 2 involves the image processing prior to the dense reconstruction. }
     \label{table:binary_results}
     \begin{tabular}{l|llll}
     \toprule

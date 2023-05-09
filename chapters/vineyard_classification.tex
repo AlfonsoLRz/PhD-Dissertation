@@ -31,7 +31,7 @@ Data acquired from the spectrometer was analyzed to evaluate the distance among 
 \section{Processing of UAS data}
 \label{sec:vineyard_hyperspectral_processing}
 
-This section briefly describes the process of obtaining reflectance data from raw hyperspectral imagery, which was previously illustrated in Figure \ref{fig:spectral_view_rectification}. The computed reflectance for every grapevine class is depicted in Figure \ref{fig:vineyard_mean_grid}, which is following transformed and standardized to feed a \acrshort{dl} network. 
+This section briefly describes the process of obtaining reflectance data from raw hyperspectral imagery, which was already illustrated in Figure \ref{fig:hyperspectral_rectification}. The computed reflectance for every grapevine class is depicted in Figure \ref{fig:vineyard_mean_grid}, which is following transformed and standardized to feed a \acrshort{dl} network. 
 
 The hyperspectral data was collected using a drone and processed using Headwall SpectralView\texttrademark \hspace{.5mm} software. Several swaths were captured for each study area (we refer the reader to Figure \ref{fig:vineyard_swaths}), and a white sample was marked from the white area in the grayscale tarp. On the other hand, a dark reference was obtained by collecting a hyperspectral sample with the lens cap on before the flight. The sensor exposure and frame period were adjusted before the flight by pointing at a bright reference to avoid clamping samples from white surfaces. The white and dark references were then used to convert the raw data to reflectance. From here, the ortho-rectified swaths were obtained using high-resolution \acrshort{dem}s (25 \si{\meter}) from Copernicus' observation program \cite{european_environment_agency_eu_2017} as well as the drone's \acrshort{gps} and \acrshort{imu} data. However, non-ortho-rectified swaths were used for the analyses presented in this paper to operate over smaller images and avoid distorting the hyperspectral samples.
 
@@ -102,7 +102,7 @@ In this work, the attention-based a) kernel of Xue et al. \cite{xue_attention-ba
     \mathcal{SA}^{M \times M \times M} &\gets \mathcal{S}^{M \times M \times M}{\mathcal{S}_{central}}^{M \times M} + \mathcal{B}^{M \times 1} \numberthis \label{eq:spatial_attention_04}\\
     {\mathcal{P}_{\mathcal{SA}}}^{M \times M \times B} &\gets \textit{softmax}\hspace{.5mm}(\mathcal{SA}^{M \times M \times M}) \cdot \mathcal{P}^{M \times M \times B} \numberthis \label{eq:spatial_attention_05} 
 \end{align*}
-where $l_2$ refers to L2 normalization, $\mathcal{P}^{M \times M \times B}$ is a 3D patch, and $\mathcal{S}$, $\mathcal{S}_{\textit{central}}$ as well as $\mathcal{SA}$ are intermediate states. $\mathcal{P}_{\mathcal{SA}}$ is the result that is later concatenated with the original form. $\mathcal{K}$ and $\mathcal{B}$ are the learned kernel and bias weights from this layer.
+where $l_2$ refers to L2 normalization, $\mathcal{P}^{M \times M \times B}$ is a 3D patch, and $\mathcal{S}$, $\mathcal{S}_{\textit{central}}$ as well as $\mathcal{SA}$ are intermediate states. $\mathcal{P}_{\mathcal{SA}}$ is the result that is later concatenated with the original form. $\mathcal{K}$ and $\mathcal{B}$ are, on the other hand, the learned kernel and bias weights.
 
 Then, the second module is aimed at extracting both spatial and spectral features, as proposed by Pan et al. \cite{pan_spectral-spatial_2020}. The first convolutional layer is applied pixel-wise with a kernel of size 1 and thus operates by extracting patterns on the $z$-axis. It is used prior to kernels of larger size to compute reductions. Then, the second convolutional layer extracts spatial features over previously extracted filters. The kernel size is only 3 since deeper layers will operate over larger neighbourhoods.
 
@@ -194,7 +194,7 @@ Regarding implementation, all the tests were performed on a PC with AMD Ryzen Th
 
 \subsection{Study area}
 
-The vineyards used as study areas in this work are situated in the Northern region of Portugal, specifically in Vila Real \ref{fig:vineyard_study_area}). Each vineyard plot is dedicated to either red or white grapevine variants, and each grapevine variety is cultivated in one or more contiguous rows. Data acquisition occurred in two ways: 1) by gathering leaves from each row, directly on the field, and 2) by conducting a \acrshort{uas} flight, which is described subsequently. The initial outcomes were analyzed in a laboratory, while the second survey was dedicated to collecting \acrshort{hsi} swaths.
+The vineyards used as study areas in this work are situated in the Northern region of Portugal, specifically in Vila Real (Figure \ref{fig:vineyard_study_area}). Each vineyard plot is dedicated to either red or white grapevine variants, and each grapevine variety is cultivated in one or more contiguous rows. Data acquisition occurred in two ways: 1) by gathering leaves from each row, directly on the field, and 2) by conducting a \acrshort{uas} flight, which is described subsequently. The initial outcomes were analyzed in a laboratory, while the second survey was dedicated to collecting \acrshort{hsi} swaths.
 
 \subsection{Material}
 
