@@ -45,7 +45,7 @@ La teledetección y la inteligencia artificial se encuentran en constante evoluc
     \item El registro de imágenes se llevó a cabo utilizando hardware que no estaba orientado a altas prestaciones, y por lo tanto, se exploraron alternativas para mejor la eficiencia, como la reducción de tamaño o el desenfoque de las imágenes. No obstante, otra alternativa consiste en explorar un esquema piramidal que, partiendo de un tamaño muy reducido, permita obtener una transformación inicial con menor nivel de detalle (pero capaz de identificar grandes cambios). Este esquema se muestra en la Figura \ref{fig:image_pyramid_spanish}. A medida que se incrementa el tamaño de imagen, el nivel de detalle del registro es mayor, pero los cambios son de menor entidad, y por tanto, se estiman en un menor tiempo de respuesta. Además de reducir la latencia, este enfoque también podría ayudar a registrar imágenes con diferencias mucho mayores.
     \begin{figure}
         \centering
-        \includegraphics[width=\linewidth]{figs/conclusions/image_pyramid.png}
+        \includegraphics[width=\linewidth]{figs/conclusions/image_pyramid_spanish.png}
         \caption{Registro de imagen iterativo, donde un mayor tamaño de imagen implica mayor tiempo de respuesta y mayor precisión en la estimación de la matriz de transformación.}
         \label{fig:image_pyramid_spanish}
     \end{figure}
@@ -58,7 +58,7 @@ La teledetección y la inteligencia artificial se encuentran en constante evoluc
     \item Además de \acrshort{lidar}, hay otros sensores basados en imágenes que pueden ser simulados mediante redes generativas adversarias (Generative Adversarial Networks) como la que se muestra en la Figura \ref{fig:conclusiones_gan}. Éstas permiten generar conjuntos de datos no supervisados que permitirían, por ejemplo, construir imágenes térmicas a partir de imágenes visibles con el fin de ampliar conjuntos de datos ya existentes. Los trabajos ya existentes no han conseguido resolver este problema utilizando únicamente información visible como entrada \cite{li_multi-branch_2019, li_i-gans_2021, kniaz_thermalgan_2019, ozkanoglu_infragan_2022, yi_cycle_2023}. Sin embargo, esta tarea podría ayudarse de anotaciones semánticas que permitan identificar superficies distintas, las cuales a su vez presenta información radiométrica diferente.
     \begin{figure}[ht]
         \centering
-        \includegraphics[width=\linewidth]{figs/conclusions/gan.png}
+        \includegraphics[width=\linewidth]{figs/conclusions/gan_spanish.png}
         \caption{Esquema de una red generativa adversaria, compuesta a su vez por dos modelos diferentes: generador y discriminador. El primero se entrena para producir datos realistas, mientras el segundo debe discernir, con la mayor eficacia posible, si los datos de entrada son reales o no.}
         \label{fig:conclusiones_gan}
     \end{figure}
