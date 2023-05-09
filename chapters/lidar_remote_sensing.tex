@@ -21,7 +21,7 @@ In comparison with previous work, the main contributions of this chapter are the
 
 \section{On the generation of LiDAR datasets}
 
-\acrshort{lidar} technology has rapidly evolved in the last two decades and therefore, it has received great attention from industrial and academic environments. This sensor enables acquiring information about a surface, object or phenomenon without physical contact. There is a wide variety of \acrshort{lidar} variants according to the sensor capabilities, the platform on which they are operated (\acrshort{tls}, \acrshort{als}, \acrshort{mms}, \acrshort{bmmls}, etc.), manufacturers and models. Unfortunately, it is not easy to get a sufficient amount of ground truth data due to time constraints and available resources. In contrast to real \acrshort{lidar} sensors, \acrshort{lidar} simulation enables the generation of classified data at a significantly lower cost. The cost of \acrshort{lidar} technology is prohibitive, and collecting large real-world datasets is time-consuming, both in the acquisition and labelling (if required). 
+\acrshort{lidar} technology has rapidly evolved in the last two decades and therefore, it has received great attention from industrial and academic environments. This sensor enables acquiring information about a surface, object or phenomenon without physical contact. There is a wide variety of \acrshort{lidar} variants according to the sensor capabilities, the platform on which they are operated (\acrshort{tls}, \acrshort{als}, \acrshort{mms}, \acrshort{bmmls}, etc.), manufacturers and models. Unfortunately, it is not easy to get a sufficient amount of ground truth data due to time constraints and available resources. In contrast to real sensors, the \acrshort{lidar} simulation enables the generation of classified data at a significantly lower cost. The cost of \acrshort{lidar} technology is prohibitive, and collecting large real-world datasets is time-consuming, both in the acquisition and labelling (if required). 
 
 On the other hand, simulated \acrshort{lidar} data can be enriched with any kind of information. For instance, semantic tags can be accurately determined since the models in the input scenarios are named accordingly. The \acrshort{lod} of augmented data, including semantic tags, can be constrained by the \acrshort{lod} of input environments as well as by the requirements of decision-making and classification algorithms that will use these synthetic datasets. Also, simulations can go further and integrate errors and limitations of \acrshort{lidar}, either systematic or random, to provide more realistic data. Nevertheless, simulating the physical interaction of \acrshort{lidar} sensors with real-world surfaces is a non-trivial task that demands computationally efficient algorithms. 
 
@@ -45,18 +45,18 @@ Synthetic scenarios must be similar to real-world environments since the scannin
 	\caption{Hydraulic erosion of 200k particles over a heightfield modelled with 2D Perlin noise. }
 	\label{fig:hydraulic_erosion}
 \end{marginfigure}
-The procedural generation of forestry scenarios has been previously approached with ecosystems \cite{cordonnier_authoring_2017, fischer_autobiomes_2020, makowski_synthetic_2019} that achieve a high level of realism. However, this work intended to provide a simple tool for the procedural generation of natural scenarios. To this end, the procedure depicted in Figure \ref{fig:procedural_workflow} can be configured using a text file or a node editor in the Graphical User Interface (\acrshort{gui}).
+The procedural generation of forestry scenarios has been previously approached with ecosystems \cite{cordonnier_authoring_2017, fischer_autobiomes_2020, makowski_synthetic_2019} that achieve a high level of realism. However, this work is intended to provide a simple tool for the procedural generation of natural scenarios. To this end, the procedure depicted in Figure \ref{fig:procedural_workflow} can be configured using a text file or a node editor in the Graphical User Interface (\acrshort{gui}).
 
 \begin{figure*}
     \centering
     \includegraphics[width=\linewidth]{figs/lidar_simulation/procedural_workflow.png}
-	\caption{Workflow regarding the procedural modelling of a forestry area with water, low-vegetation, high-vegetation and buildings. First, the soil is eroded using hydraulic processes, and then, water and low vegetation are procedurally generated. Finally, trees and buildings are generated so that collisions among them are avoided. }
+	\caption{Workflow of the procedural modelling of a forestry area with water, low-vegetation, high-vegetation and buildings. First, the soil is eroded using hydraulic processes, and then, water and low vegetation are procedurally generated. Finally, trees and buildings are generated so that collisions among them are avoided. }
 	\label{fig:procedural_workflow}
 \end{figure*}
 
-The soil was modelled using a Perlin noise function, followed by hydraulic erosion over the heightfield representation of the terrain. The erosion algorithm was enhanced using the \acrshort{gpu} to model each particle with a different thread. Accordingly, the particles move according to a weighted aggregation of slopes from their surroundings, until a move of length zero or a limit of iterations ($\rho_{\textit{iterations}}$) are reached. During these moves, particles deposit sediment whether the carried material exceeds their capacity; otherwise, the heightfield is eroded. The erosion is applied as a convolution with a configurable radius, whose weights, $w_i$, represent the distance to the kernel centre. Regardless of the particle location, the convolution has always the same weights and thus can be computed once and stored. Figure \ref{fig:hydraulic_erosion} shows several stages of this hydraulic erosion for 200k particles. The surface got smoother when the erosion run for a larger number of iterations. Hence, a limited number of iterations helps to balance realism and latency. 
+The soil was modelled using a Perlin noise function, followed by hydraulic erosion over the heightfield representation of the terrain. The erosion algorithm was enhanced using the \acrshort{gpu} to model each particle with a different thread. Accordingly, the particles move according to a weighted aggregation of slopes from their surroundings, until a move of length zero or a limit of iterations is reached. During these moves, particles deposit sediment whether the carried material exceeds their capacity; otherwise, the heightfield is eroded. The erosion is applied as a convolution with a configurable radius, whose weights, $w_i$, represent the distance to the kernel centre. Regardless of the particle location, the convolution has always the same weights and thus can be computed once and stored. Figure \ref{fig:hydraulic_erosion} shows several stages of this hydraulic erosion for 200k particles. The surface got smoother when the erosion run for a larger number of iterations. Hence, a limited number of iterations helps to balance realism and latency. 
 
-On the other hand, water is modelled as planar surfaces placed at valleys. The procedure is to locate local minima defined as points whose elevation is lower than surrounding pixels. Then, local minima points are flooded until the height $h_{\textit{flood}}$ is achieved to compute which cells are part of a valley. $h_{\textit{flood}}$ is computed as shown in Equation \ref{eq:water_height} using a reference height, $h_{\textit{water}}$, and a random value in $[-h_{\sigma}, h_{\sigma}]$, both obtained from the scene configuration. The set of collected valleys is sorted according to the covered area to retrieve only the top-$n$ instances. 
+On the other hand, water is modelled as planar surfaces placed at valleys like the ones depicted in Figure \ref{fig:terrain_valleys}. The procedure is to locate local minima defined as points whose elevation is lower than surrounding pixels. Then, local minima points are flooded until the height $h_{\textit{flood}}$ is achieved, thus obtaining which cells are part of a valley. $h_{\textit{flood}}$ is computed as shown in Equation \ref{eq:water_height}, using a reference height, $h_{\textit{water}}$, and a random value in $[-h_{\sigma}, h_{\sigma}]$, both obtained from the scene configuration. The set of collected valleys is sorted according to the covered area to retrieve only the top-$n$ instances. 
 \begin{equation}
     \label{eq:water_height}
     h_{\textit{flood}} = h_{\textit{water}} + f_{\textit{random}}h_{\sigma}
@@ -69,12 +69,12 @@ where $f_{\textit{random}} \in [-1, 1]$.
 	\caption{Valleys detected on an eroded terrain. }
 	\label{fig:terrain_valleys}
 \end{marginfigure}
-Low vegetation is represented with a large number of low-poly instances that enable the modelling of highly detailed scenes while keeping a good rendering performance. Still, \acrshort{opengl}'s instance rendering is required for providing a high value of \acrshort{fps}. Otherwise, geometry shaders could be used; however, the \acrshort{lidar} simulation requires explicitly declaring the vegetation geometry in a \acrshort{ssbo} for the spatial indexing. The distribution was computed using seeds from a random uniform distribution, with the slope and height being key factors to determine whether they are instanced or not. Thus, the instancing probability is defined as shown in Equation \ref{eq:vegetation_instancing_prob}. The probability map is compiled in a texture that aggregates the height and normal map computed in previous stages. According to Equation \ref{eq:vegetation_instancing_prob}, points that present steeper slopes and lower altitudes have a lower instancing probability.
+Low vegetation is represented with a large number of low-poly instances that enable the modelling of highly detailed scenes while keeping a good rendering performance. Still, \acrshort{opengl}'s instance rendering is required for providing a high value of \acrshort{fps}. Otherwise, geometry shaders could be used; however, the \acrshort{lidar} simulation requires explicitly declaring the vegetation geometry in a \acrshort{ssbo} for the spatial indexing. The distribution was computed using seeds from a random uniform distribution, with the slope and height being key factors to determine whether they are instanced or not. Thus, the instancing probability is defined as shown in Equation \ref{eq:vegetation_instancing_prob}. The probability map is compiled in a texture that aggregates the height and normal map from previous stages. According to Equation \ref{eq:vegetation_instancing_prob}, points that present steeper slopes and lower altitudes have a lower instancing probability.
 \begin{gather}
     \label{eq:vegetation_instancing_prob}
     p_{i, j} = 1 - w_{\textit{height}} \cdot H(h, h_{\textit{min}}, h_{\textit{max}}) - w_{\textit{slope}} \cdot (1 - \hat{n} \cdot \left[0, 1, 0\right]^\intercal)
 \end{gather}
-where $H(h, h_{\textit{min}}, h_{\textit{max}})$ is an Hermite interpolation function in $[h_{\textit{min}}, h_{\textit{max}}]$, and $\hat{n}$ is the normal vector at $(i, j)$, given that $i \in [0, \textit{width}[$ and $j \in [0, \textit{height}[$, with ($\textit{width}, \textit{height}$) being the size of the eroded heightfield.
+where $H(h, h_{\textit{min}}, h_{\textit{max}})$ is an Hermite interpolation function in $[h_{\textit{min}}, h_{\textit{max}}]$, and $\hat{n}$ is the normal vector at $(i, j)$, given that $i \in [0, \textit{width}[$ and $j \in [0, \textit{height}\hspace{.5mm}[$, with ($\textit{width}, \textit{height}\hspace{.5mm}$) being the size of the eroded heightfield.
 
 \begin{figure*}[hbt]
     \centering
@@ -112,11 +112,11 @@ Firstly, roads are split into rails according to their width, and then, vehicles
 \end{gather}
 where $r_{o}$, $r_{t}$ and $r_{d}$ are the ray's source, target and direction, and the vertices $v_{\textit{source}}$, $v_{\textit{target}}$ are part of a triangle edge. Composite matrices ($C$) with $T$ subscript correspond to the target model, whereas $S$ refers to the source instance, i.e., the model with a lower number of polygons.
 
-On the other hand, translation and rotation vectors are significantly more randomized for pedestrian instancing. Pedestrian models are randomly selected, whereas their location and rotation in the $y$-axis are described using three random values ($t_x$, $t_z$, $r_y$). As proposed before, the $y$ coordinate can be obtained by casting a ray with $\textit{nadir}$ direction. The detection of inter-collisions is addressed as explained, though pedestrians may also collide with buildings. Thus, it requires building the \acrshort{bvh} of non-populated urban objects. Finally, procedural trees are also generated in some areas, and they can be upscaled and downscaled within a user-defined interval.
+On the other hand, translation and rotation vectors are significantly more randomized for pedestrian instancing. Pedestrian models are randomly selected, whereas their location and rotation in the $y$-axis are described using three random values ($t_x$, $t_z$, $r_y$). As proposed before, the $y$ coordinate can be obtained by casting a ray with $\textit{nadir}$ direction. The detection of inter-collisions is addressed as explained, though pedestrians may also collide with buildings. Thus, it requires building the \acrshort{bvh} of non-populated urban objects. Finally, procedural trees are also generated in some areas, and they can be upscaled and downscaled with a user-defined interval.
 
 \section{Spatial indexing}
 
-The objective of the synthetic \acrshort{lidar} that will be following proposed is to estimate returns with high precision. To this end, these will be computed with ray-casting in 3D, rather than solving it in the image space. However, highly detailed scenarios are composed of several millions of triangles and \acrshort{lidar} simulations also comprise millions of rays. Despite ray-triangle intersections being efficiently solved in the \acrshort{gpu}, the main concern is the spatial traversal since it is considerably more time-consuming. Thus, this is a well-known time bottleneck even for optimized proposals. 
+The objective of the synthetic \acrshort{lidar} that will be following proposed is to estimate returns with high precision. To this end, these will be computed with ray-casting in 3D, rather than solving it in the image space. However, highly detailed scenarios are composed of several millions of triangles and \acrshort{lidar} simulations also comprise millions of rays. Despite ray-triangle intersections being efficiently solved in the \acrshort{gpu}, the main concern is the spatial traversal since it is considerably more time-consuming. Thus, this is a well-known time bottleneck even for optimized algorithms. 
 
 \begin{marginfigure}[.cm]
     \centering
@@ -124,7 +124,7 @@ The objective of the synthetic \acrshort{lidar} that will be following proposed 
 	\caption{Rendering of the \acrshort{bvh} indexing of the very same scene in \ref{fig:kitchen_classification}. It was constructed using a buffer radius, $r$, of size 100.}
 	\label{fig:lidar_bvh_rendering}
 \end{marginfigure}
-Either static or procedural, scenarios are indexed using a \acrshort{bvh} which can be rapidly traversed for millions of rays. The indexing was performed as proposed by Meister and Bittner \cite{meister_parallel_2018} in the \acrshort{gpu}. Hence, it is efficiently generated and after this, the \acrshort{bvh} is stored in the \acrshort{gpu}'s memory to solve the subsequent scans, thus avoiding time-consuming transfers between \acrshort{cpu} and \acrshort{gpu}. For instance, this \acrshort{gpu}-based approach enables building a \acrshort{bvh} for ten million triangles with a response time below 1 \si{\second}, as reported in Figure \ref{table:bvh_time}. On the other hand, the traversal time is improved with several threads working in parallel. The naïve traversal starts by the root and descends into the tree while pushing nodes into a stack. Hence, the topmost node of this stack is checked for intersections. The ray-\acrshort{aabb} intersections are rapidly solved with the algorithm proposed by Majercik et al. \cite{majercik_ray-box_2018}, whereas leaf nodes are checked with the ray-triangle test described by Möller \cite{moller_fast_1997}.
+Either static or procedural, scenarios are indexed using a \acrshort{bvh} which can be rapidly traversed for millions of rays. The indexing was performed as proposed by Meister and Bittner \cite{meister_parallel_2018} in the \acrshort{gpu}. Hence, it is efficiently generated and after this, the \acrshort{bvh} is stored in the \acrshort{gpu}'s memory to solve the subsequent scans, thus avoiding time-consuming transfers between \acrshort{cpu} and \acrshort{gpu}. For instance, this \acrshort{gpu}-based approach enables building a \acrshort{bvh} for ten million triangles with a response time below 1 \si{\second}, as reported in Figure \ref{fig:bvh_time}. On the other hand, the traversal time is improved with several threads working in parallel. The naïve traversal starts by the root and descends into the tree while pushing nodes into a stack. Hence, the topmost node of this stack is checked for intersections. The ray-\acrshort{aabb} intersections are rapidly solved with the algorithm proposed by Majercik et al. \cite{majercik_ray-box_2018}, whereas leaf nodes are checked with the ray-triangle test described by Möller \cite{moller_fast_1997}.
 
 \section{Labelling of triangle meshes}
 
@@ -136,12 +136,12 @@ Either static or procedural, scenarios are indexed using a \acrshort{bvh} which 
 \end{marginfigure}
 Instead of manually labelling large \acrshort{lidar} point clouds, human operators are required to label objects in a 3D triangle mesh. This task is facilitated using a hierarchical segmentation that is sped up using the naming conventions of objects and materials (see Figure \ref{fig:semantic_label_examples}). During the mesh loading, object names are considered significant whether they do not collide with other instances' names. Otherwise, they are named after the material together with a unique $\mathtt{id}$. Furthermore, models are organized either by following a custom tag or standard labels defined in the LASer (\acrshort{las}) file format (see Figure \ref{fig:kitchen_classification}). The former can be collapsed or further subdivided according to the required \acrshort{lod}, thus helping to provide a fine-grained segmentation. In contrast to the manual classification of real \acrshort{lidar} point clouds, annotated environments help to suppress labelling errors and provide a fine-grained segmentation. Otherwise, manual labelling should be limited to a few classes to avoid overwhelming human operators in this task.
 
-\begin{figure}[ht]
+\begin{figure*}[ht]
     \centering
-    \includegraphics[width=\linewidth]{figs/lidar_simulation/semantic_labels.png}
+    \includegraphics[width=.85\linewidth]{figs/lidar_simulation/semantic_labels.png}
 	\caption{Different criteria for labelling a static scenario. First, the scene is annotated using custom labels, whereas the second classification is performed with semantic labels in the \acrshort{las} 1.4 standard.}
 	\label{fig:kitchen_classification}
-\end{figure}
+\end{figure*}
 
 Besides semantic labels, models are also linked to materials that help in computing the \acrshort{lidar} intensity. This property will be further described in the following chapter. Finally, the identifier of each instance is also stored to make the simulated datasets appropriate for instance segmentation.
 
@@ -209,7 +209,7 @@ This section is structured according to the steps followed in the \acrshort{gpu}
     The number of channels ($n_{c}$) & Number of simultaneous channels. \\
     Channel spacing ($d_{c}$) & Interleaved distance between consecutive channels.\\
     Channel angular distance ($d_{\alpha_{c}}$) & Interleaved emission angle between consecutive channels.\\
-    Axis noise ($\hat{\delta}_{\textit{noise}}$) & Magnitude of ray jittering. \\
+    Axis noise ($\hat{\delta}_{\textit{noise}}$) & Magnitude of the jittering in the ray's direction. \\
     Angle noise ($\alpha_{\textit{noise}}$) & Magnitude of the angle used for jittering the ray's target position. \\
     \bottomrule
     \end{tabular}
@@ -217,12 +217,12 @@ This section is structured according to the steps followed in the \acrshort{gpu}
 \end{table*}
 \renewcommand{\arraystretch}{1}
 
-The parameters concerning \acrshort{tls} simulations are described in Table \ref{table:tls_parameters}. Rays in \acrshort{tls} spread in a sphere which is discretized through the horizontal and vertical resolution, $r_x$ and $n_c$. Furthermore, horizontal and vertical \acrshort{fov} determine which part of the sphere is covered, since these angles can be lower than $2\pi$ and $\pi$, respectively. The \acrshort{fov} is parameterized with $\alpha_{\textit{centre}_{xz}}, \alpha_{\textit{fov}_{xz}}$ as well as $(\alpha_{\textit{centre}_{y}}, \alpha_{\textit{fov}_{y}})$. Therefore, the horizontal \acrshort{fov} covers $[\alpha_{\textit{centre}_{xz}} - \frac{\alpha_{\textit{fov}_{xz}}}{2}, \alpha_{\textit{centre}_{xz}} + \frac{\alpha_{\textit{fov}_{xz}}}{2}]$, whereas the spacing of channels is $d_c$ (by default, it is almost zero, $\epsilon \gets 1^{-16}$). However, this ideal spatial subdivision leads to grid-like renderings (Moiré effect) of \acrshort{lidar} point clouds, which can be interpreted as an artefact. Instead, this unwanted visual effect can be avoided by jittering \cite{akenine-moller_real-time_2018} the emitted rays, thus leading to an imperfect result. Furthermore, it enables emulating beam jittering and minor inaccuracies as a result of the limited sensor accuracy \cite{mcmanamon_lidar_2019}. The jittering changes both the ray's direction ($\hat{\delta}_{\textit{noise}}$) and its magnitude ($\alpha_{\textit{noise}}$) with random values in $[-1, 1]$.
+The parameters concerning \acrshort{tls} simulations are described in Table \ref{table:tls_parameters}. Rays in \acrshort{tls} spread in a sphere which is discretized through the horizontal and vertical resolution, $r_x$ and $n_c$. Furthermore, horizontal and vertical \acrshort{fov} determine which part of the sphere is covered, since these angles can be lower than $2\pi$ and $\pi$, respectively. The \acrshort{fov} is parameterized with $(\alpha_{\textit{centre}_{xz}}, \alpha_{\textit{fov}_{xz}})$ as well as $(\alpha_{\textit{centre}_{y}}, \alpha_{\textit{fov}_{y}})$. Therefore, the horizontal \acrshort{fov} covers $[\alpha_{\textit{centre}_{xz}} - \frac{\alpha_{\textit{fov}_{xz}}}{2}, \alpha_{\textit{centre}_{xz}} + \frac{\alpha_{\textit{fov}_{xz}}}{2}]$, whereas the spacing of channels is $d_c$ (by default, it is almost zero, $\epsilon \gets 1^{-16}$). However, this ideal spatial subdivision leads to grid-like renderings (Moiré effect) of \acrshort{lidar} point clouds, which can be interpreted as an artefact. Instead, this unwanted visual effect can be avoided by jittering \cite{akenine-moller_real-time_2018} the emitted rays, thus leading to an imperfect result. Furthermore, it enables emulating beam jittering and minor inaccuracies as a result of the limited sensor accuracy \cite{mcmanamon_lidar_2019}. The jittering changes both the ray's direction ($\hat{\delta}_{\textit{noise}}$) and its magnitude ($\alpha_{\textit{noise}}$) with random values in $[-1, 1]$.
 
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=\linewidth]{figs/lidar_simulation/tls_first_approach.png}
-	\caption{Terrestrial scan with point colours encoding their relative height.}
+	\caption{Terrestrial scan with colours encoding the point's relative height.}
 	\label{fig:tls_first_approach}
 \end{figure}
 
@@ -246,7 +246,7 @@ where intermediate results are calculated as follows:
     \alpha_{y} &= \alpha_{\textit{centre}_{y}} - \frac{\alpha_{\textit{fov}_{y}}}{2} + y\left(\frac{n_{c}\alpha_{\textit{fov}_{y}} + \alpha_{\textit{fov}_{y}}}{{n_{c}}^2}\right)
     \numberthis \label{eq:vertical_angle_tls}
 \end{align*}
-provided that $\Omega$ represents a rotation matrix defined by a rotation axis and scalar angle, whereas $\lambda_{x}$, $\lambda_{y}$, $\lambda_{z}$ and $\lambda_{a}$ are random values generated through a random uniform distribution. $x$ and $y$ are iterative values so that $0 \leq x < r_{x}$, $0 \leq y < n_{c}$. $\alpha_{xz}$ and $\alpha_{y}$ are horizontal and vertical angles, respectively. Accordingly, $0 \leq \alpha_{xz} \leq 2\pi$ and $\frac{-\pi}{2} < \alpha_{y} < \frac{\pi}{2}$. 
+provided that $\Omega$ represents a rotation matrix defined by a rotation axis and scalar angle, whereas $\lambda_{x}$, $\lambda_{y}$, $\lambda_{z}$ and $\lambda_{a}$ are random values generated by a random uniform distribution. $x$ and $y$ are iterative values so that $0 \leq x < r_{x}$, $0 \leq y < n_{c}$. $\alpha_{xz}$ and $\alpha_{y}$ are horizontal and vertical angles, respectively. Accordingly, $0 \leq \alpha_{xz} \leq 2\pi$ and $\frac{-\pi}{2} < \alpha_{y} < \frac{\pi}{2}$. 
 
 Furthermore, other \acrshort{lidar} models such as Pandar64 do not have uniform resolution along the vertical axis \cite{hesai_pandaset_2021}. To cope with this kind of sensor, several intervals can be defined with the starting and limit angles.  
 
@@ -284,9 +284,9 @@ Even this straightforward construction of \acrshort{tls} rays has a significant 
 \end{table}
 \renewcommand{\arraystretch}{1}
 
-\acrshort{tls} was explained so that beams were emitted from a single emitter location. However, both \acrshort{tls} and \acrshort{als} can be configured to follow a path, thereby simulating terrestrial and aerial vehicles, respectively. However, the configuration of airborne paths is slightly more complex, though they can be automatically computed, and thus will be introduced with \acrshort{als}. The parameters concerning \acrshort{als} that will be used throughout this section are described in Table \ref{table:als_parameters}.
+\acrshort{tls} was explained so that beams were emitted from a single emitter location. However, both \acrshort{tls} and \acrshort{als} can be configured to follow a path, thereby simulating terrestrial and aerial vehicles, respectively. However, the configuration of airborne paths is slightly more complex, though they can be automatically computed, and thus will be introduced with \acrshort{als}. The parameters concerning \acrshort{als} are described in Table \ref{table:als_parameters}.
 
-In comparison with \acrshort{tls}, \acrshort{als} pulses a spread over a plane rather than a sphere, and the sensor's emitter changes according to the path. Among other features, the \acrshort{fov} is typically narrowed to avoid including returns from atmospheric particles, and yet, noisy returns are very frequent. In this case study, the jittering affects the emitted rays and the height of the mobile platform, with a magnitude of $\delta_{\textit{noise}}$ and $h_\textit{noise}$, respectively. The resolution is parameterized by the number of scans and pulses per second. Instead of only performing parallel scans, other patterns are frequently used in \acrshort{als} to maximize the point cloud coverage. Figure \ref{fig:als_patterns} shows the aftermath of zigzag and elliptical patterns \cite{dong_lidar_2018}. Hence, the configuration of \acrshort{als} includes parameters that help to automatize the estimation of the platform path. Regardless of the scanning pattern, the airborne platform moves according to such a path, and therefore, the emitter location is calculated with a parametric value, $t_i$. On the other hand, $r_d$ and $r_t$ are computed according to the scanning pattern and $t_i$. The rays emitted with parallel and zigzag patterns are calculated as follows:
+In comparison with \acrshort{tls}, \acrshort{als} pulses a spread over a plane rather than a sphere, and the sensor's emitter changes according to the path. Among other features, the \acrshort{fov} is typically narrowed to avoid including returns from atmospheric particles, and yet, noisy returns are very frequent. In this case study, the jittering affects the emitted rays and the height of the mobile platform, with a magnitude of $\delta_{\textit{noise}}$ and $h_\textit{noise}$, respectively. The resolution is parameterized by the number of scans and pulses per second. Instead of only performing parallel scans, other patterns are frequently used in \acrshort{als} to maximize the point cloud coverage. Figure \ref{fig:als_patterns} shows the aftermath of zigzag and elliptical patterns \cite{dong_lidar_2018}. Hence, the configuration of \acrshort{als} includes parameters that help to automatize the estimation of the platform path. Regardless of the scanning pattern, the airborne platform moves according to such a path, and therefore, the emitter location is calculated with a parametric value, $t_i$. On the other hand, the ray's source and target points, $r_o$ and $r_t$, are computed according to the scanning pattern and $t_i$. The rays emitted with parallel and zigzag patterns are calculated as follows:
 \begin{align*}
     r_{o} &= p_{t_{i}} + 
     \begin{bmatrix} 0 \\ \lambda_{h}h_{\textit{noise}} \\ 0 \end{bmatrix} + \frac{\xi p_{s_{i}}}{\psi} \vec{d}
@@ -326,7 +326,7 @@ where the rotation angle, $\vartheta$, and the ellipse radius, $e_{r}$, are calc
 \end{align*}
 Intuitively, $e_{r}$ is computed with the tangent of $\frac{\alpha}{2}$ for any height $h$. The formulae were considerably simplified by momentarily assuming that $h \gets 1$, and therefore, $r_{d_{y}} \gets -h$. On the other hand, $i$ is defined as the index of each incremental step, related to the parametric value $t_{i}$.
 
-Scenarios can be scanned with \acrshort{als} following parallel routes along the $X$ or $Z$ axis. Platform rotations involving changes in the $\textit{forward}$ direction are not simulated since these waypoints are typically discarded in post-processing. Hence, computer-aided paths simply consist of sparse lines parallel to the $X$-axis. The distance between them is calculated considering the dimensions of the scenario as well as the sensor's \acrshort{fov} (Equation \ref{eq:num_aerial_sweeps}), in order to exhaustively cover the scene. Otherwise, the path can be defined using a canvas in the \acrshort{gui}, though these require further processing. User-defined paths comprise points recorded in every frame as long as the painting pointer is being dragged, thereby generating paths with a huge number of (noisy) points. This shortcoming was tackled by simplifying the path with the Douglas-Pecker algorithm \cite{douglas_algorithms_1973}: the path remains very similar, whereas the number of points is significantly lowered and the noise is mitigated. Then, points in this path are the control points of a Catmull-Rom spline which will be later sampled during the scan. Either computer-aided or defined by users, paths are sampled in the \acrshort{cpu} and transferred to the \acrshort{gpu} to make this routine simpler in the \acrshort{gpu} processing. 
+Scenarios can be scanned with \acrshort{als} following parallel routes along the $X$ or $Z$ axis. Platform rotations involving changes in the $\textit{forward}$ direction are not simulated since these waypoints are typically discarded in post-processing. Hence, computer-aided paths simply consist of sparse lines parallel to the $X$-axis. The distance between them is calculated considering the dimensions of the scenario as well as the sensor's \acrshort{fov} (Equation \ref{eq:num_aerial_sweeps}), in order to exhaustively cover the scene. Otherwise, the path can be defined using a canvas in the \acrshort{gui}, though these require further processing. User-defined paths comprise points recorded in every frame as long as the painting cursor is being dragged, thereby generating paths with a huge number of (noisy) points. This shortcoming was tackled by simplifying the path with the Douglas-Pecker algorithm \cite{douglas_algorithms_1973}: the path remains very similar, whereas the number of points is significantly lowered and the noise is mitigated. Then, points in this path are the control points of a Catmull-Rom spline which will be later sampled during the scan. Either computer-aided or defined by users, paths are sampled in the \acrshort{cpu} and transferred to the \acrshort{gpu} to make this routine simpler in the \acrshort{gpu} processing. 
 \begin{equation}
     n_{\textit{steps}} = \lceil{\frac{\textit{aabb}_{\textit{min}_z}}{2(h - \textit{aabb}_{\textit{min}_y})\tan(\frac{\alpha}{2})}\rceil}
     \numberthis \label{eq:num_aerial_sweeps}
@@ -345,7 +345,7 @@ Finally, the emitted rays in \acrshort{als} change considerably with respect to 
 
 \subsection{Collision solver}
 
-\acrshort{tls} and \acrshort{als} rays interact with surfaces to construct dense synthetic point clouds enhanced with semantic information. The emitted rays operate following the synchronous stages shown in Figure \ref{fig:lidar_workflow}, regardless of the scanning platform. Particularities on \acrshort{tls} and \acrshort{als} can be implemented through shader subroutines rather than different pipelines. The \acrshort{gpu}-based stages are explicitly synchronized to avoid simultaneous reading and writing operations from different steps. Stages involving randomness use buffers generated with a custom random distribution and accessed with an offset equal to the thread index. The \acrshort{qmc} (Quasi-Monte Carlo) Halton sampler was used along with the C++ built-in uniform random distribution, although other samples could be integrated. The number of rays processed during a single iteration must be a multiple of $n_{p}$.
+\acrshort{tls} and \acrshort{als} rays interact with surfaces to construct dense synthetic point clouds enhanced with semantic information. The emitted rays operate following the synchronous stages shown in Figure \ref{fig:lidar_workflow}, regardless of the scanning platform. Particularities on \acrshort{tls} and \acrshort{als} can be implemented through shader subroutines rather than different pipelines. The \acrshort{gpu}-based stages are explicitly synchronized to avoid simultaneous reading and writing operations from different steps. Stages involving randomness use buffers generated with a custom random distribution and accessed with an offset equal to the thread index. The \acrshort{qmc} (Quasi-Monte Carlo) Halton sampler was used along with the C++ built-in uniform random distribution, although other samplers could be integrated. Also, the number of rays processed during a single iteration must be a multiple of $n_{p}$.
 
 The stages depicted in Figure \ref{fig:lidar_workflow} are following described:
 \subsubsection{Ray initialization}
@@ -361,7 +361,7 @@ Initially, rays carry a value of energy equal to $\bar{I} / n_{p}$, with $\bar{I
 
 \subsubsection{Find collision in the \acrshort{bvh}}
 
-Each ray finds the nearest intersected polygon and surface. This stage requires the constructed \acrshort{bvh} as well as solving ray-\acrshort{aabb} and ray-triangle intersections. The foundational core is the time-of-flight (\acrshort{tof}) principle, which involves estimating the nearest intersection by timing the travel distance of the laser beam, whose velocity is known. Whether the propagated ray detects an intersection, the indices of the intersected triangle and surface are stored in what is called a collision buffer. 
+Each ray finds the nearest intersected polygon and surface. This stage requires using the constructed \acrshort{bvh} as well as solving ray-\acrshort{aabb} and ray-triangle intersections. The foundational core is the time-of-flight (\acrshort{tof}) principle, which involves estimating the nearest intersection by timing the travel distance of the laser beam, whose velocity is known. Whether the propagated ray detects an intersection, the indices of the intersected triangle and surface are stored in what is called a collision buffer. 
 
 \subsubsection{Ray reduction}
 
@@ -390,23 +390,23 @@ Given the maximum distance, $R$, and a noisy boundary, defined through $R_{\delt
     \label{eq:noisy_boundary}
     d > R + \delta (R_{\delta_{\textit{max}}} - R_{\delta_{\textit{min}}}) + R_{\delta_{\textit{min}}}
 \end{equation}
-provided that $\delta$ is a random value retrieved from a uniform random distribution ranging from 0 to 1, and $R_{\delta}$ denotes a value relative to $R$, with $R_{\delta_{\textit{min}}} \leq R_{\delta_{\textit{max}}}$. For instance, $R_{\delta_{\textit{min}}} \gets -1 $\si{\meter} and $R_{\delta_{\textit{max}}} \gets 1 $\si{\meter} are valid values. Figure \ref{fig:tls_maximum_range} shows an example of smoother boundaries in return losses.
+provided that $\delta$ is a random value retrieved from a uniform random distribution ranging from 0 to 1, and $R_{\delta}$ denotes a value relative to $R$, with $R_{\delta_{\textit{min}}} \leq R_{\delta_{\textit{max}}}$. For instance, $R_{\delta_{\textit{min}}} \gets \hspace{.5mm}$-1 \si{\meter} and $R_{\delta_{\textit{max}}} \gets \hspace{.5mm}$1 \si{\meter} are valid values. Figure \ref{fig:tls_maximum_range} shows an example of smoother boundaries in return losses.
 
-\begin{figure}[ht]
+\begin{figure*}[ht]
 	\centering
 	\includegraphics[width=\linewidth]{figs/lidar_simulation/tls_maximum_range.png}
-	\caption{Scanning with very limited range, a), and with a larger range, b).}
+	\caption{Scanning in three environments using an increasing maximum range.}
 	\label{fig:tls_maximum_range}
-\end{figure}
+\end{figure*}
 
 \subsubsection{'Time-walk' effect}
 
-This effect is simulated by translating returns according to three factors: the distance to the sensor's receiver and the indices that identify 1) the intersected surface and 2) a single collision in a unique way. Hence, index-related factors, $\delta_{\textit{object}}$ and $\delta_{\textit{return}}$ are intended to distort the returns according to either \textit{object} or \textit{return}. $\delta_{\textit{surface}}$ distorts every intersection from a surface with the same factor, thus preserving the shape, whereas $\delta_{\textit{return}}$ changes every return individually. Still, the magnitude of these errors is mainly driven by the distance factor (Equation \ref{eq:shiny_surface_error}).
+This effect is simulated by translating returns according to three factors: the distance to the sensor's receiver and the indices that identify 1) the intersected surface and 2) a single collision in a unique way. Hence, index-related factors, $\delta_{\textit{object}}$ and $\delta_{\textit{return}}$ are intended to distort the returns according to either \textit{object} or \textit{return}. $\delta_{\textit{object}}$ distorts every intersection within a surface with the same factor, thus preserving the shape, whereas $\delta_{\textit{return}}$ changes for every return. Still, the magnitude of these errors is mainly driven by the distance factor (Equation \ref{eq:shiny_surface_error}).
 \begin{equation}
     \label{eq:shiny_surface_error}
-    \varrho = e_{\textit{glossy}} \cdot (d \cdot \hat{r}_{d} k_{\textit{distance}} + \hat{r}_{d}(\delta_{\textit{surface}}k_{\textit{surface}} + \delta_{\textit{collision}}k_{\textit{collision}})) 
+    \varrho = e_{\textit{glossy}} \cdot (d \cdot \hat{r}_{d} k_{\textit{distance}} + \hat{r}_{d}(\delta_{\textit{object}}k_{\textit{object}} + \delta_{\textit{return}}k_{\textit{return}})) 
 \end{equation}
-where $k_{\textit{distance}}$, $k_{\textit{surface}}$ and $k_{\textit{collision}}$ are constant values that control the magnitude of every equation term, $\textit{glossy}$ is a Boolean value that determines if such error is applied, and $d$ is the distance from the sensor to the intersection. Figure \ref{fig:shiny_surface_error} shows the translation applied to highly reflective objects if the \acrshort{lidar}'s emitter is close to the affected surfaces.
+where $k_{\textit{distance}}$, $k_{\textit{object}}$ and $k_{\textit{return}}$ are constant values that control the magnitude of every equation term, $e_{\textit{glossy}}$ is a Boolean value that determines if such error is applied, and $d$ is the distance from the sensor to the intersection. Figure \ref{fig:shiny_surface_error} shows the translation applied to highly reflective objects if the \acrshort{lidar}'s emitter is close to the affected surfaces.
 
 \begin{figure}[ht]
 	\centering
@@ -429,12 +429,12 @@ Points are also distorted on steep surfaces according to the airborne flight alt
 \end{gather}
 provided that $h$ is the flight altitude, $k_{\textit{height}_{v}}$, $k_{\textit{height}_{h}}$,  $k_{\alpha}$ weight the flight altitude and slope angle for the horizontal and vertical errors, and $\delta$ are random values in $[0, 1]$. Figure \ref{fig:terrain_induced_errors} shows the outcome of this distortion. All these errors can be omitted by weighting them as zero.
 
-\begin{figure}
+\begin{figure*}
     \centering
-    \includegraphics[width=\linewidth]{figs/lidar_simulation/terrain_induced_errors.png}
+    \includegraphics[width=.9\linewidth]{figs/lidar_simulation/terrain_induced_errors.png}
 	\caption{Terrain-induced errors for a procedural environment. a) depicts an environment scanned without slope-based errors, whereas b) simulates such errors, thus making these points visible in the foreground. }
 	\label{fig:terrain_induced_errors}
-\end{figure}
+\end{figure*}
 
 \subsubsection{Bathymetric \acrshort{lidar}}
 
@@ -456,7 +456,7 @@ where $c$ allows introducing some randomness even for diffuse materials. However
 
 \begin{figure}
 	\centering
-	\includegraphics[width=.75\linewidth]{figs/lidar_simulation/glossy_loss.png}
+	\includegraphics[width=.9\linewidth]{figs/lidar_simulation/glossy_loss.png}
 	\caption{a) A loss function that slightly tolerates surfaces as glossy as water, and b) another loss function that discards every return from glossy surfaces. }
 	\label{fig:glossy_loss}
 \end{figure}
@@ -474,11 +474,11 @@ This stage simulates radiometric information acquired by the virtual \acrshort{l
 
 \subsubsection{Simulating outliers}
 
-Outlier points are included to simulate errors caused by atmospheric particles such as dust or steam \cite{boehler_investigating_2018}. To this end, a variable amount ($t_{\textit{outlier}} \in [0, 1]$) of returns is translated along the ray's direction with a magnitude of $t \in [0, 1]$, which is modelled with a pseudo-random generation. In this case, the distribution from which noise is retrieved is particularly relevant to emulate the spatial distribution of outliers. The value $t$ refers to the parametric value in $p = r_o + r_d * t$. Figure \ref{fig:lidar_outliers} shows some outliers simulated at the Conference scenario.
+Outlier points are included to simulate errors caused by atmospheric particles such as dust or steam \cite{boehler_investigating_2018}. To this end, a variable amount ($t_{\textit{outlier}} \in [0, 1]$) of returns is translated along the ray's direction with a magnitude of $t \in [0, 1]$, which is modelled with a pseudo-random generation. In this case, the distribution from which noise is retrieved is particularly relevant to emulate the spatial distribution of outliers. The value $t$ refers to the parametric value in $p = r_o + r_d \cdot t$. Figure \ref{fig:lidar_outliers} shows some outliers simulated at the Conference scenario.
 
 \subsubsection{Update of return numbers}
 
-Pulses are updated once all the rays are terminated or achieve the maximum number of returns. Returns are then changed to save the overall number of collisions per pulse. The return number provides valuable information since it helps to compute a factor $k_{\tau}$ defined as $\frac{\tau}{n_{\tau}}$, i.e., the return number, $\tau$ divided by the overall number of returns. Returns obtained in later iterations are more likely to belong to the ground; however, filtering by $\tau$ does not help to retrieve every ground point and filter out the rest. Instead, the last return of every pulse satisfies that $k_{\tau} > 1 - \epsilon$, and these are more appropriate to filter out vegetation and render only points close to the ground. For example, \acrshort{lidar} technology has been widely adopted in archaeology to detect remains which are not visible (either buried or occluded by the canopy) using the \acrshort{dsm} reconstructed with points that belong to the ground. 
+Pulses are updated once all the rays are terminated or achieve the maximum number of returns. Returns are then changed to save the overall number of collisions per pulse. The return number provides valuable information since it helps to compute a factor $k_{\tau}$ defined as $\frac{\tau}{n_{\tau}}$, i.e., the return number, $\tau$, divided by the overall number of returns. Returns obtained in later iterations are more likely to belong to the ground; however, filtering by $\tau$ does not help to retrieve every ground point and filter out the rest. Instead, the last return of every pulse satisfies that $k_{\tau} > 1 - \epsilon$, and these are more appropriate to filter out vegetation and render only points close to the ground. For example, \acrshort{lidar} technology has been widely adopted in archaeology to detect remains which are not visible (either buried or occluded by the canopy) using the \acrshort{dem} reconstructed with points that belong to the ground. 
 
 \begin{figure}[ht]
 	\centering
@@ -493,7 +493,7 @@ Figure \ref{fig:multiple_returns} depicts two different point clouds filtered by
 
 The proposed \acrshort{lidar} simulator has been tested against static and procedural scenes with high polygonal complexity (from 4.5M triangles to 11M). Also, the performance was checked by considering both response time and resulting point clouds. Therefore, the \acrshort{gpu}- and \acrshort{cpu}-based approaches were compared. Then, the proposed simulation was compared against several state-of-the-art \acrshort{lidar} solutions by addressing both quantitative metrics, such as the facilities to generate dense semantic datasets, and qualitative factors, such as the similarity of the point clouds with respect to real-world \acrshort{lidar} scans. 
 
-Measurements were performed using a PC with Intel Core i9-9900 3.1 GHz, 48 GB RAM, RTX 2080 Ti \acrshort{gpu} with 11 GB RAM (Turing architecture). The proposed methodology was implemented in C++ along with \acrshort{opengl}. Massively parallel processes were either implemented in the \acrshort{gpu}, either using \acrshort{glsl} and general-purpose compute shaders or \acrshort{cpu} multi-threading with \acrshort{openmp}. 
+Measurements were performed using a PC with Intel Core i9-9900 3.1 GHz, 48 GB RAM, RTX 2080 Ti \acrshort{gpu} with 11 GB RAM (Turing architecture). The proposed methodology was implemented in C++ along with \acrshort{opengl}. Massively parallel processes were either implemented in the \acrshort{gpu}, using \acrshort{glsl} and general-purpose compute shaders, or in the \acrshort{cpu} with \acrshort{openmp}. 
 
 \subsection{\acrshort{lidar} response time}
 
@@ -506,7 +506,7 @@ A comparison of the \acrshort{gpu}-based solution against its analogous multi-co
 	\label{fig:lidar_response_time_global}
 \end{figure*}
 
-\textbf{Ray build time}. \acrshort{tls} beams were straightforwardly computed, and thus the instancing phase shows lower latency. On the other hand, \acrshort{als} beams require a larger number of parameters and processing involving angles and the platform path. The response time for 10M pulses grows linearly with respect to 5M. Despite \acrshort{cpu}-based ray-instancing not being as time-consuming as the \acrshort{lidar} core, the speedup ranged from 90.9\% (\acrshort{als}, 10M pulses) to 99.12\% (\acrshort{tls}, 10M pulses).
+\textbf{Ray build time}. \acrshort{tls} beams were straightforwardly computed, and thus the instancing phase shows lower latency. On the other hand, \acrshort{als} beams require a larger number of parameters and calculations involving angles and the platform path. The response time for 10M pulses grows linearly with respect to 5M. Despite \acrshort{cpu}-based ray-instancing not being as time-consuming as the \acrshort{lidar} core, the speedup ranged from 90.9\% (\acrshort{als}, 10M pulses) to 99.12\% (\acrshort{tls}, 10M pulses).
 
 \textbf{\acrshort{lidar} behaviour}. The \acrshort{tof} solver operates for every batch of rays, with the batch dimensionality being limited by the maximum allocatable memory for an \acrshort{ssbo}. In this stage, the response time is also proved to grow linearly according to the number of pulses. However, \acrshort{als} surveys show lower latency both in \acrshort{cpu} and \acrshort{gpu} since the scene geometry is less dense in the vertical axis, and thus, the \acrshort{bvh} clusters are rapidly discarded. Although \acrshort{ssbo}s are very limited in size, reducing it beyond the limit queried from \acrshort{opengl} helped to reduce the latency, apparently from a lower \acrshort{gpu} overload. This factor was also parameterized to be tuned during these tests.
 
@@ -521,7 +521,7 @@ Although \acrshort{tls} scans are notably slower, the reported speedup with resp
 
 \textbf{Stage occupancy}. Besides the overall response time, the individual latency of every stage was also measured. To this end, stages were explicitly synchronized in the \acrshort{cpu} instead of allowing \acrshort{opengl} to handle parallelism and memory access. Figure \ref{fig:lidar_response_time_chart} shows the relative latency for high-performance tests using environments from lower (5M) to higher complexity (10M) scanned with 5M pulses. Apart from the phases depicted in Figure \ref{fig:lidar_workflow}, reading transfers from \acrshort{gpu} to \acrshort{cpu} were also included as they were required to perform further processing in the \acrshort{cpu} and store the results as part of the simulated point cloud. Instead of constructing the whole ray buffer at once, rays were iteratively constructed to avoid \acrshort{cpu} and \acrshort{gpu} data transfers.
 
-As reported, transferring collisions to the \acrshort{cpu} takes a substantial portion of time, whereas \acrshort{bvh} traversals are notably more time-consuming for highly populated environments. However, traversing a scene is significantly slower for \acrshort{tls} scans as they cannot discard clusters as rapidly. The reduction stage is also relevant in this chart due to the operations performed pulse-wise; note that in this stage, every ray within a pulse is processed by the same thread. 
+As reported, transferring collisions to the \acrshort{cpu} takes a substantial portion of time, whereas \acrshort{bvh} traversals are notably more time-consuming for highly populated environments. However, traversing a scene is significantly slower for \acrshort{tls} scans as they cannot discard clusters as rapidly. The reduction stage is also relevant in this chart due to the pulse-wise operations; note that in this stage, every ray within a pulse is processed by the same thread. 
 
 \newcommand{\datasetImageHeight}{-.06\totalheight}
 \newcommand{\datasetImageSize}{1.4cm}
@@ -605,7 +605,7 @@ Another main objective of this work is to provide a framework for generating lar
 \renewcommand{\arraystretch}{1.25}
 \begin{table*}
     \centering
-    \caption{Overview of outdoor \acrshort{lidar} datasets with semantic annotations, regarding their average size ($\textit{Points} / \textit{Scans}$) and number of classes (Labels).}
+    \caption{Overview of outdoor \acrshort{lidar} datasets with semantic annotations, regarding their average size ($\textit{Points} / \textit{Scan}$) and number of labels.}
     \label{table:lidar_dataset_comparison}
     \centering
     \begin{tabular}{llllll}
@@ -644,7 +644,7 @@ Figure \ref{fig:lidar_urban_scan} illustrates the semantic labels of the input s
 
 \renewcommand{\arraystretch}{1.2}
 \begin{table*}
-    \caption{Specifications of sensors simulated during the scanning of urban environments. Parameters adapted or required by virtual scans are highlighted in cursive.}
+    \caption{Specifications of sensors simulated during the scanning of urban environments.}
     \label{table:test_sensor_parameters}
     \centering
     \begin{tabular}{lcccc}
@@ -671,7 +671,7 @@ Figure \ref{fig:lidar_urban_scan} illustrates the semantic labels of the input s
     Resulting points & 139M & 5.5M & 165M & 5M\\
     \bottomrule
     \end{tabular}\\
-    \footnotesize{$^*$ These parameters were not provided by the manufacturer and thus were adjusted with the objective of providing a dense result.}\\
+    \footnotesize{$^*$ These parameters were not provided by the manufacturer and thus were adjusted with the objective of generating a dense point cloud.}\\
 \end{table*}
 \renewcommand{\arraystretch}{1}
 
@@ -692,8 +692,8 @@ Figure \ref{fig:lidar_point_cloud_comparison} shows that glossy surfaces are omi
 
 \section{Conclusions and future work}
 
-A massively parallel and parameterized \acrshort{lidar} was proposed for generating dense semantic point clouds, aimed at collecting large datasets for \acrshort{dl} models. It operates over any environment defined as a triangle mesh. However, procedural scenes were constructed to provide a time-efficient alternative that alleviates the manual annotation task. Procedural environments are labelled once and produce large datasets, whereas static environments only contribute to building a few point clouds at most. Spatial queries were rapidly solved with state-of-the-art data structures proposed for ray tracing, whereas the proposed \acrshort{tof} solver includes multiple returns and well-known \acrshort{lidar} errors. To this end, \acrshort{lidar}'s pulses were discretized as several rays that strike into the scene surfaces, instead of solving the simulation in the image space. Thus, the described algorithm is suitable both for real-time simulations and the generation of large \acrshort{lidar} semantic point clouds with low latency. Accordingly, \acrshort{lidar} scans can be solved iteratively or in a single batch. Also, the sensor parameterization helps in simulating a wide range of \acrshort{lidar} sensors and platforms, including \acrshort{als}.
+A massively parallel and parameterized \acrshort{lidar} was proposed for generating dense semantic point clouds over any environment defined as a triangle mesh, aimed at collecting large datasets for \acrshort{dl}. However, procedural scenes were constructed to provide a time-efficient alternative that alleviates the manual annotation task. Procedural environments are labelled once and produce large datasets, whereas static environments only contribute to building a few point clouds at most. Spatial queries were rapidly solved with state-of-the-art data structures proposed for ray tracing, whereas the \acrshort{tof} solver includes multiple returns and well-known \acrshort{lidar} errors. To this end, \acrshort{lidar}'s pulses were discretized as several rays that strike into the scene surfaces, instead of solving the simulation in the image space. Thus, the described algorithm is suitable both for real-time simulations and the generation of large \acrshort{lidar} semantic point clouds with low latency. Accordingly, \acrshort{lidar} scans can be solved iteratively or in a single batch. Also, the sensor parameterization helps in simulating a wide range of \acrshort{lidar} sensors and platforms, including \acrshort{als}.
 
-This solution was assessed through its performance and capabilities in the generation of large datasets. The workflow was implemented in \acrshort{glsl} and compared with its analogous multi-core \acrshort{cpu} approach by conducting much more dense scans than actual \acrshort{lidar} sensors. These tests showed that the \acrshort{gpu} approach improves the sequential procedure with speedups above 90\%. Hence, it was also demonstrated that this simulator is appropriate for generating large semantic \acrshort{lidar} datasets with low latency, despite working with large and highly detailed scenes. Regarding scanning capabilities, a significant enhancement both in average scan size and the number of semantic labels was observed. Note that this is not solely affected by the \acrshort{lidar} scans, but also as a result of the facilities given on the annotation task. Finally, point clouds were visually compared against the results obtained using the Blensor plugin, proving that some errors, such as those derived from highly reflective surfaces, were better simulated by our solution. 
+This solution was assessed through its performance and capabilities in the generation of large datasets. The workflow was implemented in \acrshort{glsl} and compared with its analogous multi-core \acrshort{cpu} approach by conducting much more dense scans than actual \acrshort{lidar} sensors. These tests showed that the \acrshort{gpu} approach improves the sequential procedure with speedups above 90\%. Hence, it was demonstrated that this simulator is appropriate for generating large semantic \acrshort{lidar} datasets with low latency from highly detailed scenes. Regarding scanning capabilities, a significant enhancement both in average scan size and the number of semantic labels was observed. Note that this is not solely affected by the \acrshort{lidar} scans, but also as a result of the facilities given on the annotation task. Finally, point clouds were visually compared against the results obtained using the Blensor plugin, proving that some errors, such as those derived from highly reflective surfaces, were better simulated by our solution. 
 
 In future work, the proposed pipeline could be further accelerated in multi-\acrshort{gpu} systems. Furthermore, this framework could be extended to cover full-waveform and single-photon \acrshort{lidar} \cite{tachella_real-time_2019} and other nonincluded systems. Finally, a deeper study ought to be conducted to show the benefits of synthetic \acrshort{lidar} point clouds in the training of \acrshort{dl} networks, thus checking whether datasets can be partially or completely exchanged by synthetic data. 

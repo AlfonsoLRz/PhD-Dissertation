@@ -195,7 +195,7 @@ The \acrshort{cuda} kernel for computing the nearest 3D point for every pixel an
 %-------------------------------------------------------------------------
 \section{Point cloud sorting}
 
-\begin{marginfigure}[0cm]
+\begin{marginfigure}[-1cm]
     \centering
     \includegraphics[width=\linewidth]{figs/multi_thermal_projection/point_cloud_morton.png}
     \caption{Colouring of two randomized point clouds in [0, 1] according to Morton encoding with 30 bits. }
@@ -268,12 +268,12 @@ The image-matching procedure was performed over different data sources from the 
 
 \begin{figure*}
     \centering
-    \includegraphics[width=\linewidth]{figs/multi_thermal_projection/study area.png}
-    \caption{Overview of surveyed region and areas. a) The region of Jaén, b) a forest and c) an olive grove. }
+    \includegraphics[width=.97\linewidth]{figs/multi_thermal_projection/study area.png}
+    \caption{Overview of the surveyed region and areas. a) The region of Jaén, b) a forest and c) an olive grove. }
 \label{fig:occlusion_study_area}
 \end{figure*}
 
-In this section, the proposed methodology is compared with other notable software solutions for building multispectral and thermal point clouds, such as Pix4Dmapper or Agisoft Metashape. The carried tests are focused on obtaining the response time and point cloud size, although some reconstructions from these solutions also present geometrical errors. The evaluation was performed on a PC with AMD Ryzen Threadripper 3970X 3.6 GHz, 256 GB RAM, two NVIDIA RTX A6000 \acrshort{gpu}s and Windows 10 \acrshort{os}. The proposed methodology was implemented in C++ using \acrshort{opengl} both for rendering and computing. Besides \acrshort{gpu} computing, \acrshort{cpu}-based methods were also accelerated using the Open Multi-Processing (\acrshort{openmp}) framework.
+In this section, the proposed methodology is compared with other notable software solutions for building multispectral and thermal point clouds, such as Pix4Dmapper or Agisoft Metashape. The carried tests are focused on obtaining the response time and point cloud size, although some reconstructions from these solutions also present geometrical errors. The evaluation was performed on a PC with AMD Ryzen Threadripper 3970X 3.6 GHz, 256 GB RAM, two NVIDIA RTX A6000 \acrshort{gpu}s and Windows 10 \acrshort{os}. The proposed methodology was implemented in C++ using \acrshort{opengl}, and besides \acrshort{gpu} computing, \acrshort{cpu}-based methods were accelerated using the Open Multi-Processing (\acrshort{openmp}) framework.
 
 The baseline \acrshort{rgb} point cloud consists of 115M (multispectral) and 97M (thermal) points for the first dataset, whereas the second dataset yields point clouds with a dimensionality of 126M and 96M points. To further stress this evaluation and achieve higher point density, a single depth buffer resolution has been used, $d\gets 10$. Regarding point cloud order, points are initially shuffled to show the benefits of spatial sorting. Apart from this, two different setups are here shown: 1) sorting with Morton codes and 2) sorting and shuffling in small groups. The experimental results are obtained by repeating every test four times and averaging the results. 
 

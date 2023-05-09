@@ -72,6 +72,7 @@
 \usepackage{xcolor}
 
 % Hyperref
+\usepackage{xurl}
 \usepackage{hyperref}
 
 % Variable parameter parsing
@@ -361,8 +362,8 @@
 \partIntro{III}{Point cloud enrichment}{This chapter comprises the generation of thermal and multispectral point clouds. Remotely sensed data is projected over large \acrshort{rgb} point clouds to obtain denser point clouds from low-resolution imagery. The evolution of this approach is shown throughout this chapter; the first proposal is solved in a sequential manner, whereas the methodology of the last work was completely implemented in the \acrshort{gpu}. }
 
 % \input{chapters/thermal_point_cloud.tex}
-\input{chapters/multi_thermal_point_cloud}
-\input{chapters/hyper_point_cloud}
+% \input{chapters/multi_thermal_point_cloud}
+% \input{chapters/hyper_point_cloud}
 
 %----------------------------------------------------------------------------------------
 %	PART IV
@@ -372,7 +373,7 @@
 % \chapterBackground{figs/chapters/b5/Chapter4_01.png}{figs/chapters/b5/Chapter4_02.png}{DailyArt}{Stone lion}{Sketchfab}{black}
 
 \oddChapter
-\partIntro{IV}{Generation of synthetic data}{This part is split into two chapters. The first one covers the efficient simulation of a \acrshort{lidar} sensor aimed at providing large point cloud datasets for the training of Deep Learning models. Then, the \acrshort{lidar} datasets are further enriched with intensity by modelling the surfaces' \acrshort{brdf}. 
+\partIntro{IV}{Generation of synthetic data}{This part is split into two chapters. The first one covers the efficient simulation of a \acrshort{lidar} sensor aimed at providing large point cloud datasets for the training of Deep Learning networks. Then, the \acrshort{lidar} datasets are further enriched with intensity data by modelling the surfaces' \acrshort{brdf}. 
 % Finally, the emulated sensor is applied to the optimization of \acrshort{lidar} scans within 3D buildings. 
 }
 
@@ -403,7 +404,7 @@
 \oddChapter
 \partIntro{VI}{Concluding remarks}{}
 
-% \input{chapters/conclusions.tex}
+\input{chapters/conclusions.tex}
 
 % \pagelayout{wide} % No margins
 % \addpart{Class Options, Commands and Environments}
@@ -433,9 +434,9 @@
 \oddChapter
 \partIntro{VII}{Appendices}{}
 
-% \input{chapters/preamble_spanish}
-% \input{chapters/introduction_spanish}
-% \input{chapters/conclusions_spanish}
+\input{chapters/preamble_spanish}
+\input{chapters/introduction_spanish}
+\input{chapters/conclusions_spanish}
 
 %----------------------------------------------------------------------------------------
 %	COVER

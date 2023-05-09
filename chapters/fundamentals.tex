@@ -148,7 +148,7 @@ Finally, remark that the radiometric processing of multispectral imagery from co
 \subsection{Thermography}
 \label{sec:thermography_imaging}
 
-\begin{marginfigure}[1cm]
+\begin{marginfigure}[0cm]
     \centering
     \includegraphics{figs/fundamentals/thermal_applications.png}
     \caption{Some applications of infrared imaging \cite{vollmer_infrared_2017}. From left to right, and from top to bottom: night vision, volcano monitoring, surveillance and detection of incorrect thermal insulation.}
@@ -179,7 +179,7 @@ The radiation measured from a surface is not solely affected by such a surface, 
 Although the \acrshort{ir} spectrum covers a wide range of wavelengths (see Figure \ref{fig:introduction_scheme}), \acrshort{ir} imaging is focused on a small part of these. Three spectral ranges are the most frequent in thermography: short-wave infrared (\acrshort{swir}: 900-1,700 \si{\nano\meter}), mid-wave infrared (\acrshort{mwir}: 3,000-5,000 \si{\nano\meter}) and long-wave infrared (\acrshort{lwir}: 8,000-14,000 \si{\nano\meter}) \cite{gade_thermal_2014, vollmer_infrared_2017}. Commercial sensors are available on the three spectral ranges; whether one of them ought to be used over another must attend to criteria such as atmospheric transmission, expected radiation and the physics of detectors. A simple Scopus search shows that \acrshort{mwir} imaging is the most widespread, though it is significantly downgraded over \acrshort{swir} and \acrshort{lwir} for \acrshort{uas} platforms. Figure \ref{fig:infrared_scopus} shows the percentage of work devoted to each \acrshort{ir} interval. The Scopus searches were the following: $(\textit{thermographic} \lor \textit{thermography} \lor \textit{thermal} \lor \textit{infrared} \lor \textit{ir}) \land (\textit{drone} \lor \textit{uav} \lor \textit{uas}) \land ((x-\textit{wave} \lor y\textit{WIR}))$, with $x$ being short ($y \gets $S), mid ($y \gets $M) or long ($y \gets $L). In this dissertation, the integrated thermographic camera operates over the \acrshort{lwir} range. 
 
 \begin{figure}[ht]
-	\includegraphics[width=.75\textwidth]{figs/fundamentals/infrared.png}
+	\includegraphics[width=\textwidth]{figs/fundamentals/infrared.png}
 	\caption{Number of manuscripts related to different \acrshort{ir} intervals.  }
     \label{fig:infrared_scopus}
 \end{figure}
@@ -363,9 +363,9 @@ Radiometric measurements are layered data that can be carved to find the surface
 	\label{fig:brdf_wi_wo}
 \end{marginfigure}
 
-In the last years, hyperspectral data acquisition has significantly increased, benefiting from the use of more cost-effective sensors and versatile platforms. On the one hand, traditional systems, which are deployed in the laboratory, are currently more efficient and capable of getting accurate spectral measurements of isotropic and anisotropic materials. These are gaining in accuracy, efficiency, and ease of use. At the laboratory level, the most accurate and well-known technique for collecting the optical features and \acrshort{brdf} of any real-world material is the use of a goniophotometer \cite{riviere_multispectral_2012}. Different variants of this configuration have been developed either to obtain better results in anisotropic materials, to take into account refraction phenomena or even to obtain normal maps, and any other characteristic that helps in synthetic modelling \cite{tunwattanapong_acquiring_2013, chen_reflectance_2014}. 
+In the last years, hyperspectral data acquisition has significantly increased, benefiting from the use of more cost-effective sensors and versatile platforms. On the one hand, traditional systems, which are deployed in the laboratory, are currently more efficient and capable of getting accurate spectral measurements of isotropic and anisotropic materials. These are gaining in accuracy, efficiency, and ease of use. At the laboratory level, the most accurate and well-known technique for collecting the optical features and \acrshort{brdf} of any real-world material is the use of a gonio-photometer \cite{riviere_multispectral_2012}. Different variants of this configuration have been developed either to obtain better results in anisotropic materials, to take into account refraction phenomena or even to obtain normal maps, and any other characteristic that helps in synthetic modelling \cite{tunwattanapong_acquiring_2013, chen_reflectance_2014}. 
 
-The first databases only included anisotropic materials that captured red, green and blue spectral response as a dense set of measurements \cite{matusik_data-driven_2003}, instead of analytical functions. Thus, discretized representations are more likely to be parameterized to build larger, yet realistic, \acrshort{brdf} datasets \cite{serrano_intuitive_2016}. More recently, the provided wavelengths have been extended to the whole spectra available for a motorized goniophotometer, thus allowing to extend render engines beyond the visible spectra \cite{dupuy_adaptive_2018}. As a result, \acrshort{brdf} are not solely parameterized through two spatial vectors, but also with a radiometric value. Hence, $f$ is now expressed as $f(\omega_i, \omega_o, \lambda)$, with $\lambda$ being the target wavelength. Accordingly, coarse radiometric resolution can be simulated as $\int_{\lambda_i}^{\lambda_j} f(\omega_i, \omega_o, \lambda) \hspace{1mm} d\lambda$. 
+The first databases only included anisotropic materials that captured red, green and blue spectral response as a dense set of measurements \cite{matusik_data-driven_2003}, instead of analytical functions. Thus, discretized representations are more likely to be parameterized to build larger, yet realistic, \acrshort{brdf} datasets \cite{serrano_intuitive_2016}. More recently, the provided wavelengths have been extended to the whole spectra available for a motorized gonio-photometer, thus allowing to extend render engines beyond the visible spectra \cite{dupuy_adaptive_2018}. As a result, \acrshort{brdf} are not solely parameterized through two spatial vectors, but also with a radiometric value. Hence, $f$ is now expressed as $f(\omega_i, \omega_o, \lambda)$, with $\lambda$ being the target wavelength. Accordingly, coarse radiometric resolution can be simulated as $\int_{\lambda_i}^{\lambda_j} f(\omega_i, \omega_o, \lambda) \hspace{1mm} d\lambda$. 
 
 These advances lead us toward the generation of real-world material databases, which are notably used for rendering photorealistic scenes, virtual interior design in architecture, the game industry, etc. These applications can be enhanced by the increasing availability of real-world scenarios, which can be efficiently reconstructed using versatile platforms. However, building material databases is time-consuming, prohibitive when it comes to acquisition devices and requires considering a list of laboratory constraints. 
 
@@ -470,10 +470,10 @@ The current state-of-the-art of massive point cloud rendering has evolved along 
     \label{fig:hqs_pc_rendering}
 \end{figure}
 
-\begin{kaobox}[frametitle=Compute shader core proposed by Schütz and Wimmer]
+\begin{kaobox}[frametitle=Compute shader logic proposed by Schütz and Wimmer]
 The projection approach from Schütz and Wimmer \cite{schutz_rendering_2021} uses modern \acrshort{opengl} extensions following this pipeline:
 \begin{itemize}
-    \item The depth buffer is firstly computed, with the depth being encoded along with the point index (64 bits). The atomic minimum operators help to select the point with the minimum depth. However, this approach leads to a noisy-like rendering for sparse point clouds. Instead, the depth of a pixel takes into account several points; data is exchanged within thread groups whose points fall in the same pixel using \small\verb|shuffleNV|\normalsize and \small\verb|ballotThreadNV|\normalsize operators. Then, \small\verb|shuffleXorNV|\normalsize computes the minimum depth within a pixel neighbourhood.
+    \item The depth buffer is firstly computed, with the depth being encoded along with the point index (64 bits). The atomic minimum operators help to select the point with the minimum depth. However, this approach leads to a noisy-like rendering for sparse point clouds. Instead, the depth of a pixel takes into account several points; data is exchanged within thread groups whose points fall in the same pixel using \footnotesize\verb|shuffleNV|\normalsize \hspace{.1mm} and \hspace{.1mm} \footnotesize\verb|ballotThreadNV|\normalsize\\ \hspace{.1mm} operators. Then, \footnotesize\verb|shuffleXorNV|\normalsize \hspace{.1mm} computes the minimum depth within a pixel neighbourhood.
     \item Colours are iteratively accumulated: the limited capacity of SSBOs may require that multiple point cloud subdivisions aggregate data. Accumulations can be implemented using atomic operators, whereas (red, green) and (blue, alpha ($\alpha$)) channels are encoded in two different buffers with values of 64 bits. Hence, the alpha channel is also used for accounting for the number of visible points at each pixel.
     \item Aggregated colours are finally transformed by averaging the mean value for each channel. Pixels with $\alpha \gets 0$ are shaded with the background colour. 
 \end{itemize}
@@ -534,7 +534,7 @@ Points, if back-projected to imagery, are mapped to multiple values that may var
 Instead of averaging samples, multiple aggregation functions can be used together with penalty functions to select the aggregation that differs the less from the experts' opinions. In this context, experts are different camera viewing angles which collect distinct results. In this context, penalty functions compute the similarity of each aggregation and the starting samples \cite{bustince_definition_2017, bustince_penalty_2017}, which must be maximized (whereas the dissimilarity is minimized). Although penalty functions have been gaining interest in scientific research, they have barely been explored in some contexts such as image processing \cite{paternain_color_2012, paternain_construction_2015}. Nevertheless, they have obtained notable results on image downscaling and even upscaling.
 
 \begin{figure}[ht]
-	\includegraphics[width=\linewidth]{figs/fundamentals/penalty_functions.png}
+	\includegraphics[width=.89\linewidth]{figs/fundamentals/penalty_functions.png}
 	\caption{Overall procedure to compute the penalty value of aggregation functions.}
 	\label{fig:penalty_funtions}
 \end{figure}
@@ -620,7 +620,7 @@ Another shortcoming is to incorporate massive parallelism in the \acrshort{gpu}.
 
 One would expect the later traversals to be easier than the initial construction. Nonetheless, the first shortcoming is the looping and stack-based traversal; the first makes threads stall until the traversal is terminated, whereas the latter requires storing local access data for every thread. These shortcomings are even harder when the ray-tracing engine does not solely requires the first hit, but also any hit. Stackless traversals have been proposed, but most of them still have a small memory footprint\cite{meister_survey_2021}. It is caused by traversals requiring at least some kind of binary encoding of the path. Once footprint and traversal drawbacks are overcome, or at least mitigated to some degree, ray traversals can be further optimized by grouping rays which may have a similar outcome \cite{hendrich_ray_2019}. In this work, ray traversals were approached using a stack with local data. For millions of rays, the \acrshort{gpu} will stall for seconds as this procedure is neither efficient nor have a low memory footprint, though it is solved in much less time than would require in the \acrshort{cpu}. 
 
-\begin{marginfigure}[-1.0cm]
+\begin{marginfigure}[-4.0cm]
     \includegraphics{figs/fundamentals/bvh_clustering.png}
 	\caption{Node clustering at different \acrshort{bvh} levels. }
     \label{fig:bvh_clustering}

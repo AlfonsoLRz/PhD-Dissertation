@@ -104,10 +104,10 @@ Figure \ref{fig:fisheye_model} shows this relation on the basis of $\alpha$ and 
 	\label{fig:fisheye_model}
 \end{figure}
 
-Then, four polynomial coefficients ($k_1, k_2, k_3, k_4$) read from the image metadata are used to compute the angle $\beta$ between the optical axis and the segment $\overline{c\textsubscript{o}p}$, as expressed in Equation \ref{eq:beta}. Note that this correction model is provided by Parrot.
+Then, four polynomial coefficients ($k_1, k_2, k_3, k_4$) are read from the image metadata to compute the angle $\beta$ between the optical axis and the segment $\overline{c\textsubscript{o}p}$, as expressed in Equation \ref{eq:beta}. Note that this correction model is provided by Parrot.
 \begin{equation}
 \label{eq:beta}
-\alpha = k_1 + k_2 * \alpha + k_3 * \alpha ^ 2 + k_4 * \alpha ^ 3
+\beta = k_1 + k_2 * \alpha + k_3 * \alpha ^ 2 + k_4 * \alpha ^ 3
 \end{equation}
 
 \begin{marginfigure}[-1.5cm]
@@ -160,6 +160,7 @@ Images captured by the DJI Zenmuse XT2 are affected by distortions that must be 
 
 As depicted in Figure \ref{fig:thermal_rgb_distortion}, corrected images have null values if the result has a lower dimensionality than the starting image. Hence, the minimum area that presents non-null colours can be determined by calculating the new corners of the image and subsequently cropping it (Equation \ref{eq:matrix_corners}). As a result, corrected images can have lower resolution than the initial ones, as occurs for thermal images. Figure \ref{fig:thermal_undistortion} compares three stages of the correction procedure. 
 \begin{gather}
+    \small
     \begin{aligned}
     \label{eq:matrix_corners}
     \min_x &= \max \{\max_x \{M \cdot [0, 0, 1]^\mathsf{T}, M \cdot [0, h - 1, 1]^\mathsf{T}\}, \min_x\}\\
@@ -167,6 +168,7 @@ As depicted in Figure \ref{fig:thermal_rgb_distortion}, corrected images have nu
     \max_x &= \min \{\min_x\{M \cdot [w - 1, 0, 1]^\mathsf{T}, M \cdot [w - 1, h - 1, 1]^\mathsf{T}\}, \max_x\}\\
     \max_y &= \min \{\min_y\{M \cdot [0, h - 1, 1]^\mathsf{T}, M \cdot [w - 1, h - 1, 1]^\mathsf{T}\}, \max_y\}\\
     \end{aligned}
+    \normalsize
 \end{gather}
 
 Distortion is removed by following the transformations defined in Equations \ref{eq:distortion_removal}, whereas the inverse produce can also be followed to guarantee every pixel is mapped to a colour.
