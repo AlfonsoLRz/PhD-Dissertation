@@ -1,4 +1,4 @@
-# PhD-Dissertation :octocat: :rocket: :tada:
+# PhD-Dissertation :rocket: :tada:
 LaTeX repository of the PhD disseration titled 'New tools for the modelling of sensor data', presented at the University of Jaén in May, 2023.
 
 This template is simply a fork of _kaobook_, which can be found in [Github](https://github.com/fmarotta/kaobook).
